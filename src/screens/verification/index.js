@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import {ImageBackground, StatusBar,ScrollView, Image, TextInput, View, StyleSheet, Animated} from 'react-native';
 import { Left,
-    Right,Header,Title,
+    Right,Header,Title, Container,
     Body,Button, H3, Text,Item,
-    Input } from "native-base";
-import Container from "./Container";
+    Input,Icon } from "native-base";
+//import BasicTab from "../tab/basicTab";
+//import Container from "./Container";
 //import styles from "./styles";
 
 const launchscreenBg = require("../../../assets/launchscreen-bg.png");
 const launchscreenLogo = require("../../../assets/logo-kitchen-sink.png");
-class Home extends Component {
+
+class Verify extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -18,7 +20,7 @@ class Home extends Component {
         }
     };
     loginSubmit= () => {
-        this.props.navigation.navigate("Verify");
+        this.props.navigation.navigate('NHTab');
     };
     onChanged(text){
         let newText = '';
@@ -34,7 +36,7 @@ class Home extends Component {
             }
         };
         //alert(newText.length);
-        if(newText.length==10){
+        if(newText.length==4){
             this.state.isDisabled=false;
         }else{
             this.state.isDisabled=true;
@@ -54,11 +56,15 @@ class Home extends Component {
 
     renderHeader() {
         return (
-            <View>
+            <View >
                 <Header style={{ backgroundColor : '#da4439'}}>
-                    <Left />
+                    <Left>
+                        <Button transparent onPress={() => this.props.navigation.goBack()}>
+                            <Icon name="arrow-back" />
+                        </Button>
+                    </Left>
                     <Body>
-                    <Title>Runner Login</Title>
+                    <Title>Verification</Title>
                     </Body>
                     <Right />
                 </Header>
@@ -70,8 +76,8 @@ class Home extends Component {
         return (
             <View style={styles.loginImageSection}>
                 <Image style={styles.loginImage}
-                    source={require('../../../assets/moglixRunner.png')}
-                    style={styles.images}
+                       source={require('../../../assets/moglixRunner.png')}
+                       style={styles.images}
                 />
             </View>
         );
@@ -81,18 +87,18 @@ class Home extends Component {
             <ScrollView style={{padding: 20}}>
                 <Text
                     style={{fontSize: 15}}>
-                    Enter Your Mobile number
+                    Enter OTP sent to {"\n"} Your Mobile number
                 </Text>
                 <Item>
-                    <Input type="number" value={this.state.myNumber} onChangeText={(text)=> this.onChanged(text)} keyboardType='numeric' placeholder='+91' maxLength={10} minLength={9} />
+                    <Input type="number" value={this.state.myNumber} onChangeText={(text)=> this.onChanged(text)} keyboardType='numeric' placeholder='- - - -' maxLength={4}/>
                 </Item>
                 <View style={{margin:12}} />
                 <Button full success
                         disabled={this.state.isDisabled}
-                    style={{marginTop: 15, alignSelf: "center" }}
-                    onPress={() => this.loginSubmit()}
+                        style={{marginTop: 15, alignSelf: "center" }}
+                        onPress={() => this.loginSubmit()}
                 >
-                    <Text>Login</Text>
+                    <Text>Verify</Text>
                 </Button>
             </ScrollView>
         );
@@ -134,5 +140,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     }
 });
-export default Home;
+
+export default Verify;
+
+
 

@@ -20,7 +20,7 @@ const datas = [
         name: "Home",
         route: "NHTab",
         icon: "home",
-        bg: "#AB6AED"
+        bg: "#da4439"
     },
     {
         name: "Pickup",
