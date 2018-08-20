@@ -12,4 +12,3 @@ Runner App written in React Native .
 *	**Run on Android**
 	*	Make sure you have an `Android emulator` installed and running
 	*	Run `react-native run-android` in your terminal
-

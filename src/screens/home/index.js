@@ -18,6 +18,7 @@ class Home extends Component {
         }
     };
     loginSubmit= () => {
+        alert("done");
         this.props.navigation.navigate("Verify");
     };
     onChanged(text){
@@ -58,7 +59,7 @@ class Home extends Component {
                 <Header style={{ backgroundColor : '#da4439'}}>
                     <Left />
                     <Body>
-                    <Title>Runner Login</Title>
+                    <Title>Runner Login </Title>
                     </Body>
                     <Right />
                 </Header>

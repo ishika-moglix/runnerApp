@@ -19,7 +19,8 @@ class BasicTab extends Component {
   render() {
     return (
       <Container>
-        <Header hasTabs>
+        <Header style={{ backgroundColor: '#da4439' }}
+                androidStatusBarColor="#da4439" hasTabs>
             <Left>
             <Button
                 transparent
@@ -29,16 +30,18 @@ class BasicTab extends Component {
             </Button>
         </Left>
           <Body>
-            <Title> Basic Tabs</Title>
+            <Title> Moglix Runner1</Title>
           </Body>
           <Right />
         </Header>
 
-        <Tabs>
-          <Tab heading="Pickup">
+        <Tabs tabBarUnderlineStyle={{borderBottomWidth:2}}>
+          <Tab tabStyle={{ backgroundColor: '#da4439' }}
+               androidStatusBarColor="#da4439" activeTabStyle={{backgroundColor: 'red'}}  textStyle={{color: '#fff'}} heading="Pickup">
             <TabOne />
           </Tab>
-          <Tab heading="Delivery">
+          <Tab tabStyle={{ backgroundColor: '#da4439' }}
+               androidStatusBarColor="#da4439" textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: 'red'}}  heading="Delivery">
             <TabTwo />
           </Tab>
           {/*<Tab heading="Tab3">*/}
