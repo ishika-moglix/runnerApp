@@ -138,7 +138,9 @@ import NHAccordion from "./screens/accordion/";
 import NHDatePicker from "./screens/datepicker/";
 import TabOne from "./screens/tab/tabOne";
 import TabTwo from "./screens/tab/tabTwo";
-import Verify from "./screens/verification"
+import Verify from "./screens/verification";
+import PickupList from "./screens/pickupDetail";
+import Invoiceinfo from "./screens/invoiceInfo";
 
 const Drawer = DrawerNavigator(
   {
@@ -146,6 +148,7 @@ const Drawer = DrawerNavigator(
       NHDelivery: {screen:TabTwo},
       NHTab: { screen: BasicTab },
       Home: { screen: Home },
+      NHInvoice:{screen:Invoiceinfo},
     //
     // Header: { screen: Header },
     // Footer: { screen: Footer },
@@ -184,8 +187,9 @@ const Drawer = DrawerNavigator(
 
 const AppNavigator = StackNavigator(
   {
-    Drawer: { screen: Drawer },
-      Verify: {screen: Verify},
+  Drawer: { screen: Drawer },
+  Verify: {screen: Verify},
+  Invoiceinfo:{screen:Invoiceinfo},
     Header1: { screen: Header1 },
     Header2: { screen: Header2 },
     Header3: { screen: Header3 },
@@ -307,7 +311,9 @@ const AppNavigator = StackNavigator(
     AccordionIcon: { screen: AccordionIcon },
     AccordionIconStyle: { screen: AccordionIconStyle },
     AccordionHeaderContentStyle: { screen: AccordionHeaderContentStyle },
-    AccordionCustomHeaderContent: { screen: AccordionCustomHeaderContent }
+    AccordionCustomHeaderContent: { screen: AccordionCustomHeaderContent },
+
+      PickupList: { screen: PickupList }
   },
   {
     initialRouteName: "Drawer",

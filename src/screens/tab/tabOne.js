@@ -9,7 +9,8 @@ import {
     Text
 } from "native-base";
 import styles from "../form/styles";
-import TabThree from "./tabThree";
+//import PickupList from "../pickupDetail";
+//import TabThree from "./tabThree";
 
 export default class TabOne extends Component {
     constructor(props) {
@@ -19,6 +20,9 @@ export default class TabOne extends Component {
             isDisabled: true
         };
     }
+    tab1click= () => {
+        this.props.navigation.navigate('PickupList');
+    };
     onChanged(text){
         let newText = '';
         let numbers = '0123456789';
@@ -46,7 +50,7 @@ export default class TabOne extends Component {
                           <Input keyboardType='numeric' value={this.state.myNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="PO Number" secureTextEntry />
                       </Item>
                   </Form>
-                  <Button block disabled={this.state.isDisabled} onPress={() => this.props.navigation.navigate("TabThree")} style={{ margin: 15, marginTop: 50 }}>
+                  <Button block disabled={this.state.isDisabled} onPress={() => this.tab1click()} style={{ margin: 15, marginTop: 50 }}>
                       <Text>Search PO</Text>
                   </Button>
               </Content>

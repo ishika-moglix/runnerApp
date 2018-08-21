@@ -18,6 +18,9 @@ export default class TabTwo extends Component {
             isDisabled: true
         };
     }
+    tab2click= () => {
+        this.props.navigation.navigate('Invoiceinfo');
+    };
     onChanged(text){
         let newText = '';
         let numbers = '0123456789';
@@ -45,7 +48,7 @@ export default class TabTwo extends Component {
                           <Input keyboardType='numeric' value={this.state.myNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="Invoice Number" secureTextEntry />
                       </Item>
                   </Form>
-                  <Button block disabled={this.state.isDisabled} onPress={() => this.props.navigation.navigate("TabThree")} style={{ margin: 15, marginTop: 50 }}>
+                  <Button block disabled={this.state.isDisabled} onPress={() => this.tab2click()} style={{ margin: 15, marginTop: 50 }}>
                       <Text>Search Invoice</Text>
                   </Button>
               </Content>

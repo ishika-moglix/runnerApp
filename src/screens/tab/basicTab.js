@@ -13,7 +13,7 @@ import {
 } from "native-base";
 import TabOne from "./tabOne";
 import TabTwo from "./tabTwo";
-import TabThree from "./tabThree";
+//import TabThree from "./tabThree";
 
 class BasicTab extends Component {
   render() {
@@ -30,7 +30,7 @@ class BasicTab extends Component {
             </Button>
         </Left>
           <Body>
-            <Title> Moglix Runner1</Title>
+            <Title> Moglix Runner</Title>
           </Body>
           <Right />
         </Header>
@@ -38,11 +38,11 @@ class BasicTab extends Component {
         <Tabs tabBarUnderlineStyle={{borderBottomWidth:2}}>
           <Tab tabStyle={{ backgroundColor: '#da4439' }}
                androidStatusBarColor="#da4439" activeTabStyle={{backgroundColor: 'red'}}  textStyle={{color: '#fff'}} heading="Pickup">
-            <TabOne />
+            <TabOne navigation={this.props.navigation} />
           </Tab>
           <Tab tabStyle={{ backgroundColor: '#da4439' }}
                androidStatusBarColor="#da4439" textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: 'red'}}  heading="Delivery">
-            <TabTwo />
+            <TabTwo navigation={this.props.navigation} />
           </Tab>
           {/*<Tab heading="Tab3">*/}
             {/*<TabThree />*/}
