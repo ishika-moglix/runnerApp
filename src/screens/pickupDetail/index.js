@@ -17,14 +17,18 @@ import {
 import {  FlatList, StyleSheet, View } from 'react-native';
 //import styles from "./styles";
 
+
 class PickupList extends Component {
   render() {
       var items = [
-          'Simon Mignolet',
-          'Nathaniel Clyne',
-          'Dejan Lovren',
-          'Mama Sakho',
-          'Emre Can'
+          {name:'Simon Mignolet',qty:10},
+          {name:'Nathaniel Clyne',qty:20},
+          {name:'Dejan Lovren',qty:22},
+          {name:'Mama Sakho',qty:25},
+          {name:'Emre Can',qty:78},
+          {name:'Dejan Lovren',qty:22},
+          {name:'Mama Sakho',qty:25},
+          {name:'Emre Can',qty:78},
       ];
     return (
       <Container>
@@ -44,7 +48,19 @@ class PickupList extends Component {
             <List dataArray={items}
                   renderRow={(item) =>
                       <ListItem>
-                          <Text>{item}</Text>
+                          <Text>{item.name}</Text>
+                          <Text>QTY: {item.qty}</Text>
+                          <Button transparent onPress={() => this.props.navigation.goBack()}>
+                              <Icon name="minus" />
+                          </Button>
+                          <Text textAlign="right" style={{textAlign: 'right'}}>
+                              5</Text>
+                          <Button transparent onPress={() => this.props.navigation.goBack()}>
+                              <Icon name="plus" />
+                          </Button>
+                          {/*<Text>*/}
+                              {/*<b>Some Text</b>*/}
+                          {/*</Text>*/}
                       </ListItem>
                   }>
             </List>
@@ -53,7 +69,7 @@ class PickupList extends Component {
         <Footer>
           <FooterTab>
             <Button active full>
-              <Text>Footer</Text>
+              <Text>Pickup Done</Text>
             </Button>
           </FooterTab>
         </Footer>
@@ -61,5 +77,6 @@ class PickupList extends Component {
     );
   }
 }
+
 
 export default PickupList;

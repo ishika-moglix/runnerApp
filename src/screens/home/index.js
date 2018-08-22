@@ -5,6 +5,7 @@ import { Left,
     Body,Button, H3, Text,Item,
     Input } from "native-base";
 import Container from "./Container";
+import axios from 'axios';
 //import styles from "./styles";
 
 const launchscreenBg = require("../../../assets/launchscreen-bg.png");
@@ -17,9 +18,32 @@ class Home extends Component {
             isDisabled: true
         }
     };
-    loginSubmit= () => {
-        this.props.navigation.navigate("Verify");
-    };
+    // loginSubmit= () => {
+    //
+    // };
+    loginSubmit = event => {
+       // event.preventDefault();
+
+        const user = {
+            "phoneNumber": this.state.myNumber
+        };
+        const headers = {
+            'Content-Type': 'application/json',
+        };
+        axios.post(`http://emsqa.moglilabs.com/api/auth/login.json`, user,headers)
+            .then(res => {
+                alert(JSON.stringify(res));
+                //alert(res.data);
+                //alert(res.success);
+                if(res.success && res.code==200){
+                    this.props.navigation.navigate("Verify");
+                }else{
+                   // alert(res.message);
+                }
+                console.log(res);
+
+            })
+    }
     onChanged(text){
         let newText = '';
         let numbers = '0123456789';
