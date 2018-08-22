@@ -4,6 +4,7 @@ import { Left,
     Right,Header,Title, Container,
     Body,Button, H3, Text,Item,
     Input,Icon } from "native-base";
+import axios from "axios/index";
 //import BasicTab from "../tab/basicTab";
 //import Container from "./Container";
 //import styles from "./styles";
@@ -14,13 +15,33 @@ const launchscreenLogo = require("../../../assets/logo-kitchen-sink.png");
 class Verify extends Component {
     constructor(props) {
         super(props);
+        const {state} = props.navigation;
+        console.log("PROPS " + state.params.userId);
         this.state = {
             myNumber: '',
-            isDisabled: true
+            isDisabled: true,
+            userId:state.params.userId
         }
     };
-    loginSubmit= () => {
-        this.props.navigation.navigate('NHTab');
+    verifyOtp= event => {
+        const user = {
+            "id":this.state.userId,
+            "otp": this.state.myNumber
+        };
+        const headers = {
+            'Content-Type': 'application/json',
+        };
+        axios.post(`http://emsqa.moglilabs.com/api/auth/verifyOtp.json`, user,headers)
+            .then(res => {
+                console.log(JSON.stringify(res));
+                //console.log(res.data.data.id);
+                if(res.data.success && res.data.code==200){
+                    this.props.navigation.navigate('NHTab');
+                }else{
+                    alert(res.data.message);
+                }
+            })
+
     };
     onChanged(text){
         let newText = '';
@@ -36,7 +57,7 @@ class Verify extends Component {
             }
         };
         //alert(newText.length);
-        if(newText.length==4){
+        if(newText.length==6){
             this.state.isDisabled=false;
         }else{
             this.state.isDisabled=true;
@@ -90,13 +111,13 @@ class Verify extends Component {
                     Enter OTP sent to {"\n"} Your Mobile number
                 </Text>
                 <Item>
-                    <Input type="number" value={this.state.myNumber} onChangeText={(text)=> this.onChanged(text)} keyboardType='numeric' placeholder='- - - -' maxLength={4}/>
+                    <Input type="number" value={this.state.myNumber} onChangeText={(text)=> this.onChanged(text)} keyboardType='numeric' placeholder='- - - - - -' maxLength={6}/>
                 </Item>
                 <View style={{margin:12}} />
                 <Button full success
                         disabled={this.state.isDisabled}
                         style={{marginTop: 15, alignSelf: "center" }}
-                        onPress={() => this.loginSubmit()}
+                        onPress={() => this.verifyOtp()}
                 >
                     <Text>Verify</Text>
                 </Button>

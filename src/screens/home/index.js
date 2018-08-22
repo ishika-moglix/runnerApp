@@ -18,12 +18,7 @@ class Home extends Component {
             isDisabled: true
         }
     };
-    // loginSubmit= () => {
-    //
-    // };
     loginSubmit = event => {
-       // event.preventDefault();
-
         const user = {
             "phoneNumber": this.state.myNumber
         };
@@ -32,18 +27,15 @@ class Home extends Component {
         };
         axios.post(`http://emsqa.moglilabs.com/api/auth/login.json`, user,headers)
             .then(res => {
-                alert(JSON.stringify(res));
-                //alert(res.data);
-                //alert(res.success);
-                if(res.success && res.code==200){
-                    this.props.navigation.navigate("Verify");
+                console.log(JSON.stringify(res));
+                //console.log(res.data.data.id);
+                if(res.data.success && res.data.code==200){
+                    this.props.navigation.navigate("Verify", { userId: res.data.data.id });
                 }else{
-                   // alert(res.message);
+                   alert(res.data.message);
                 }
-                console.log(res);
-
             })
-    }
+    };
     onChanged(text){
         let newText = '';
         let numbers = '0123456789';
