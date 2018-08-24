@@ -13,10 +13,16 @@ import {
 } from "native-base";
 import TabOne from "./tabOne";
 import TabTwo from "./tabTwo";
+import { AsyncStorage } from "react-native";
 //import TabThree from "./tabThree";
 
 class BasicTab extends Component {
   render() {
+      AsyncStorage.getItem('token', (err, result) => {
+          console.log("storage token get later");
+          console.log(result);
+      });
+      //console.log(AsyncStorage.getItem('token'));
     return (
       <Container>
         <Header style={{ backgroundColor: '#da4439' }}

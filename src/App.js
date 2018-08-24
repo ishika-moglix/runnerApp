@@ -142,6 +142,20 @@ import Verify from "./screens/verification";
 import PickupList from "./screens/pickupDetail";
 import Invoiceinfo from "./screens/invoiceInfo";
 
+import { AsyncStorage } from "react-native"
+// To see all the requests in the chrome Dev tools in the network tab.
+XMLHttpRequest = GLOBAL.originalXMLHttpRequest ?
+    GLOBAL.originalXMLHttpRequest :
+    GLOBAL.XMLHttpRequest;
+
+// fetch logger
+global._fetch = fetch;
+global.fetch = function (uri, options, ...args) {
+    return global._fetch(uri, options, ...args).then((response) => {
+        console.log('Fetch', { request: { uri, options, ...args }, response });
+        return response;
+    });
+};
 const Drawer = DrawerNavigator(
   {
       NHPickup: {screen:TabOne},
@@ -177,12 +191,25 @@ const Drawer = DrawerNavigator(
     // NHDatePicker: { screen: NHDatePicker }
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "NHTab",
     contentOptions: {
       activeTintColor: "#e91e63"
     },
     contentComponent: props => <SideBar {...props} />
   }
+);
+
+const Drawer2 = DrawerNavigator(
+    {
+        NHTab2: { screen: BasicTab },
+    },
+    {
+        initialRouteName: "NHTab2",
+        contentOptions: {
+            activeTintColor: "#e91e63"
+        },
+        contentComponent: props => <SideBar {...props} />
+    }
 );
 
 const AppNavigator = StackNavigator(
@@ -320,8 +347,20 @@ const AppNavigator = StackNavigator(
     headerMode: "none"
   }
 );
-
-export default () =>
-  <Root>
+// if(AsyncStorage.getItem('token')){
+//     return <Drawer2 />
+// }else{
+//     return <AppNavigator />
+// }
+export default () =><Root>
     <AppNavigator />
-  </Root>;
+</Root>
+// if(AsyncStorage.getItem('token'))
+// {
+//
+// }else{
+//     <Root>
+//         <AppNavigator />
+//     </Root>
+// }
+

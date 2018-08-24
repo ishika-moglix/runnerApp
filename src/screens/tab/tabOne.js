@@ -1,14 +1,9 @@
 import React, { Component } from "react";
 import {
-    Container,
-    Content,
-    Button,
-    Item,
-    Input,
-    Form,
-    Text
+    Container, Content, Button, Item, Input, Form, Text
 } from "native-base";
 import styles from "../form/styles";
+
 //import PickupList from "../pickupDetail";
 //import TabThree from "./tabThree";
 
@@ -16,12 +11,12 @@ export default class TabOne extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            myNumber: '',
+            mypoNumber: '',
             isDisabled: true
         };
     }
     tab1click= () => {
-        this.props.navigation.navigate('PickupList');
+        this.props.navigation.navigate('PickupList', { poNumber: this.state.mypoNumber });
     };
     onChanged(text){
         let newText = '';
@@ -34,12 +29,12 @@ export default class TabOne extends Component {
                 alert("please enter numbers only");
             }
         };
-        if(newText.length==10){
+        if(newText.length==5){
             this.state.isDisabled=false;
         }else{
             this.state.isDisabled=true;
         }
-        this.setState({ myNumber: newText });
+        this.setState({ mypoNumber: newText });
     }
   render() {
       return (
@@ -47,7 +42,7 @@ export default class TabOne extends Component {
               <Content style={{ margin: 10, marginTop: 100 }}>
                   <Form >
                       <Item last>
-                          <Input keyboardType='numeric' value={this.state.myNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="PO Number" secureTextEntry />
+                          <Input keyboardType='numeric' value={this.state.mypoNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="PO Number" />
                       </Item>
                   </Form>
                   <Button block disabled={this.state.isDisabled} onPress={() => this.tab1click()} style={{ margin: 15, marginTop: 50 }}>

@@ -5,6 +5,7 @@ import { Left,
     Body,Button, H3, Text,Item,
     Input,Icon } from "native-base";
 import axios from "axios/index";
+import { AsyncStorage } from "react-native"
 //import BasicTab from "../tab/basicTab";
 //import Container from "./Container";
 //import styles from "./styles";
@@ -36,6 +37,14 @@ class Verify extends Component {
                 console.log(JSON.stringify(res));
                 //console.log(res.data.data.id);
                 if(res.data.success && res.data.code==200){
+                    console.log(res.data.data.token);
+                    AsyncStorage.setItem('token', res.data.data.token, () => {
+                        AsyncStorage.getItem('token', (err, result) => {
+                            console.log("storage token get");
+                            console.log(result);
+                        });
+                    });
+                   // AsyncStorage.setItem('token', res.data.data.token);
                     this.props.navigation.navigate('NHTab');
                 }else{
                     alert(res.data.message);
