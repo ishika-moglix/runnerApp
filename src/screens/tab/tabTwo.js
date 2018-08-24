@@ -14,12 +14,12 @@ export default class TabTwo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            myNumber: '',
+            invoiceNumber: '',
             isDisabled: true
         };
     }
     tab2click= () => {
-        this.props.navigation.navigate('Invoiceinfo');
+        this.props.navigation.navigate('Invoiceinfo', { invoice: this.state.invoiceNumber });
     };
     onChanged(text){
         let newText = '';
@@ -32,12 +32,12 @@ export default class TabTwo extends Component {
                 alert("please enter numbers only");
             }
         };
-        if(newText.length==10){
+        if(newText.length>=4){
             this.state.isDisabled=false;
         }else{
             this.state.isDisabled=true;
         }
-        this.setState({ myNumber: newText });
+        this.setState({ invoiceNumber: newText });
     }
   render() {
       return (
@@ -45,7 +45,7 @@ export default class TabTwo extends Component {
               <Content style={{ margin: 10, marginTop: 100 }}>
                   <Form >
                       <Item last>
-                          <Input keyboardType='numeric' value={this.state.myNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="Invoice Number" secureTextEntry />
+                          <Input keyboardType='numeric' value={this.state.invoiceNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="Invoice Number"  />
                       </Item>
                   </Form>
                   <Button block disabled={this.state.isDisabled} onPress={() => this.tab2click()} style={{ margin: 15, marginTop: 50 }}>

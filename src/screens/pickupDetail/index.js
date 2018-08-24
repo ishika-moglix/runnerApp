@@ -36,10 +36,6 @@ class PickupList extends Component{
             const user = {
                 "poIds":this.state.myPONumber,
             };
-            const headers = {
-                'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I",
-                'Content-Type': 'application/json',
-            };
             const AuthStr = 'Bearer '.concat('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I');
             axios.post(`http://emsqa.moglilabs.com/api/runner/poDetail.json`, user,{ headers: { 'Authorization': AuthStr } })
                 .then(res => {
