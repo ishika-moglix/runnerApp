@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import {
-  Container, Header, Title, Content, Text, Button, Icon, Footer, FooterTab, Left, Right, Body
+  Container,Fab,
+    IconNB, Header, Title, Content, Text, Button, Icon, Footer, FooterTab, Left, Right, Body
 } from "native-base";
 //import Pdf from 'react-native-pdf';
 //import styles from "./styles";
 //import styles from "../form/styles";
-import { StyleSheet, Dimensions, View } from 'react-native';
+import {ImageBackground, StatusBar,ScrollView, Image, TextInput,  Dimensions, View, StyleSheet, Animated} from 'react-native';
 import Pdf from 'react-native-pdf';
 
 import axios from "axios/index";
@@ -15,6 +16,7 @@ class Invoiceinfo extends Component {
         const {state} = props.navigation;
         this.state = {
             myItems:state.params.invoice,
+            active: false
         };
         console.log("PROPS " + state.params.invoice);
 
@@ -40,13 +42,13 @@ class Invoiceinfo extends Component {
         return (
             <Container style={[ styles.container, this.props.style || {} ]}>
                 { this.renderHeader() }
-                { this.renderImage() }
+                { this.renderPdf() }
+                { this.renderFooter() }
             </Container>
         );
     }
-renderImage() {
+    renderPdf() {
       if(this.state.myItems){
-          { this.renderHeader() }
       const source = {uri:'http://'+this.state.myItems,cache:true};
       //const source = require('./test.pdf');  // ios only
       //const source = {uri:'bundle-assets://test.pdf'};
@@ -55,7 +57,7 @@ renderImage() {
       //const source = {uri:"data:application/pdf;base64,..."};
 
       return (
-          <View style={styles.container}>
+          <View style={styles.container2}>
               <Pdf
                   source={source}
                   onLoadComplete={(numberOfPages,filePath)=>{
@@ -77,22 +79,38 @@ renderImage() {
           )
       }
   }
+    renderFooter(){
+        return (
+            <View>
+                <Text style={styles.footerStyle}>
+                     <Text style={{color: 'red'}}> Approve </Text>
+                </Text>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        marginTop: 25,
         shadowColor: '#000000',
         shadowOpacity: 0.4,
         shadowOffset: { height: -5, width:-5},
         shadowRadius: 10,
     },
+    container2:{
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        marginTop: 25,
+    },
     pdf: {
         flex:1,
         width:Dimensions.get('window').width,
+    },
+    footerStyle: {
+        margin: 10,
+        marginLeft:15,
+        fontSize: 15
     }
 });
 

@@ -36,7 +36,7 @@ class BasicTab extends Component {
             </Button>
         </Left>
           <Body>
-            <Title> Moglix Runner 1</Title>
+            <Title> Moglix Runner</Title>
           </Body>
           <Right />
         </Header>

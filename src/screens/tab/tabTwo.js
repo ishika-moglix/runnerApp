@@ -25,6 +25,7 @@ export default class TabTwo extends Component {
     tab2click= () => {
         AsyncStorage.getItem('token', (err, result) => {
             this.state.myToken=result;
+            console.log(this.state.myToken);
             const user = {
                 "invoiceNumber":this.state.invoiceNumber,
             };
@@ -38,8 +39,6 @@ export default class TabTwo extends Component {
                         console.log(res.data.data.invoice.invoiceUrl);
                         //this.setState({ myItems: res.data.data.poItems });
                         this.state.myItems=res.data.data.invoice.invoiceUrl;
-                        console.log(this.state.myItems);
-                        alert(this.state.myItems.length);
                         this.props.navigation.navigate('Invoiceinfo', { invoice: this.state.myItems });
                     }else{
                         alert(res.data.message);
