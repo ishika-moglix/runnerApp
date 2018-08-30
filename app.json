@@ -1,4 +1,7 @@
 {
   "name": "Runner App",
-  "displayName": "Runner App"
+  "displayName": "Runner App",
+  "expo": {
+    "sdkVersion": "18.0.0"
+  }
 }
