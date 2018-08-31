@@ -9,6 +9,7 @@ import {
 import {ImageBackground, StatusBar,ScrollView, Image, TextInput,  Dimensions, View, StyleSheet, Animated} from 'react-native';
 import Pdf from 'react-native-pdf';
 import { AsyncStorage } from "react-native";
+//import {TabTwo} from "../tab/tabTwo";
 import axios from "axios/index";
 var ImagePicker = require('react-native-image-picker');
 var options = {
@@ -24,13 +25,14 @@ class Invoiceinfo extends Component {
     constructor(props) {
         super(props);
         const {state} = props.navigation;
+        console.log(state.params);
         this.state = {
-            myItems:state.params.invoice,
+            myItems:state.params.invoice.invoiceUrl,
             active: false,
             myImgaeBase:'',
+            invoiceNo: state.params.invoice.invoiceNumber
         };
-        console.log("PROPS " + state.params.invoice);
-
+        console.log("PROPS " + state.params.invoice.invoiceUrl);
     };
     renderHeader() {
         return (
@@ -42,7 +44,7 @@ class Invoiceinfo extends Component {
                         </Button>
                     </Left>
                     <Body>
-                    <Title>Verification</Title>
+                    <Title>Invoice: {this.state.invoiceNo}</Title>
                     </Body>
                     <Right />
                 </Header>
@@ -102,7 +104,7 @@ class Invoiceinfo extends Component {
                         style={styles.footerStyle}
                         onPress={() => this.openPicker()}
                 >
-                    <Text style={{color: 'red'}}> Approve </Text>
+                    <Text style={{color: 'red'}}> Upload Pod </Text>
                 </Button>
             </View>
         );
@@ -134,45 +136,44 @@ class Invoiceinfo extends Component {
                 this.state.myImgaeBase= response.data
                 this.forceUpdate();
                 this.storePicture(response);
-                //this.uploadImage();
             }
         });
     }
-    uploadImage = event => {
-        const user = {
-            "phoneNumber": this.state.myNumber
-        };
-        const headers = {
-            'Content-Type': 'application/json',
-        };
-        AsyncStorage.getItem('token', (err, result) => {
-            console.log("storage token in pickup details");
-            console.log(result);
-            this.state.myToken=result;
-
-            const user = {
-                "packetId":58984,
-                "fileToUpload":'https://www.google.co.in/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
-                "podDate":'2018-08-22'
-            };
-            const AuthStr = 'Bearer '.concat('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I');
-            axios.post(`http://emsqa.moglilabs.com/api/runner/markDeliveredPod.json`, user,{ headers: { 'Authorization': AuthStr } })
-                .then(res => {
-                    console.log(JSON.stringify(res));
-                    //console.log(res.data.data.id);
-                    if(res.data.success && res.data.code==200){
-                        console.log("my po items are here");
-                        console.log(res.data.data.poItems);
-                        //this.setState({ myItems: res.data.data.poItems });
-                        this.state.myItems=res.data.data.poItems;
-                        this.forceUpdate();
-                    }else{
-                        alert(res.data.message);
-                    }
-                });
-            console.log(this.state.myItems);
-        });
-    };
+    // uploadImage = event => {
+    //     const user = {
+    //         "phoneNumber": this.state.myNumber
+    //     };
+    //     const headers = {
+    //         'Content-Type': 'application/json',
+    //     };
+    //     AsyncStorage.getItem('token', (err, result) => {
+    //         console.log("storage token in pickup details");
+    //         console.log(result);
+    //         this.state.myToken=result;
+    //
+    //         const user = {
+    //             "packetId":58984,
+    //             "fileToUpload":'https://www.google.co.in/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
+    //             "podDate":'2018-08-22'
+    //         };
+    //         const AuthStr = 'Bearer '.concat('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I');
+    //         axios.post(`http://emsqa.moglilabs.com/api/runner/markDeliveredPod.json`, user,{ headers: { 'Authorization': AuthStr } })
+    //             .then(res => {
+    //                 console.log(JSON.stringify(res));
+    //                 //console.log(res.data.data.id);
+    //                 if(res.data.success && res.data.code==200){
+    //                     console.log("my po items are here");
+    //                     console.log(res.data.data.poItems);
+    //                     //this.setState({ myItems: res.data.data.poItems });
+    //                     this.state.myItems=res.data.data.poItems;
+    //                     this.forceUpdate();
+    //                 }else{
+    //                     alert(res.data.message);
+    //                 }
+    //             });
+    //         console.log(this.state.myItems);
+    //     });
+    // };
     storePicture(file) {
         console.log(file);
         if (file) {
@@ -242,18 +243,8 @@ class Invoiceinfo extends Component {
                 .catch(err => {
                     console.log("error log is here"+err);
                 });*/
-
-
-
-
-console.log("******** final console is here ******");
-console.log(file);
-
-let path = file.path;
             const parts = file.path.split('/');
-console.log(path.substring(path.indexOf('s')), 'asdfdasfadsfasdfas');
             const data = new FormData();
-          //  data.append('name', 'testName'); // you can append anyone.
             data.append('fileToUpload', {
                 uri: file.uri,
                 type: file.type, // or photo.type
@@ -267,7 +258,6 @@ console.log(path.substring(path.indexOf('s')), 'asdfdasfadsfasdfas');
                 config: { headers: {'Content-Type': 'multipart/form-data' }}
             }).then(res => {
                 console.log(res);
-                alert("success")
                 alert(JSON.stringify(res));
             }).catch(err => {
                 console.log("error log is here"+err);

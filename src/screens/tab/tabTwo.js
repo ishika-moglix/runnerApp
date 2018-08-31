@@ -38,7 +38,7 @@ export default class TabTwo extends Component {
                         console.log("my po items are here");
                         console.log(res.data.data.invoice.invoiceUrl);
                         //this.setState({ myItems: res.data.data.poItems });
-                        this.state.myItems=res.data.data.invoice.invoiceUrl;
+                        this.state.myItems=res.data.data.invoice;
                         this.props.navigation.navigate('Invoiceinfo', { invoice: this.state.myItems });
                     }else{
                         alert(res.data.message);
