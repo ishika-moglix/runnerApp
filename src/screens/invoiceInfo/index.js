@@ -18,14 +18,16 @@ var options = {
         path: 'images'
     }
 };
-
+let mytest;
 class Invoiceinfo extends Component {
+
     constructor(props) {
         super(props);
         const {state} = props.navigation;
         this.state = {
             myItems:state.params.invoice,
-            active: false
+            active: false,
+            myImgaeBase:'',
         };
         console.log("PROPS " + state.params.invoice);
 
@@ -53,7 +55,7 @@ class Invoiceinfo extends Component {
                 { this.renderHeader() }
                 { this.renderPdf() }
                 { this.renderFooter() }
-                <Image source={this.state.avatarSource} style={styles.uploadAvatar} />
+                {/*<Image source={this.state.avatarSource} style={styles.uploadAvatar} />*/}
             </Container>
         );
     }
@@ -80,7 +82,10 @@ class Invoiceinfo extends Component {
                       console.log(error);
                   }}
                   style={styles.pdf}/>
-              <Image source={this.state.avatarSource} style={styles.uploadAvatar} />
+              <Image  source={{
+                  isStatic: true,
+                  uri: 'data:image/jpeg;base64,'+this.state.myImgaeBase,
+              }} style={{width: 100, height: 100}} />
           </View>
       )
       }
@@ -121,16 +126,14 @@ class Invoiceinfo extends Component {
             }
             else {
                // let source = { uri: response.uri };
-                console.log(response.uri);
+                console.log(response.path);
                 console.log(response);
                // You can also display the image using data:
                 //let source = { uri: 'data:image/jpeg;base64,' + response.data };
                 let source = 'data:image/jpeg;base64,' + response.data;
-                this.setState({
-                    avatarSource: source
-                });
+                this.state.myImgaeBase= response.data
                 this.forceUpdate();
-                this.storePicture(source);
+                this.storePicture(response);
                 //this.uploadImage();
             }
         });
@@ -170,47 +173,122 @@ class Invoiceinfo extends Component {
             console.log(this.state.myItems);
         });
     };
-    storePicture(PicturePath) {
-        console.log(PicturePath);
-        if (PicturePath) {
+    storePicture(file) {
+        console.log(file);
+        if (file) {
             // Create the form data object
-            let formdata = new FormData();
-            global.FormData =global.originalFormData;
-            formdata.append('fileToUpload', PicturePath);
-            formdata.append('packetId', '58984')
-            formdata.append('podDate', '2018-08-22')
-            // data.append('picture', {
-            //     "fileToUpload": PicturePath,
-            //     name: 'selfie.jpg',
-            //     type: 'image/jpg',
-            //     "packetId":58984,
-            //     "podDate":'2018-08-22'
-            // });
+            // let filename = file.uri
+            // let fileUrl = (!filename.match(/^file:/) ? 'file://' : '') + filename
+            // console.log("fileurl ="+fileUrl);
+            // console.log("filename ="+filename);
+            // console.log("name= "+fileUrl.split(/[\\/]/).pop());
+            // GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest
+            // global.FormData = global.originalFormData
+//            console.log("type =" + mime.lookup(fileUrl));
+            var photo = {
+                // uri: 'file://'+file.path,
+                uri: file.path,
+                type: file.type,
+                name: file.fileName,
+            };
+            console.log(photo);
+            // const testbody = new FormData();
+            // testbody.append('fileToUpload', photo);
+            // console.log(testbody);
+            // var xhr = new XMLHttpRequest();
+            // xhr.open('POST', `http://emsqa.moglilabs.com/api/runner/uplodaDemoFile.json`);
+            // xhr.send(testbody);
 
+            // const formdata = new FormData();
+            // formdata.append('fileToUpload', photo);
+            // console.log("formdata is here");
+            // console.log(formdata);
+            // this.mytest=formdata;
+            // let options1: FileUploadOptions = {
+            //     fileKey: "upload_data",
+            //     fileName: filename,
+            //     chunkedMode: false,
+            //     mimeType: "multipart/form-data",
+            //     params: {'supplier_id': param1, 'doc_name': "pan_card"}
+            // };
+            // formdata.append('packetId', '58984')
+            // formdata.append('podDate', '2018-08-22')
             // Create the config object for the POST
             // You typically have an OAuth2 token that you use for authentication
-            const AuthStr = 'Bearer '.concat('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I');
-            const config = {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Authorization': 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I'
-                },
-                body: formdata
-            };
-            axios.post(`http://emsqa.moglilabs.com/api/runner/markDeliveredPod.json`, config,{ headers: { 'Authorization': AuthStr }})
+            // const AuthStr = 'Bearer '.concat('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I');
+            // const config = {
+            //     method: 'POST',
+            //
+            //     headers: {
+            //         'Accept': 'application/json',
+            //         'Content-Type': 'multipart/form-data;',
+            //         // 'Authorization': 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I'
+            //     },
+            //     // mimeType: "multipart/form-data",
+            //     // data: this.mytest,
+            //     body: formdata
+            // };
+            /*axios.post(`http://emsqa.moglilabs.com/api/runner/uplodaDemoFile.json`, config)
                 .then(res => {
+
                     console.log(JSON.stringify(res));
                 });
-            fetch('http://emsqa.moglilabs.com/api/runner/markDeliveredPod.json', config)
+            fetch('http://emsqa.moglilabs.com/api/runner/uplodaDemoFile.json', config)
                 .then(responseData => {
                     // Log the response form the server
                     // Here we get what we sent to Postman back
                     console.log(responseData);
                 })
                 .catch(err => {
-                    console.log(err);
-                });
+                    console.log("error log is here"+err);
+                });*/
+
+
+
+
+console.log("******** final console is here ******");
+console.log(file);
+
+let path = file.path;
+            const parts = file.path.split('/');
+console.log(path.substring(path.indexOf('s')), 'asdfdasfadsfasdfas');
+            const data = new FormData();
+          //  data.append('name', 'testName'); // you can append anyone.
+            data.append('fileToUpload', {
+                uri: file.uri,
+                type: file.type, // or photo.type
+                name: parts[parts.length - 1]
+            });
+            console.log(data);
+            axios({
+                method: 'post',
+                url: 'http://emsqa.moglilabs.com/api/runner/uplodaDemoFile.json',
+                data: data,
+                config: { headers: {'Content-Type': 'multipart/form-data' }}
+            }).then(res => {
+                console.log(res);
+                alert("success")
+                alert(JSON.stringify(res));
+            }).catch(err => {
+                console.log("error log is here"+err);
+                alert("err")
+                alert(JSON.stringify(err));
+                // alert(err);
+            });
+            // fetch('http://emsqa.moglilabs.com/api/runner/uplodaDemoFile.json', {
+            //     method: 'post',
+            //     body: data
+            // }).then(res => {
+            //     console.log(res);
+            //     alert("success")
+            //     alert(JSON.stringify(res));
+            //     console.log(res);
+            //     alert(res._bodyInit);
+            // }).catch(err => {
+            //     console.log("error log is here"+err);
+            //     alert(JSON.stringify(err));
+            //    // alert(err);
+            // });
         }
     }
 }
