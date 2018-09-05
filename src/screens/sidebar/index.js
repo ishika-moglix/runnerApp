@@ -20,20 +20,23 @@ const datas = [
         name: "Home",
         route: "NHTab",
         icon: "home",
+        sidebar:false,
         bg: "#da4439"
     },
     {
         name: "Pickup",
         route: "NHPickup",
+        sidebar:true,
         icon: "phone-portrait",
         bg: "#C5F442"
     },
-  {
-    name: "Delivery",
-    route: "NHDelivery",
-    icon: "phone-portrait",
-    bg: "#C5F442"
-  },
+      {
+        name: "Delivery",
+        route: "NHDelivery",
+        icon: "phone-portrait",
+          sidebar:true,
+        bg: "#C5F442"
+      },
   // {
   //   name: "Header",
   //   route: "Header",
@@ -220,7 +223,7 @@ class SideBar extends Component {
               <ListItem
                 button
                 noBorder
-                onPress={() => this.props.navigation.navigate(data.route)}
+                onPress={() => this.props.navigation.navigate(data.route,{'from':data.sidebar})}
               >
                 <Left>
                   <Icon

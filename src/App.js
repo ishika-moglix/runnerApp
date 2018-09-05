@@ -158,7 +158,7 @@ global.fetch = function (uri, options, ...args) {
 };
 const Drawer = DrawerNavigator(
   {
-      NHPickup: {screen:TabOne},
+      NHPickup: {screen:TabOne  },
       NHDelivery: {screen:TabTwo},
       NHTab: { screen: BasicTab },
       Home: { screen: Home },
