@@ -14,7 +14,7 @@ import {
     List, ListItem,
     Body
 } from "native-base";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage,FlatList,View,StyleSheet,ActivityIndicator } from "react-native";
 import axios from "axios/index";
 //import styles from "./styles";
 
@@ -26,7 +26,8 @@ class PickupList extends Component{
         this.state = {
             myPONumber: state.params.poNumber,
             myItems:'',
-            myToken:''
+            myToken:'',
+            isLoading: true,
         };
         console.log("PROPS " + state.params.poNumber);
         AsyncStorage.getItem('token', (err, result) => {
@@ -46,6 +47,8 @@ class PickupList extends Component{
                         console.log(res.data.data.poItems);
                         //this.setState({ myItems: res.data.data.poItems });
                         this.state.myItems=res.data.data.poItems;
+                        console.log(this.state.myItems);
+                        this.setState({ isLoading: false });
                         this.forceUpdate();
                     }else{
                         alert(res.data.message);
@@ -54,16 +57,26 @@ class PickupList extends Component{
             console.log(this.state.myItems);
         });
     };
+    decreaseValue(selectedItem,index){
+        let { myItems } = this.state;
+        let targetPost = myItems[index];
+        --targetPost.remainingQuantity;
+        this.setState({ myItems });
+    }
+    increaseValue(selectedItem,index){
+        let { myItems } = this.state;
+        let targetPost = myItems[index];
+        ++targetPost.remainingQuantity;
+        this.setState({ myItems });
+    }
   render() {
+      const { isLoading} = this.state;
       var items=[];
-      // var items = [
-      //     {name:'Simon Mignolet',qty:10},
-      // ];
       console.log("list is here");
       if(this.state.myItems){
           items=this.state.myItems;
-          console.log(this.state.myItems.lenght);
       }
+
     return (
       <Container>
           <Header style={{ backgroundColor : '#da4439'}}>
@@ -79,25 +92,35 @@ class PickupList extends Component{
           </Header>
 
         <Content padder>
-            <List dataArray={items}
-                  renderRow={(item) =>
-                      <ListItem>
-                          <Text>{item.productName}</Text>
-                          <Text>QTY: {item.quantity}</Text>
-                          <Button transparent onPress={() => this.props.navigation.goBack()}>
-                              <Icon name="minus" />
-                          </Button>
-                          <Text textAlign="right" style={{textAlign: 'right'}}>
-                              5</Text>
-                          <Button transparent onPress={() => this.props.navigation.goBack()}>
-                              <Icon name="plus" />
-                          </Button>
-                          {/*<Text>*/}
-                              {/*<b>Some Text</b>*/}
-                          {/*</Text>*/}
-                      </ListItem>
-                  }>
-            </List>
+            {isLoading && (
+            <ActivityIndicator
+                animating={true}
+                style={styles.indicator}
+                size="large"
+            />
+            )}
+            <FlatList
+                extraData={this.state}
+                data={this.state.myItems}
+                showsVerticalScrollIndicator={false}
+                renderItem={({item,index}) =>
+                    <View style={styles.flatview}>
+                        <Text style={styles.viewText}>{item.productName}</Text>
+                        <Text style={styles.viewText}>QTY : {item.quantity}</Text>
+                        <View style={{textAlign: 'right'}}>
+                        <Button style={styles.buttonColor} disabled={item.remainingQuantity==0} transparent onPress={() => this.decreaseValue( item, index )}>
+                        <Icon name="remove" />
+                        </Button>
+                        <Text style={{textAlign: 'right'}}>
+                        {item.remainingQuantity}</Text>
+                        <Button disabled={item.remainingQuantity==item.quantity} style={{textAlign: 'right'}} transparent onPress={() => this.increaseValue( item, index )}>
+                        <Icon name="add" />
+                        </Button>
+                        </View>
+                    </View>
+                }
+                keyExtractor={item => item.productName}
+            />
         </Content>
 
         <Footer>
@@ -112,5 +135,52 @@ class PickupList extends Component{
   }
 }
 
+const styles = StyleSheet.create({
+    container: {
+        shadowColor: '#000000',
+        shadowOpacity: 0.4,
+        shadowOffset: { height: -5, width:-5},
+        shadowRadius: 10,
+    },
+    indicator: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 100,
+        color:"#C00",
+    },
+    buttonColor:{
+        elevation: 1,
+        // borderRadius: 1,
+        // backgroundColor: '#312100',
+        // flex: 1,
+        // flexDirection: 'row',  // main axis
+        // justifyContent: 'flex-start', // main axis
+        // alignItems: 'center', // cross axis
+        // paddingTop: 10,
+        // paddingBottom: 10,
+        // paddingLeft: 100,
+        // paddingRight: 16,
+        // marginLeft: 14,
+        // marginRight: 0,
+        // marginTop: 0,
+        // marginBottom: 6,
+    },
+    flatview: {
+        justifyContent: 'center',
+        paddingTop: 30,
+        borderRadius: 2,
 
+    },
+    viewText: {
+        fontFamily: 'Verdana',
+        fontSize: 15
+    },
+    separator: {
+        height: 0.5,
+        width: "80%",
+        alignSelf: 'center',
+        backgroundColor: "#555"
+    }
+});
 export default PickupList;
