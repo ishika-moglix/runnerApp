@@ -104,10 +104,12 @@ class PickupList extends Component{
                 data={this.state.myItems}
                 showsVerticalScrollIndicator={false}
                 renderItem={({item,index}) =>
-                    <View style={styles.flatview}>
-                        <Text style={styles.viewText}>{item.productName}</Text>
-                        <Text style={styles.viewText}>QTY : {item.quantity}</Text>
-                        <View style={{textAlign: 'right'}}>
+                    <ListItem>
+                    {/*<View style={styles.flatview}>*/}
+                        <Left>
+                        <Text style={styles.viewText}>{item.productName} {"\n"} QTY : {item.quantity}</Text>
+                        </Left>
+                            <Right>
                         <Button style={styles.buttonColor} disabled={item.remainingQuantity==0} transparent onPress={() => this.decreaseValue( item, index )}>
                         <Icon name="remove" />
                         </Button>
@@ -116,8 +118,8 @@ class PickupList extends Component{
                         <Button disabled={item.remainingQuantity==item.quantity} style={{textAlign: 'right'}} transparent onPress={() => this.increaseValue( item, index )}>
                         <Icon name="add" />
                         </Button>
-                        </View>
-                    </View>
+                            </Right>
+                    </ListItem>
                 }
                 keyExtractor={item => item.productName}
             />
@@ -151,20 +153,6 @@ const styles = StyleSheet.create({
     },
     buttonColor:{
         elevation: 1,
-        // borderRadius: 1,
-        // backgroundColor: '#312100',
-        // flex: 1,
-        // flexDirection: 'row',  // main axis
-        // justifyContent: 'flex-start', // main axis
-        // alignItems: 'center', // cross axis
-        // paddingTop: 10,
-        // paddingBottom: 10,
-        // paddingLeft: 100,
-        // paddingRight: 16,
-        // marginLeft: 14,
-        // marginRight: 0,
-        // marginTop: 0,
-        // marginBottom: 6,
     },
     flatview: {
         justifyContent: 'center',

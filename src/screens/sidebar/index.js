@@ -30,13 +30,20 @@ const datas = [
         icon: "phone-portrait",
         bg: "#C5F442"
     },
-      {
+    {
         name: "Delivery",
         route: "NHDelivery",
         icon: "phone-portrait",
           sidebar:true,
         bg: "#C5F442"
       },
+    {
+        name: "Profile",
+        route: "NHProfile",
+        icon: "phone-portrait",
+        sidebar:false,
+        bg: "#C5F442"
+    }
   // {
   //   name: "Header",
   //   route: "Header",

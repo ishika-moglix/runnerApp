@@ -93,8 +93,8 @@ import ToastPosition from "./screens/toast/toast-position";
 import ToastType from "./screens/toast/toast-type";
 import ToastText from "./screens/toast/toast-text";
 import ToastButton from "./screens/toast/toast-button";
-import RegularActionSheet from "./screens/actionsheet/regular";
-import IconActionSheet from "./screens/actionsheet/icon";
+//import RegularActionSheet from "./screens/actionsheet/regular";
+//import IconActionSheet from "./screens/actionsheet/icon";
 import AdvSegment from "./screens/segment/segmentTab";
 import SimpleDeck from "./screens/deckswiper/simple";
 import AdvancedDeck from "./screens/deckswiper/advanced";
@@ -102,11 +102,11 @@ import HeaderNoLeft from "./screens/Header/header-noLeft";
 import NHCustomRadio from "./screens/radio/custom";
 import NHDefaultRadio from "./screens/radio/default";
 import PickerWithIconStyle from "./screens/picker/picker-with-iconstyle";
-import AccordionDefault from "./screens/accordion/accordion-default";
-import AccordionIcon from "./screens/accordion/accordion-icon";
-import AccordionIconStyle from "./screens/accordion/accordion-icon-style";
-import AccordionHeaderContentStyle from "./screens/accordion/accordion-header-content-style";
-import AccordionCustomHeaderContent from "./screens/accordion/accordion-custom-header-content";
+// import AccordionDefault from "./screens/accordion/accordion-default";
+// import AccordionIcon from "./screens/accordion/accordion-icon";
+// import AccordionIconStyle from "./screens/accordion/accordion-icon-style";
+// import AccordionHeaderContentStyle from "./screens/accordion/accordion-header-content-style";
+// import AccordionCustomHeaderContent from "./screens/accordion/accordion-custom-header-content";
 
 import Home from "./screens/home/";
 import Anatomy from "./screens/anatomy/";
@@ -133,14 +133,15 @@ import NHTypography from "./screens/typography/";
 import SideBar from "./screens/sidebar";
 import Segment from "./screens/segment";
 import NHToast from "./screens/toast/";
-import Actionsheet from "./screens/actionsheet";
-import NHAccordion from "./screens/accordion/";
+//import Actionsheet from "./screens/actionsheet";
+// import NHAccordion from "./screens/accordion/";
 import NHDatePicker from "./screens/datepicker/";
 import TabOne from "./screens/tab/tabOne";
 import TabTwo from "./screens/tab/tabTwo";
 import Verify from "./screens/verification";
 import PickupList from "./screens/pickupDetail";
 import Invoiceinfo from "./screens/invoiceInfo";
+import Profile from "./screens/profile"
 
 import { AsyncStorage } from "react-native"
 // To see all the requests in the chrome Dev tools in the network tab.
@@ -163,6 +164,7 @@ const Drawer = DrawerNavigator(
       NHTab: { screen: BasicTab },
       Home: { screen: Home },
       NHInvoice:{screen:Invoiceinfo},
+      NHProfile: {screen: Profile}
     //
     // Header: { screen: Header },
     // Footer: { screen: Footer },
