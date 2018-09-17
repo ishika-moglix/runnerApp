@@ -105,20 +105,18 @@ class PickupList extends Component{
                 showsVerticalScrollIndicator={false}
                 renderItem={({item,index}) =>
                     <ListItem>
-                    {/*<View style={styles.flatview}>*/}
-                        <Left>
-                        <Text style={styles.viewText}>{item.productName} {"\n"} QTY : {item.quantity}</Text>
-                        </Left>
-                            <Right>
-                        <Button style={styles.buttonColor} disabled={item.remainingQuantity==0} transparent onPress={() => this.decreaseValue( item, index )}>
-                        <Icon name="remove" />
-                        </Button>
-                        <Text style={{textAlign: 'right'}}>
-                        {item.remainingQuantity}</Text>
-                        <Button disabled={item.remainingQuantity==item.quantity} style={{textAlign: 'right'}} transparent onPress={() => this.increaseValue( item, index )}>
-                        <Icon name="add" />
-                        </Button>
-                            </Right>
+                    <Text>{item.productName} {"\n"} QTY: {item.quantity}</Text>
+                    <Button disabled={item.remainingQuantity==0} transparent onPress={() => this.decreaseValue( item, index )}>
+                    <Icon name="remove" />
+                    </Button>
+                    <Text textAlign="right" style={{textAlign: 'right'}}>
+                    {item.remainingQuantity}</Text>
+                    <Button  disabled={item.remainingQuantity==item.quantity} transparent onPress={() => this.increaseValue( item, index )}>
+                    <Icon name="add" />
+                    </Button>
+                    {/*<Text>*/}
+                    {/*<b>Some Text</b>*/}
+                    {/*</Text>*/}
                     </ListItem>
                 }
                 keyExtractor={item => item.productName}

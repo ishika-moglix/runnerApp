@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import {
-  Container, Header, Title,  List, ListItem, Thumbnail,
-  Content, Button, Icon, Text, Body, Left, Right, View} from "native-base";
+  Container, Header, Title, ListItem,
+  Content, Button, Icon, Text, Body, Left, Right} from "native-base";
 import { StyleSheet } from "react-native";
 import axios from "axios/index";
 import { AsyncStorage } from "react-native";
-const cover = require("../../../assets/web-cover1.jpg");
-const datas = [];
 
 class Profile extends Component {
     constructor(props) {
@@ -18,8 +16,6 @@ class Profile extends Component {
     }
     getProfile= () => {
         AsyncStorage.getItem('token', (err, result) => {
-            //this.state.myToken=result;
-            //console.log(this.state.myToken);
             const user = {};
             const AuthStr = 'Bearer '.concat('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I');
             axios.post(`http://emsqa.moglilabs.com/api/auth/profile.json`,user, { headers: { 'Authorization': AuthStr } })
@@ -27,14 +23,11 @@ class Profile extends Component {
                     if(res.data.success && res.data.code==200){
                         console.log("my po items are here");
                         console.log(res.data.data);
-                        //this.state.profileInfo=res.data.data;
                         this.setState({ profileInfo: res.data.data });
-                       //  this.forceUpdate();
                     }else{
                         alert(res.data.message);
                     }
                 });
-            //console.log(this.state.myItems);
         });
 
     };
@@ -56,7 +49,6 @@ class Profile extends Component {
           <Right />
         </Header>
           <Content>
-              <Thumbnail small source={cover} style={styles.mb10} />
                       <ListItem>
                           <Left>
                               <Text>
@@ -89,9 +81,7 @@ class Profile extends Component {
               </ListItem>
           </Content>
       </Container>
-    );
-  }
-}
+    );}}
 
 const styles = StyleSheet.create({
     container: {
@@ -102,4 +92,5 @@ const styles = StyleSheet.create({
         alignItems: "center"
     }
 });
+
 export default Profile;

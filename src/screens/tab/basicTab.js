@@ -13,10 +13,14 @@ import {
 } from "native-base";
 import TabOne from "./tabOne";
 import TabTwo from "./tabTwo";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage,Keyboard } from "react-native";
 //import TabThree from "./tabThree";
 
 class BasicTab extends Component {
+    openSideMenu(){
+        Keyboard.dismiss();
+        this.props.navigation.navigate("DrawerOpen")
+    }
   render() {
       AsyncStorage.getItem('token', (err, result) => {
           console.log("storage token get later");
@@ -30,7 +34,7 @@ class BasicTab extends Component {
             <Left>
             <Button
                 transparent
-                onPress={() => this.props.navigation.navigate("DrawerOpen")}
+                onPress={() => this.openSideMenu()}
             >
                 <Icon name="menu" />
             </Button>

@@ -111,7 +111,7 @@ import PickerWithIconStyle from "./screens/picker/picker-with-iconstyle";
 import Home from "./screens/home/";
 import Anatomy from "./screens/anatomy/";
 import Footer from "./screens/footer/";
-import NHBadge from "./screens/badge/";
+//import NHBadge from "./screens/badge/";
 import NHButton from "./screens/button/";
 import NHCard from "./screens/card/";
 import NHCheckbox from "./screens/checkbox/";

@@ -1,16 +1,8 @@
 import React, { Component } from "react";
-import { Image } from "react-native";
+import { Image,} from "react-native";
 import {
-  Content,
-  Text,
-  List,
-  ListItem,
-  Icon,
-  Container,
-  Left,
-  Right,
-  Badge
-} from "native-base";
+  Content,Footer, Text,Title, List, ListItem,
+  Icon, Container, Left, Right, Badge} from "native-base";
 import styles from "./style";
 
  const drawerCover = require("../../../assets/moglixRunner.png");
@@ -40,7 +32,7 @@ const datas = [
     {
         name: "Profile",
         route: "NHProfile",
-        icon: "phone-portrait",
+        icon: "user",
         sidebar:false,
         bg: "#C5F442"
     }
@@ -206,15 +198,19 @@ const datas = [
 ];
 
 class SideBar extends Component {
+
   constructor(props) {
     super(props);
+      Keyboard.dismiss();
     this.state = {
       shadowOffsetWidth: 1,
       shadowRadius: 4
     };
+
   }
 
   render() {
+
     return (
       <Container>
         <Content
@@ -260,6 +256,9 @@ class SideBar extends Component {
               </ListItem>}
           />
         </Content>
+          <Footer style={{ backgroundColor : '#da4439'}}>
+              <Title onPress={() => this.props.navigation.navigate('Home')}>Logout</Title>
+          </Footer>
       </Container>
     );
   }
