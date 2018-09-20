@@ -6,24 +6,25 @@ import { Left,
     Input } from "native-base";
 import Container from "./Container";
 import axios from 'axios';
-import { AsyncStorage } from "react-native";
+import { AsyncStorage,ActivityIndicator } from "react-native";
 //import styles from "./styles";
 
 const launchscreenBg = require("../../../assets/launchscreen-bg.png");
 const launchscreenLogo = require("../../../assets/logo-kitchen-sink.png");
 class Home extends Component {
     constructor(props) {
-
        // AsyncStorage.clear();
-        console.log("async token");
-        console.log(AsyncStorage.getItem('token'));
+       // console.log(AsyncStorage.getItem('token'));
         super(props);
         this.state = {
             myNumber: '',
-            isDisabled: true
-        }
+            isDisabled: true,
+            isLoading: false,
+        };
+        this.checkLogin();
     };
     loginSubmit = event => {
+        this.setState({ isLoading: true});
         const user = {
             "phoneNumber": this.state.myNumber
         };
@@ -32,6 +33,7 @@ class Home extends Component {
         };
         axios.post(`http://emsqa.moglilabs.com/api/auth/login.json`, user,headers)
             .then(res => {
+                this.setState({ isLoading: false });
                 console.log(JSON.stringify(res));
                 //console.log(res.data.data.id);
                 if(res.data.success && res.data.code==200){
@@ -41,6 +43,15 @@ class Home extends Component {
                 }
             })
     };
+    checkLogin(){
+        AsyncStorage.getItem('token', (err, result) => {
+            console.log("async token");
+            console.log(result);
+            if(result){
+                this.props.navigation.navigate('NHDelivery');
+            }
+        });
+    }
     onChanged(text){
         let newText = '';
         let numbers = '0123456789';
@@ -63,11 +74,19 @@ class Home extends Component {
         this.setState({ myNumber: newText });
     };
     render() {
+        const { isLoading} = this.state;
         return (
             <Container style={[ styles.container, this.props.style || {} ]}>
                 { this.renderHeader() }
                 { this.renderImage() }
                 { this.renderForm() }
+                {isLoading && (
+                    <ActivityIndicator
+                        animating={true}
+                        style={styles.indicator}
+                        size="large"
+                    />
+                )}
                 { this.renderFooter() }
             </Container>
         );
@@ -108,7 +127,8 @@ class Home extends Component {
                     <Input type="number" value={this.state.myNumber} onChangeText={(text)=> this.onChanged(text)} keyboardType='numeric' placeholder='+91' maxLength={10} minLength={9} />
                 </Item>
                 <View style={{margin:12}} />
-                <Button full success
+                <Button block success
+                        type="button"
                         disabled={this.state.isDisabled}
                     style={{marginTop: 15, alignSelf: "center" }}
                     onPress={() => this.loginSubmit()}

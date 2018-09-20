@@ -6,7 +6,7 @@ import {
 //import Pdf from 'react-native-pdf';
 //import styles from "./styles";
 //import styles from "../form/styles";
-import {ImageBackground, StatusBar,ScrollView, Image, TextInput,  Dimensions, View, StyleSheet, Animated} from 'react-native';
+import {ImageBackground,ActivityIndicator, StatusBar,ScrollView, Image, TextInput,  Dimensions, View, StyleSheet, Animated} from 'react-native';
 import Pdf from 'react-native-pdf';
 import { AsyncStorage } from "react-native";
 //import {TabTwo} from "../tab/tabTwo";
@@ -34,7 +34,8 @@ class Invoiceinfo extends Component {
             myImgaeBase:'',
             invoiceNo: state.params.invoice.invoiceNumber,
             packetI: state.params.invoice.packetId,
-            AuthStr: ''
+            AuthStr: '',
+            isLoading: false,
         };
         console.log("PROPS " + state.params.invoice.invoiceUrl);
         AsyncStorage.getItem('token', (err, result) => {
@@ -63,10 +64,18 @@ class Invoiceinfo extends Component {
         );
     }
     render() {
+        const { isLoading} = this.state;
         return (
             <Container style={[ styles.container, this.props.style || {} ]}>
                 { this.renderHeader() }
                 { this.renderPdf() }
+                {isLoading && (
+                    <ActivityIndicator
+                        animating={true}
+                        style={styles.indicator}
+                        size="large"
+                    />
+                )}
                 { this.renderFooter() }
                 {/*<Image source={this.state.avatarSource} style={styles.uploadAvatar} />*/}
             </Container>
@@ -104,7 +113,7 @@ class Invoiceinfo extends Component {
       }
       else{
           return (
-              <Text>Getting info</Text>
+              <Text>No Pdf to shown</Text>
           )
       }
   }
@@ -188,6 +197,7 @@ class Invoiceinfo extends Component {
     storePicture(file) {
         console.log(file);
         if (file) {
+            this.setState({ isLoading: true });
             // Create the form data object
             // let filename = file.uri
             // let fileUrl = (!filename.match(/^file:/) ? 'file://' : '') + filename
@@ -285,6 +295,7 @@ class Invoiceinfo extends Component {
                 headers:{'Authorization':this.state.AuthStr},
                 body: data
             }).then(res => {
+                this.setState({ isLoading: false });
                 console.log(res);
                 //alert(JSON.stringify(res));
                 console.log(res);
@@ -296,6 +307,7 @@ class Invoiceinfo extends Component {
                 // }
                 //alert(res.json())
             }).catch(err => {
+                this.setState({ isLoading: false });
                 console.log("error log is here"+err);
                 //alert(JSON.stringify(err));
             });

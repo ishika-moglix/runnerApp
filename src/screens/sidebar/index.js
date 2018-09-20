@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Image,Keyboard} from "react-native";
+import { Image,Keyboard,AsyncStorage} from "react-native";
 import {
   Content,Footer, Text,Title, List, ListItem,
-  Icon, Container, Left, Right, Badge} from "native-base";
+  Icon, Container,Button, Left, Right, Badge} from "native-base";
 import styles from "./style";
 
  const drawerCover = require("../../../assets/moglixRunner.png");
@@ -256,10 +256,18 @@ class SideBar extends Component {
           />
         </Content>
           <Footer style={{ backgroundColor : '#da4439'}}>
-              <Title onPress={() => this.props.navigation.navigate('Home')}>Logout</Title>
+              <Button
+                  transparent
+                  onPress={() => this.moveHome()}>
+                  <Text>Logout</Text>
+              </Button>
           </Footer>
       </Container>
     );
+  }
+  moveHome(){
+      AsyncStorage.clear();
+      this.props.navigation.navigate('Home')
   }
 }
 
