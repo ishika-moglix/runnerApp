@@ -305,6 +305,9 @@ class Invoiceinfo extends Component {
                 res.json().then(function(data) {
                     console.log(data);
                     alert(data.message);
+                    if(data.code==200 && data.success){
+                        this.props.navigation.navigate('NHDelivery');
+                    }
                 })
             }).catch(err => {
                 this.setState({ isLoading: false });
