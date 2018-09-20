@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image,} from "react-native";
+import { Image,Keyboard} from "react-native";
 import {
   Content,Footer, Text,Title, List, ListItem,
   Icon, Container, Left, Right, Badge} from "native-base";
@@ -8,20 +8,20 @@ import styles from "./style";
  const drawerCover = require("../../../assets/moglixRunner.png");
 //const drawerImage = require("../../../assets/logo-kitchen-sink.png");
 const datas = [
-    {
-        name: "Home",
-        route: "NHTab",
-        icon: "home",
-        sidebar:false,
-        bg: "#da4439"
-    },
-    {
-        name: "Pickup",
-        route: "NHPickup",
-        sidebar:true,
-        icon: "phone-portrait",
-        bg: "#C5F442"
-    },
+    // {
+    //     name: "Home",
+    //     route: "NHTab",
+    //     icon: "home",
+    //     sidebar:false,
+    //     bg: "#da4439"
+    // },
+    // {
+    //     name: "Pickup",
+    //     route: "NHPickup",
+    //     sidebar:true,
+    //     icon: "phone-portrait",
+    //     bg: "#C5F442"
+    // },
     {
         name: "Delivery",
         route: "NHDelivery",
@@ -210,7 +210,6 @@ class SideBar extends Component {
   }
 
   render() {
-
     return (
       <Container>
         <Content

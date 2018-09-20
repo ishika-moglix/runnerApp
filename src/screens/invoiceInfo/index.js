@@ -250,35 +250,38 @@ class Invoiceinfo extends Component {
                 type: file.type, // or photo.type
                 name: parts[parts.length - 1]
             });
+            data.append('packetId','58984');
+            data.append('podDate','2018-08-22');
             console.log(data);
-            axios({
-                method: 'post',
-                url: 'http://emsqa.moglilabs.com/api/runner/uplodaDemoFile.json',
-                data: data,
-                config: { headers: {'Content-Type': 'multipart/form-data' }}
-            }).then(res => {
-                console.log(res);
-                alert(JSON.stringify(res));
-            }).catch(err => {
-                console.log("error log is here"+err);
-                alert("err")
-                alert(JSON.stringify(err));
-                // alert(err);
-            });
-            // fetch('http://emsqa.moglilabs.com/api/runner/uplodaDemoFile.json', {
+            // axios({
             //     method: 'post',
-            //     body: data
+            //     url: 'http://emsqa.moglilabs.com/api/runner/markDeliveredPod.json',
+            //     data: data,
+            //     headers:{'Authorization':'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I'},
+            //     config: { headers: {'Content-Type': 'multipart/form-data' }}
             // }).then(res => {
             //     console.log(res);
-            //     alert("success")
             //     alert(JSON.stringify(res));
-            //     console.log(res);
-            //     alert(res._bodyInit);
             // }).catch(err => {
             //     console.log("error log is here"+err);
+            //     alert("err")
             //     alert(JSON.stringify(err));
-            //    // alert(err);
+            //     // alert(err);
             // });
+            fetch('http://emsqa.moglilabs.com/api/runner/markDeliveredPod.json', {
+                method: 'post',
+                headers:{'Authorization':'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I'},
+                body: data
+            }).then(res => {
+                console.log(res);
+                //alert(JSON.stringify(res));
+                console.log(res);
+                alert(JSON.stringify(res.json()));
+               // alert(res._bodyInit.message);
+            }).catch(err => {
+                console.log("error log is here"+err);
+                //alert(JSON.stringify(err));
+            });
         }
     }
 }
