@@ -11,7 +11,7 @@ import {
 
 import styles from "../form/styles";
 import axios from "axios/index";
-import { AsyncStorage,View } from "react-native";
+import { AsyncStorage,View,ActivityIndicator } from "react-native";
 
 export default class TabTwo extends Component {
     constructor(props) {
@@ -24,6 +24,7 @@ export default class TabTwo extends Component {
                 isDisabled: true,
                 myItems:'',
                 myToken:'',
+                isLoading: false,
                 showHeader:state.params.from
             };
         }else{
@@ -32,11 +33,13 @@ export default class TabTwo extends Component {
                 isDisabled: true,
                 myItems:'',
                 myToken:'',
+                isLoading: false,
                 showHeader:false,
             };
         }
     }
     tab2click= () => {
+        this.setState({ isLoading: true });
         AsyncStorage.getItem('token', (err, result) => {
             // this.state.myToken=result;
             // console.log(this.state.myToken);
@@ -50,6 +53,7 @@ export default class TabTwo extends Component {
             }
             axios.post(`http://emsqa.moglilabs.com/api/runner/invoiceDetail.json`, user,{ headers: { 'Authorization': this.state.myToken } })
                 .then(res => {
+                    this.setState({ isLoading: false });
                     if(res.data.success && res.data.code==200){
                         console.log("my po items are here");
                         console.log(res.data.data.invoice.invoiceUrl);
@@ -83,10 +87,18 @@ export default class TabTwo extends Component {
         this.setState({ invoiceNumber: newText });
     }
     render() {
+        const { isLoading} = this.state;
             return (
                 <Container style={styles.container}>
                     { this.renderHeader()}
                     { this.renderForm() }
+                    {isLoading && (
+                        <ActivityIndicator
+                            animating={true}
+                            style={styles.indicator}
+                            size="large"
+                        />
+                    )}
                 </Container>
             );
             /* commented due to first release */
@@ -126,6 +138,7 @@ export default class TabTwo extends Component {
         );
     }
     renderForm(){
+        const { isLoading} = this.state;
         return (
             <Content style={{ margin: 10, marginTop: 100 }}>
                 <Form >
@@ -133,7 +146,7 @@ export default class TabTwo extends Component {
                         <Input keyboardType='numeric' value={this.state.invoiceNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="Invoice Number"  />
                     </Item>
                 </Form>
-                <Button block disabled={this.state.isDisabled} onPress={() => this.tab2click()} style={{ margin: 15, marginTop: 50 }}>
+                <Button block disabled={this.state.isDisabled || isLoading} onPress={() => this.tab2click()} style={{ margin: 15, marginTop: 50 }}>
                     <Text>Search Invoice</Text>
                 </Button>
             </Content>

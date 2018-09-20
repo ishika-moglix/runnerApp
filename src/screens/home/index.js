@@ -124,7 +124,7 @@ class Home extends Component {
                     Enter Your Mobile number
                 </Text>
                 <Item>
-                    <Input type="number" value={this.state.myNumber} onChangeText={(text)=> this.onChanged(text)} keyboardType='numeric' placeholder='+91' maxLength={10} minLength={9} />
+                    <Text>+91</Text><Input type="number" value={this.state.myNumber} onChangeText={(text)=> this.onChanged(text)} keyboardType='numeric' placeholder='' maxLength={10} minLength={9} />
                 </Item>
                 <View style={{margin:12}} />
                 <Button block success

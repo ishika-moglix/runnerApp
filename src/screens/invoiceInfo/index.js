@@ -118,13 +118,14 @@ class Invoiceinfo extends Component {
       }
   }
     renderFooter(){
+        const { isLoading} = this.state;
         return (
             <View>
-                <Button full primary
+                <Button full primary disabled={ isLoading}
                         style={styles.footerStyle}
                         onPress={() => this.openPicker()}
                 >
-                    <Text style={{color: 'red'}}> Upload Pod </Text>
+                    <Text style={{color: 'black'}}> Upload Pod </Text>
                 </Button>
             </View>
         );
@@ -279,14 +280,19 @@ class Invoiceinfo extends Component {
             //     method: 'post',
             //     url: 'http://emsqa.moglilabs.com/api/runner/markDeliveredPod.json',
             //     data: data,
-            //     headers:{'Authorization':'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I'},
-            //     config: { headers: {'Content-Type': 'multipart/form-data' }}
+            //     responseType: 'json',
+            //     timeout: 3000,
+            //     headers:{'Authorization':this.state.AuthStr},
             // }).then(res => {
+            //     this.setState({ isLoading: false });
             //     console.log(res);
-            //     alert(JSON.stringify(res));
+            //    //alert(JSON.stringify(res));
+            //     res.json().then(function(data) {
+            //         alert(data)
+            //     })
+            //     //alert(res.json().messages);
             // }).catch(err => {
             //     console.log("error log is here"+err);
-            //     alert("err")
             //     alert(JSON.stringify(err));
             //     // alert(err);
             // });
@@ -296,20 +302,18 @@ class Invoiceinfo extends Component {
                 body: data
             }).then(res => {
                 this.setState({ isLoading: false });
-                console.log(res);
-                //alert(JSON.stringify(res));
-                console.log(res);
-                //alert(JSON.stringify(res.json()));
-                //alert(res.json());
-                alert(res._bodyInit);
-                // if(res.json()){
-                //     alert(res.json().message);
-                // }
-                //alert(res.json())
+                res.json().then(function(data) {
+                    console.log(data);
+                    alert(data.message);
+                })
             }).catch(err => {
                 this.setState({ isLoading: false });
                 console.log("error log is here"+err);
                 //alert(JSON.stringify(err));
+                err.json().then(function(data) {
+                    console.log(data);
+                    alert(data.message);
+                })
             });
         }
     }
