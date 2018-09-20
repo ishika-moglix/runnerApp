@@ -45,7 +45,7 @@ class Verify extends Component {
                         });
                     });
                    // AsyncStorage.setItem('token', res.data.data.token);
-                    this.props.navigation.navigate('NHTab');
+                    this.props.navigation.navigate('NHDelivery');
                 }else{
                     alert(res.data.message);
                 }

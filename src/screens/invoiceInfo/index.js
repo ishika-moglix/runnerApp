@@ -24,15 +24,26 @@ class Invoiceinfo extends Component {
 
     constructor(props) {
         super(props);
+        var today = new Date();
+        finaldate=today.getFullYear() +"-"+ parseInt(today.getMonth()+1) + "-" +today.getDate();
         const {state} = props.navigation;
         console.log(state.params);
         this.state = {
             myItems:state.params.invoice.invoiceUrl,
             active: false,
             myImgaeBase:'',
-            invoiceNo: state.params.invoice.invoiceNumber
+            invoiceNo: state.params.invoice.invoiceNumber,
+            packetI: state.params.invoice.packetId,
+            AuthStr: ''
         };
         console.log("PROPS " + state.params.invoice.invoiceUrl);
+        AsyncStorage.getItem('token', (err, result) => {
+            if (result) {
+                this.state.AuthStr = 'Bearer '.concat(result);
+            } else {
+                this.state.AuthStr = 'Bearer '.concat('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I');
+            }
+        });
     };
     renderHeader() {
         return (
@@ -186,13 +197,13 @@ class Invoiceinfo extends Component {
             // GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest
             // global.FormData = global.originalFormData
 //            console.log("type =" + mime.lookup(fileUrl));
-            var photo = {
-                // uri: 'file://'+file.path,
-                uri: file.path,
-                type: file.type,
-                name: file.fileName,
-            };
-            console.log(photo);
+//             var photo = {
+//                 // uri: 'file://'+file.path,
+//                 uri: file.path,
+//                 type: file.type,
+//                 name: file.fileName,
+//             };
+//             console.log(photo);
             // const testbody = new FormData();
             // testbody.append('fileToUpload', photo);
             // console.log(testbody);
@@ -243,6 +254,7 @@ class Invoiceinfo extends Component {
                 .catch(err => {
                     console.log("error log is here"+err);
                 });*/
+
             const parts = file.path.split('/');
             const data = new FormData();
             data.append('fileToUpload', {
@@ -250,8 +262,8 @@ class Invoiceinfo extends Component {
                 type: file.type, // or photo.type
                 name: parts[parts.length - 1]
             });
-            data.append('packetId','58984');
-            data.append('podDate','2018-08-22');
+            data.append('packetId',this.state.packetI);
+            data.append('podDate',finaldate);
             console.log(data);
             // axios({
             //     method: 'post',
@@ -270,14 +282,19 @@ class Invoiceinfo extends Component {
             // });
             fetch('http://emsqa.moglilabs.com/api/runner/markDeliveredPod.json', {
                 method: 'post',
-                headers:{'Authorization':'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I'},
+                headers:{'Authorization':this.state.AuthStr},
                 body: data
             }).then(res => {
                 console.log(res);
                 //alert(JSON.stringify(res));
                 console.log(res);
-                alert(JSON.stringify(res.json()));
-               // alert(res._bodyInit.message);
+                //alert(JSON.stringify(res.json()));
+                //alert(res.json());
+                alert(res._bodyInit);
+                // if(res.json()){
+                //     alert(res.json().message);
+                // }
+                //alert(res.json())
             }).catch(err => {
                 console.log("error log is here"+err);
                 //alert(JSON.stringify(err));

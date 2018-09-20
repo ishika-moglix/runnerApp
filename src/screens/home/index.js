@@ -13,8 +13,10 @@ const launchscreenBg = require("../../../assets/launchscreen-bg.png");
 const launchscreenLogo = require("../../../assets/logo-kitchen-sink.png");
 class Home extends Component {
     constructor(props) {
-        AsyncStorage.clear();
-        //console.log(AsyncStorage.getItem('token'));
+
+       // AsyncStorage.clear();
+        console.log("async token");
+        console.log(AsyncStorage.getItem('token'));
         super(props);
         this.state = {
             myNumber: '',

@@ -32,19 +32,23 @@ export default class TabTwo extends Component {
                 isDisabled: true,
                 myItems:'',
                 myToken:'',
-                showHeader:false
+                showHeader:false,
             };
         }
     }
     tab2click= () => {
         AsyncStorage.getItem('token', (err, result) => {
-            this.state.myToken=result;
-            console.log(this.state.myToken);
+            // this.state.myToken=result;
+            // console.log(this.state.myToken);
             const user = {
                 "invoiceNumber":this.state.invoiceNumber,
             };
-            const AuthStr = 'Bearer '.concat('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I');
-            axios.post(`http://emsqa.moglilabs.com/api/runner/invoiceDetail.json`, user,{ headers: { 'Authorization': AuthStr } })
+            if(result){
+                this.state.myToken = 'Bearer '.concat(result);
+            }else {
+                this.state.myToken = 'Bearer '.concat('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I');
+            }
+            axios.post(`http://emsqa.moglilabs.com/api/runner/invoiceDetail.json`, user,{ headers: { 'Authorization': this.state.myToken } })
                 .then(res => {
                     if(res.data.success && res.data.code==200){
                         console.log("my po items are here");
@@ -79,20 +83,27 @@ export default class TabTwo extends Component {
         this.setState({ invoiceNumber: newText });
     }
     render() {
-        if(this.state.showHeader){
             return (
                 <Container style={styles.container}>
                     { this.renderHeader()}
                     { this.renderForm() }
                 </Container>
             );
-        }else{
-            return (
-                <Container style={styles.container}>
-                    { this.renderForm() }
-                </Container>
-            );
-        }
+            /* commented due to first release */
+        // if(this.state.showHeader){
+        //     return (
+        //         <Container style={styles.container}>
+        //             { this.renderHeader()}
+        //             { this.renderForm() }
+        //         </Container>
+        //     );
+        // }else{
+        //     return (
+        //         <Container style={styles.container}>
+        //             { this.renderForm() }
+        //         </Container>
+        //     );
+        // }
 
     }
     renderHeader() {

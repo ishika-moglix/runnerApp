@@ -193,7 +193,7 @@ const Drawer = DrawerNavigator(
     // NHDatePicker: { screen: NHDatePicker }
   },
   {
-    initialRouteName: "NHDelivery",
+    initialRouteName: "Home",
     contentOptions: {
       activeTintColor: "#e91e63"
     },
