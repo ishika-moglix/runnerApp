@@ -1,4 +1,4 @@
-package com.nativebasekitchensink;
+package com.moglix.runner;
 
 import android.app.Application;
 

@@ -1,4 +1,4 @@
-package com.nativebasekitchensink;
+package com.moglix.runner;
 
 import com.facebook.react.ReactActivity;
 
