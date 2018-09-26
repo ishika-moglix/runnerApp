@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Text,
-  Button,
-  Icon,
-  Footer,
-  FooterTab,
-  Left,
-  Right,
+    Container,
+    Header,
+    Toast,
+    Title,
+    Content,
+    Text,
+    Button,
+    Icon,
+    Footer,
+    FooterTab,
+    Left,
+    Right,
     List, ListItem,
-    Body
+    Body,
 } from "native-base";
 import { AsyncStorage,FlatList,View,StyleSheet,ActivityIndicator } from "react-native";
 import axios from "axios/index";
@@ -28,33 +29,59 @@ class PickupList extends Component{
             myItems:'',
             myToken:'',
             isLoading: true,
+            UserAuth:string='',
+            showToast: false
         };
         console.log("PROPS " + state.params.poNumber);
         AsyncStorage.getItem('token', (err, result) => {
-            console.log("storage token in pickup details");
-            console.log(result);
             this.state.myToken=result;
             const user = {
                 "poIds":this.state.myPONumber,
             };
-            const AuthStr = 'Bearer '.concat('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I');
-            axios.post(`http://emsqa.moglilabs.com/api/runner/poDetail.json`, user,{ headers: { 'Authorization': AuthStr } })
+            if(result){
+                this.state.UserAuth='Bearer '.concat(result);
+            axios.post(`http://emsqa.moglilabs.com/api/runner/poDetail.json`, user,{ headers: { 'Authorization': this.state.UserAuth } })
                 .then(res => {
-                    console.log(JSON.stringify(res));
-                    //console.log(res.data.data.id);
-                    if(res.data.success && res.data.code==200){
-                        console.log("my po items are here");
-                        console.log(res.data.data.poItems);
-                        //this.setState({ myItems: res.data.data.poItems });
-                        this.state.myItems=res.data.data.poItems;
-                        console.log(this.state.myItems);
+                    if(res.data.code==200){
+                        if(res.data.success){
+                            console.log("my po items are here");
+                            console.log(res.data.data.poItems);
+                            //this.setState({ myItems: res.data.data.poItems });
+                            this.state.myItems=res.data.data.poItems;
+                            console.log(this.state.myItems);
+                            this.setState({ isLoading: false });
+                            this.forceUpdate();
+                        }else{
+                            Toast.show({
+                                text: res.data.message,
+                                buttonText: "Okay",
+                                duration: 3000
+                            })
+                            this.setState({ isLoading: false });
+                        }
+                    }else if(res.data.code==401){
                         this.setState({ isLoading: false });
-                        this.forceUpdate();
-                    }else{
-                        alert(res.data.message);
+                        Toast.show({
+                            text: res.data.message,
+                            buttonText: "Okay",
+                            position: "top",
+                            type: "danger",
+                            duration: 3000
+                        })
+                        this.props.navigation.navigate('Home');
                     }
                 });
-            console.log(this.state.myItems);
+            }
+            else{
+                Toast.show({
+                    text: "no token Found ! Login Again",
+                    buttonText: "Okay",
+                    position: "top",
+                    type: "danger",
+                    duration: 3000
+                });
+                this.props.navigation.navigate('Home')
+            }
         });
     };
     decreaseValue(selectedItem,index){
@@ -68,6 +95,52 @@ class PickupList extends Component{
         let targetPost = myItems[index];
         ++targetPost.remainingQuantity;
         this.setState({ myItems });
+    }
+    markPickupdone(){
+        let pickupArray=[];
+        console.log("mark pickup done clicked");
+        console.log(this.state.myItems);
+        console.log(this.state.myItems.length);
+        for(var t=0;t<this.state.myItems.length;t++){
+            console.log(this.state.myItems[t].productId);
+            pickupArray.push({
+                "id": this.state.myItems[t].id,
+                "quantity": this.state.myItems[t].remainingQuantity
+            })
+        }
+        axios.post(`http://emsqa.moglilabs.com/api/runner/markPickupDone.json`,{
+            "pickupItems": pickupArray
+        },{ headers: { 'Authorization': this.state.UserAuth } })
+            .then(res => {
+                if(res.data.success && res.data.code==200){
+                    console.log(res);
+                    Toast.show({
+                        text: res.data.message,
+                        buttonText: "Okay",
+                        position: "top",
+                        type: "success",
+                        duration: 3000
+                    });
+                    this.props.navigation.navigate('NHTab');
+                }else if(!res.data.success && res.data.code==200){
+                    Toast.show({
+                        text: res.data.message,
+                        buttonText: "Okay",
+                        position: "top",
+                        type: "warning",
+                        duration: 3000
+                    })
+                }else if(res.data.code==401){
+                    Toast.show({
+                        text: res.data.message,
+                        buttonText: "Okay",
+                        position: "top",
+                        type: "danger",
+                        duration: 3000
+                    });
+                    this.props.navigation.navigate('Home');
+                }
+            });
     }
   render() {
       const { isLoading} = this.state;
@@ -86,7 +159,7 @@ class PickupList extends Component{
                   </Button>
               </Left>
               <Body>
-              <Title>Po no {this.state.myPONumber}</Title>
+              <Title>No-{this.state.myPONumber}</Title>
               </Body>
               <Right />
           </Header>
@@ -105,7 +178,10 @@ class PickupList extends Component{
                 showsVerticalScrollIndicator={false}
                 renderItem={({item,index}) =>
                     <ListItem>
+                        <Left>
                     <Text>{item.productName} {"\n"} QTY: {item.quantity}</Text>
+                        </Left>
+                        <Right>
                     <Button disabled={item.remainingQuantity==0} transparent onPress={() => this.decreaseValue( item, index )}>
                     <Icon name="remove" />
                     </Button>
@@ -114,6 +190,7 @@ class PickupList extends Component{
                     <Button  disabled={item.remainingQuantity==item.quantity} transparent onPress={() => this.increaseValue( item, index )}>
                     <Icon name="add" />
                     </Button>
+                        </Right>
                     {/*<Text>*/}
                     {/*<b>Some Text</b>*/}
                     {/*</Text>*/}
@@ -125,7 +202,7 @@ class PickupList extends Component{
 
         <Footer>
           <FooterTab>
-            <Button active full>
+            <Button onPress={() => this.markPickupdone()} active full>
               <Text>Pickup Done</Text>
             </Button>
           </FooterTab>

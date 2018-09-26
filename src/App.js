@@ -187,7 +187,7 @@ const Drawer = DrawerNavigator(
     // NHThumbnail: { screen: NHThumbnail },
     // NHTypography: { screen: NHTypography },
     // Segment: { screen: Segment },
-    // NHToast: { screen: NHToast },
+     ,NHToast: { screen: NHToast },
     // Actionsheet: { screen: Actionsheet },
     // NHAccordion: { screen: NHAccordion },
     // NHDatePicker: { screen: NHDatePicker }
@@ -327,7 +327,7 @@ const AppNavigator = StackNavigator(
     // SegmentHeaderIcon: { screen: SegmentHeaderIcon },
     //
     // BasicToast: { screen: BasicToast },
-    // ToastDuration: { screen: ToastDuration },
+    //  ToastDuration: { screen: ToastDuration },
     // ToastPosition: { screen: ToastPosition },
     // ToastType: { screen: ToastType },
     // ToastText: { screen: ToastText },

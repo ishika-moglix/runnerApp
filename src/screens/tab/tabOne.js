@@ -24,8 +24,6 @@ export default class TabOne extends Component {
                 showHeader:false
             };
         }
-
-
     }
     tab1click= () => {
         this.props.navigation.navigate('PickupList', { poNumber: this.state.mypoNumber });

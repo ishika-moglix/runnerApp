@@ -14,6 +14,7 @@ import axios from "axios/index";
 var ImagePicker = require('react-native-image-picker');
 var options = {
     title: 'Upload POD',
+    quality: 0.4,
     storageOptions: {
         skipBackup: true,
         path: 'images'
@@ -123,12 +124,23 @@ class Invoiceinfo extends Component {
             <View>
                 <Button full primary disabled={ isLoading}
                         style={styles.footerStyle}
-                        onPress={() => this.openPicker()}
+                        onPress={() => this.openPicker2()}
+                        // onPress={() => this.openPicker()}
                 >
                     <Text style={{color: 'black'}}> Upload Pod </Text>
                 </Button>
             </View>
         );
+    }
+    openPicker2(){
+        console.log("open picker new");
+        ImagePicker.openPicker({
+            width: 300,
+            height: 400,
+            cropping: true
+        }).then(image => {
+            console.log(image);
+        });
     }
     openPicker(){
         /**

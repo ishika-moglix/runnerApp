@@ -1,6 +1,6 @@
 {
   "name": "Runner App",
-  "displayName": "Runner App",
+  "displayName": "Moglix Runner",
   "expo": {
     "sdkVersion": "18.0.0"
   }

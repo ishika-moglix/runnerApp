@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import {ImageBackground, StatusBar,ScrollView, Image, TextInput, View, StyleSheet, Animated} from 'react-native';
-import { Left,
-    Right,Header,Title,
-    Body,Button, H3, Text,Item,
-    Input } from "native-base";
+import {
+    Left,
+    Right, Header, Title,
+    Body, Button, H3, Text, Item,
+    Input, Toast
+} from "native-base";
 import Container from "./Container";
 import axios from 'axios';
 import { AsyncStorage,ActivityIndicator } from "react-native";
@@ -35,11 +37,24 @@ class Home extends Component {
             .then(res => {
                 this.setState({ isLoading: false });
                 console.log(JSON.stringify(res));
-                //console.log(res.data.data.id);
                 if(res.data.success && res.data.code==200){
+                    Toast.show({
+                        text: res.data.message,
+                        buttonText: "Okay",
+                        position: "top",
+                        type: "success",
+                        duration: 3000
+                    });
                     this.props.navigation.navigate("Verify", { userId: res.data.data.id });
                 }else{
-                   alert(res.data.message);
+                    Toast.show({
+                        text: res.data.message,
+                        buttonText: "Okay",
+                        position: "top",
+                        type: "danger",
+                        duration: 3000
+                    });
+
                 }
             })
     };
@@ -62,7 +77,13 @@ class Home extends Component {
             }
             else {
                 // your call back function
-                alert("please enter numbers only");
+                Toast.show({
+                    text: "only number required !",
+                    buttonText: "Okay",
+                    position: "top",
+                    type: "warning",
+                    duration: 2000
+                });
             }
         };
         //alert(newText.length);

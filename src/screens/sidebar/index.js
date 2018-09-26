@@ -8,20 +8,20 @@ import styles from "./style";
  const drawerCover = require("../../../assets/moglixRunner.png");
 //const drawerImage = require("../../../assets/logo-kitchen-sink.png");
 const datas = [
-    // {
-    //     name: "Home",
-    //     route: "NHTab",
-    //     icon: "home",
-    //     sidebar:false,
-    //     bg: "#da4439"
-    // },
-    // {
-    //     name: "Pickup",
-    //     route: "NHPickup",
-    //     sidebar:true,
-    //     icon: "phone-portrait",
-    //     bg: "#C5F442"
-    // },
+    {
+        name: "Home",
+        route: "NHTab",
+        icon: "home",
+        sidebar:false,
+        bg: "#da4439"
+    },
+    {
+        name: "Pickup",
+        route: "NHPickup",
+        sidebar:true,
+        icon: "phone-portrait",
+        bg: "#C5F442"
+    },
     {
         name: "Delivery",
         route: "NHDelivery",
@@ -182,13 +182,13 @@ const datas = [
   //   bg: "#cc0000",
   //   types: "2"
   // },
-  // {
-  //   name: "Toast",
-  //   route: "NHToast",
-  //   icon: "albums",
-  //   bg: "#C5F442",
-  //   types: "6"
-  // },
+  ,{
+    name: "Toast",
+    route: "NHToast",
+    icon: "albums",
+    bg: "#C5F442",
+    types: "6"
+  }
   // {
   //   name: "Typography",
   //   route: "NHTypography",
