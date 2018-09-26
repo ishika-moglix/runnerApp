@@ -23,7 +23,7 @@ class Profile extends Component {
             }else {
             this.state.AuthStr = 'Bearer '.concat('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I');
             }
-            axios.post(`http://emsqa.moglilabs.com/api/auth/profile.json`,user, { headers: { 'Authorization': this.state.AuthStr } })
+            axios.post(global.url+`/api/auth/profile.json`,user, { headers: { 'Authorization': this.state.AuthStr } })
                 .then(res => {
                     if(res.data.success && res.data.code==200){
                         console.log("my po items are here");

@@ -15,6 +15,7 @@ const launchscreenBg = require("../../../assets/launchscreen-bg.png");
 const launchscreenLogo = require("../../../assets/logo-kitchen-sink.png");
 class Home extends Component {
     constructor(props) {
+        console.log(global.foo);
        // AsyncStorage.clear();
        // console.log(AsyncStorage.getItem('token'));
         super(props);
@@ -33,7 +34,7 @@ class Home extends Component {
         const headers = {
             'Content-Type': 'application/json',
         };
-        axios.post(`http://emsqa.moglilabs.com/api/auth/login.json`, user,headers)
+        axios.post(global.url+`/api/auth/login.json`, user,headers)
             .then(res => {
                 this.setState({ isLoading: false });
                 console.log(JSON.stringify(res));

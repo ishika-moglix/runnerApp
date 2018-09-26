@@ -40,7 +40,7 @@ class PickupList extends Component{
             };
             if(result){
                 this.state.UserAuth='Bearer '.concat(result);
-            axios.post(`http://emsqa.moglilabs.com/api/runner/poDetail.json`, user,{ headers: { 'Authorization': this.state.UserAuth } })
+            axios.post(global.url+`/api/runner/poDetail.json`, user,{ headers: { 'Authorization': this.state.UserAuth } })
                 .then(res => {
                     if(res.data.code==200){
                         if(res.data.success){
@@ -108,7 +108,7 @@ class PickupList extends Component{
                 "quantity": this.state.myItems[t].remainingQuantity
             })
         }
-        axios.post(`http://emsqa.moglilabs.com/api/runner/markPickupDone.json`,{
+        axios.post(global.url+`/api/runner/markPickupDone.json`,{
             "pickupItems": pickupArray
         },{ headers: { 'Authorization': this.state.UserAuth } })
             .then(res => {

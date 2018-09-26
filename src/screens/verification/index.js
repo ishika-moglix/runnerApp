@@ -32,7 +32,7 @@ class Verify extends Component {
         const headers = {
             'Content-Type': 'application/json',
         };
-        axios.post(`http://emsqa.moglilabs.com/api/auth/verifyOtp.json`, user,headers)
+        axios.post(global.url+`/api/auth/verifyOtp.json`, user,headers)
             .then(res => {
                 console.log(JSON.stringify(res));
                 //console.log(res.data.data.id);

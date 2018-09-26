@@ -182,13 +182,13 @@ const datas = [
   //   bg: "#cc0000",
   //   types: "2"
   // },
-  ,{
-    name: "Toast",
-    route: "NHToast",
-    icon: "albums",
-    bg: "#C5F442",
-    types: "6"
-  }
+  // ,{
+  //   name: "Toast",
+  //   route: "NHToast",
+  //   icon: "albums",
+  //   bg: "#C5F442",
+  //   types: "6"
+  // }
   // {
   //   name: "Typography",
   //   route: "NHTypography",

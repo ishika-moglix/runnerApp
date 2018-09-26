@@ -24,6 +24,7 @@ let mytest;
 class Invoiceinfo extends Component {
 
     constructor(props) {
+        console.log(global.foo);
         super(props);
         var today = new Date();
         finaldate=today.getFullYear() +"-"+ parseInt(today.getMonth()+1) + "-" +today.getDate();
@@ -308,7 +309,7 @@ class Invoiceinfo extends Component {
             //     alert(JSON.stringify(err));
             //     // alert(err);
             // });
-            fetch('http://emsqa.moglilabs.com/api/runner/markDeliveredPod.json', {
+            fetch(global.url+'/api/runner/markDeliveredPod.json', {
                 method: 'post',
                 headers:{'Authorization':this.state.AuthStr},
                 body: data
