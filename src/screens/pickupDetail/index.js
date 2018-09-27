@@ -15,7 +15,7 @@ import {
     List, ListItem,
     Body,
 } from "native-base";
-import { AsyncStorage,FlatList,View,StyleSheet,ActivityIndicator } from "react-native";
+import { AsyncStorage,FlatList,ButtonBox,View,StyleSheet,ActivityIndicator } from "react-native";
 import axios from "axios/index";
 //import styles from "./styles";
 
@@ -164,7 +164,7 @@ class PickupList extends Component{
               <Right />
           </Header>
 
-        <Content padder>
+        <Content>
             {isLoading && (
             <ActivityIndicator
                 animating={true}
@@ -177,23 +177,22 @@ class PickupList extends Component{
                 data={this.state.myItems}
                 showsVerticalScrollIndicator={false}
                 renderItem={({item,index}) =>
-                    <ListItem>
-                        <Left>
-                    <Text>{item.productName} {"\n"} QTY: {item.quantity}</Text>
+                    <ListItem style={styles.top}>
+                        <Left style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',
+                        }}>
+                            <Text style={{fontSize:12}}>{item.productName} {"\n"} <Text style={{fontWeight:'bold',marginTop:5}}>QTY: {item.quantity}</Text></Text>
                         </Left>
-                        <Right>
-                    <Button disabled={item.remainingQuantity==0} transparent onPress={() => this.decreaseValue( item, index )}>
+                        <Right style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',
+                        }}>
+
+                    <Button style={styles.flex1} disabled={item.remainingQuantity==0} transparent onPress={() => this.decreaseValue( item, index )}>
                     <Icon name="remove" />
                     </Button>
-                    <Text textAlign="right" style={{textAlign: 'right'}}>
-                    {item.remainingQuantity}</Text>
-                    <Button  disabled={item.remainingQuantity==item.quantity} transparent onPress={() => this.increaseValue( item, index )}>
+                            <Text style={styles.remainingQty}>{item.remainingQuantity}</Text>
+                    <Button style={styles.flex1}  disabled={item.remainingQuantity==item.quantity} transparent onPress={() => this.increaseValue( item, index )}>
                     <Icon name="add" />
                     </Button>
                         </Right>
-                    {/*<Text>*/}
-                    {/*<b>Some Text</b>*/}
-                    {/*</Text>*/}
                     </ListItem>
                 }
                 keyExtractor={item => item.productName}
@@ -235,6 +234,22 @@ const styles = StyleSheet.create({
         borderRadius: 2,
 
     },
+    buttonBox:{
+        borderWidth:1,
+        borderColor:'#ddd',
+        borderRadius:3,
+    },
+    flex1:{
+        flex: 1,
+        flexDirection: 'row',
+        backgroundColor:'#cbe3fd',
+        flexBasis:15,
+        height:40,
+        borderRadius:3,
+        alignItems:'center',
+        fontSize:10,
+
+    },
     viewText: {
         fontFamily: 'Verdana',
         fontSize: 15
@@ -244,6 +259,23 @@ const styles = StyleSheet.create({
         width: "80%",
         alignSelf: 'center',
         backgroundColor: "#555"
+    },
+    remainingQty:{
+        flexDirection: 'row',
+        fontSize:12,
+        backgroundColor:'white',
+        height:40,
+        flex:2,
+        textAlignVertical: "center",
+        textAlign: "center"
+    },
+    top:{
+        alignItems:'flex-start',
+        marginLeft:10,
+        paddingLeft:15,
+        marginTop:0
     }
+
+
 });
 export default PickupList;

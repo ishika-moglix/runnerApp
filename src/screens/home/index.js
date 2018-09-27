@@ -64,7 +64,7 @@ class Home extends Component {
             console.log("async token");
             console.log(result);
             if(result){
-                this.props.navigation.navigate('NHDelivery');
+                this.props.navigation.navigate('NHTab');
             }
         });
     }

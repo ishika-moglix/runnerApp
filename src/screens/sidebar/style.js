@@ -6,11 +6,16 @@ const deviceWidth = Dimensions.get("window").width;
 
 export default {
   drawerCover: {
-    alignSelf: "stretch",
-    height: deviceHeight / 3.5,
-    width: null,
+    //alignSelf: "stretch",
+    //height: deviceHeight / 3.5,
+    width: 200,
+    maxWidth:100,
     position: "relative",
-    marginBottom: 10
+    marginLeft:40,
+    marginTop:25,
+    left:30,
+    zIndex:999,
+    background:"blue"
   },
   drawerImage: {
     position: "absolute",

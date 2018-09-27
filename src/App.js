@@ -159,8 +159,8 @@ global.fetch = function (uri, options, ...args) {
 };
 const Drawer = DrawerNavigator(
   {
-      NHPickup: {screen:TabOne  },
-      NHDelivery: {screen:TabTwo},
+      NHPickup: {screen:TabOne },
+      NHDelivery: {screen:TabTwo },
       NHTab: { screen: BasicTab },
       Home: { screen: Home },
       NHInvoice:{screen:Invoiceinfo},
@@ -187,7 +187,7 @@ const Drawer = DrawerNavigator(
     // NHThumbnail: { screen: NHThumbnail },
     // NHTypography: { screen: NHTypography },
     // Segment: { screen: Segment },
-     ,NHToast: { screen: NHToast },
+    //  ,NHToast: { screen: NHToast },
     // Actionsheet: { screen: Actionsheet },
     // NHAccordion: { screen: NHAccordion },
     // NHDatePicker: { screen: NHDatePicker }

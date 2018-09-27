@@ -50,7 +50,7 @@ class RegularPicker extends Component {
               iosIcon={<Icon name="ios-arrow-down-outline" />}
               headerStyle={{ backgroundColor: "#b95dd3" }}
               headerBackButtonTextStyle={{ color: "#fff" }}
-              headerTitleStyle={{ color: "#fff" }}
+              headerTitleStyle={{ color: "#fff",textAlign: 'center',alignSelf:'center' }}
               style={{ width: undefined }}
               selectedValue={this.state.selected5}
               onValueChange={this.onValueChange5.bind(this)}

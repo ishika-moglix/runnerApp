@@ -5,8 +5,8 @@ import {
   Icon, Container,Button, Left, Right, Badge} from "native-base";
 import styles from "./style";
 
- const drawerCover = require("../../../assets/moglixRunner.png");
-//const drawerImage = require("../../../assets/logo-kitchen-sink.png");
+ const drawerCover = require("../../../assets/side_menu_logo.png");
+ //const drawerImage = require("../../../assets/logo-kitchen-sink.png");
 const datas = [
     {
         name: "Home",
@@ -214,9 +214,9 @@ class SideBar extends Component {
       <Container>
         <Content
           bounces={false}
-          style={{ flex: 1, backgroundColor: "#fff", top: -1 }}
+          style={{ flex: 1, backgroundColor: "#fff", top: -1 ,zIndex:-1}}
         >
-          <Image source={drawerCover} style={styles.drawerCover} />
+          <Image source={drawerCover} style={{width:"80%",height:30,maxHeight:100,marginLeft:20,marginTop:30 ,marginBottom:40}} />
           {/*<Image square style={styles.drawerImage} source={drawerImage} />*/}
 
           <List

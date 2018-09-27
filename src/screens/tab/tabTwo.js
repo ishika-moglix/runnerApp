@@ -88,34 +88,34 @@ export default class TabTwo extends Component {
     }
     render() {
         const { isLoading} = this.state;
+            // return (
+            //     <Container style={styles.container}>
+            //         { this.renderHeader()}
+            //         { this.renderForm() }
+            //         {isLoading && (
+            //             <ActivityIndicator
+            //                 animating={true}
+            //                 style={styles.indicator}
+            //                 size="large"
+            //             />
+            //         )}
+            //     </Container>
+            // );
+            /* commented due to first release */
+        if(this.state.showHeader){
             return (
                 <Container style={styles.container}>
                     { this.renderHeader()}
                     { this.renderForm() }
-                    {isLoading && (
-                        <ActivityIndicator
-                            animating={true}
-                            style={styles.indicator}
-                            size="large"
-                        />
-                    )}
                 </Container>
             );
-            /* commented due to first release */
-        // if(this.state.showHeader){
-        //     return (
-        //         <Container style={styles.container}>
-        //             { this.renderHeader()}
-        //             { this.renderForm() }
-        //         </Container>
-        //     );
-        // }else{
-        //     return (
-        //         <Container style={styles.container}>
-        //             { this.renderForm() }
-        //         </Container>
-        //     );
-        // }
+        }else{
+            return (
+                <Container style={styles.container}>
+                    { this.renderForm() }
+                </Container>
+            );
+        }
 
     }
     renderHeader() {
