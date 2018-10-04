@@ -21,7 +21,10 @@ var options = {
     }
 };
 let mytest;
-var arr=[{image:require("../../../assets/launchscreen-bg.png")},{image:require("../../../assets/logo-kitchen-sink.png")},{image:require("../../../assets/logo-kitchen-sink.png")}];
+var arr=[{image:require("../../../assets/launchscreen-bg.png")},
+    {
+        image:require("../../../assets/logo-kitchen-sink.png")
+    }];
 class Invoiceinfo extends Component {
 
     constructor(props) {
@@ -72,6 +75,7 @@ class Invoiceinfo extends Component {
             <Container style={[ styles.container, this.props.style || {} ]}>
                 { this.renderHeader() }
                 { this.renderPdf() }
+                { this.renderImages() }
                 {isLoading && (
                     <ActivityIndicator
                         animating={true}
@@ -79,10 +83,20 @@ class Invoiceinfo extends Component {
                         size="large"
                     />
                 )}
+
                 { this.renderFooter() }
                 {/*<Image source={this.state.avatarSource} style={styles.uploadAvatar} />*/}
             </Container>
         );
+    }
+    renderImages(){
+        return (
+            <View>
+        {arr.map(country => (
+            <Image source = {country.image} style={{width: 100, height: 100}} />
+        ))}
+            </View>
+        )
     }
     renderPdf() {
       if(this.state.myItems){
@@ -92,13 +106,9 @@ class Invoiceinfo extends Component {
 
       //const source = {uri:'file:///sdcard/test.pdf'};
       //const source = {uri:"data:application/pdf;base64,..."};
-
+//<Image source = {arr[0].image} style={{width: 100, height: 100}} />
       return (
           <View style={styles.container2}>
-              const listItems = arr.map((detail) =>
-              <li>{detail}</li>
-              );
-              <Image source = {arr[0].image} style={{width: 100, height: 100}} />
               <Pdf
                   source={source}
                   onLoadComplete={(numberOfPages,filePath)=>{
@@ -172,9 +182,10 @@ class Invoiceinfo extends Component {
                // You can also display the image using data:
                 //let source = { uri: 'data:image/jpeg;base64,' + response.data };
                 let source = 'data:image/jpeg;base64,' + response.data;
+                //arr.push({image:source});
                 this.state.myImgaeBase= response.data;
                 this.forceUpdate();
-                this.storePicture(response);
+               // this.storePicture(response);
             }
         });
     }
