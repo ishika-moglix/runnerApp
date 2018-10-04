@@ -21,6 +21,7 @@ var options = {
     }
 };
 let mytest;
+var arr=[{image:require("../../../assets/launchscreen-bg.png")},{image:require("../../../assets/logo-kitchen-sink.png")},{image:require("../../../assets/logo-kitchen-sink.png")}];
 class Invoiceinfo extends Component {
 
     constructor(props) {
@@ -94,6 +95,10 @@ class Invoiceinfo extends Component {
 
       return (
           <View style={styles.container2}>
+              const listItems = arr.map((detail) =>
+              <li>{detail}</li>
+              );
+              <Image source = {arr[0].image} style={{width: 100, height: 100}} />
               <Pdf
                   source={source}
                   onLoadComplete={(numberOfPages,filePath)=>{
@@ -125,7 +130,7 @@ class Invoiceinfo extends Component {
             <View>
                 <Button full primary disabled={ isLoading}
                         style={styles.footerStyle}
-                        onPress={() => this.openPicker2()}
+                        onPress={() => this.openPicker()}
                         // onPress={() => this.openPicker()}
                 >
                     <Text style={{color: 'black'}}> Upload Pod </Text>
@@ -167,7 +172,7 @@ class Invoiceinfo extends Component {
                // You can also display the image using data:
                 //let source = { uri: 'data:image/jpeg;base64,' + response.data };
                 let source = 'data:image/jpeg;base64,' + response.data;
-                this.state.myImgaeBase= response.data
+                this.state.myImgaeBase= response.data;
                 this.forceUpdate();
                 this.storePicture(response);
             }
