@@ -8,6 +8,9 @@ import {
     Text,
     Button,
     Icon,
+    Item,
+    Input,
+    CheckBox,
     Footer,
     FooterTab,
     Left,
@@ -26,64 +29,82 @@ class PickupList extends Component{
         const {state} = props.navigation;
         this.state = {
             myPONumber: state.params.poNumber,
-            myItems:'',
+            //myItems:'',
+            myItems:[
+                { "productName": "5001","name":{"title":"mr","first":"charlie","last":"lévesque"}, "quantity": "2" , "remainingQuantity": "1", "status": true},
+                { "productName": "5002","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "22", "remainingQuantity": "22" , "status": false},
+                { "productName": "5005","name":{"title":"shree","first":"charlie","last":"lévesque"}, "quantity": "23" , "remainingQuantity": "23", "status": "false"},
+                { "productName": "5007","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "3", "remainingQuantity": "3" , "status": "false"},
+                { "productName": "5006","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "7", "remainingQuantity": "7" , "status": "false"},
+                { "productName": "5003","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "5" , "remainingQuantity": "5", "status": "false"},
+                { "productName": "5004","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "4" , "remainingQuantity": "4", "status": "false"}
+            ],
+            data: [],
+            error: null,
             myToken:'',
-            isLoading: true,
+            checkbox1: false,
+            isLoading: false,
             UserAuth:string='',
             showToast: false
         };
         console.log("PROPS " + state.params.poNumber);
-        AsyncStorage.getItem('token', (err, result) => {
-            this.state.myToken=result;
-            const user = {
-                "poIds":this.state.myPONumber,
-            };
-            if(result){
-                this.state.UserAuth='Bearer '.concat(result);
-            axios.post(global.url+`/api/runner/poDetail.json`, user,{ headers: { 'Authorization': this.state.UserAuth } })
-                .then(res => {
-                    if(res.data.code==200){
-                        if(res.data.success){
-                            console.log("my po items are here");
-                            console.log(res.data.data.poItems);
-                            //this.setState({ myItems: res.data.data.poItems });
-                            this.state.myItems=res.data.data.poItems;
-                            console.log(this.state.myItems);
-                            this.setState({ isLoading: false });
-                            this.forceUpdate();
-                        }else{
-                            Toast.show({
-                                text: res.data.message,
-                                buttonText: "Okay",
-                                duration: 3000
-                            })
-                            this.setState({ isLoading: false });
-                        }
-                    }else if(res.data.code==401){
-                        this.setState({ isLoading: false });
-                        Toast.show({
-                            text: res.data.message,
-                            buttonText: "Okay",
-                            position: "top",
-                            type: "danger",
-                            duration: 3000
-                        })
-                        this.props.navigation.navigate('Home');
-                    }
-                });
-            }
-            else{
-                Toast.show({
-                    text: "no token Found ! Login Again",
-                    buttonText: "Okay",
-                    position: "top",
-                    type: "danger",
-                    duration: 3000
-                });
-                this.props.navigation.navigate('Home')
-            }
-        });
+        // AsyncStorage.getItem('token', (err, result) => {
+        //     this.state.myToken=result;
+        //     const user = {
+        //         "poIds":this.state.myPONumber,
+        //     };
+        //     if(result){
+        //         this.state.UserAuth='Bearer '.concat(result);
+        //     axios.post(global.url+`/api/runner/poDetail.json`, user,{ headers: { 'Authorization': this.state.UserAuth } })
+        //         .then(res => {
+        //             if(res.data.code==200){
+        //                 if(res.data.success){
+        //                     console.log("my po items are here");
+        //                     console.log(res.data.data.poItems);
+        //                     //this.setState({ myItems: res.data.data.poItems });
+        //                     this.state.myItems=res.data.data.poItems;
+        //                     console.log(this.state.myItems);
+        //                     this.setState({ isLoading: false });
+        //                     this.forceUpdate();
+        //                 }else{
+        //                     Toast.show({
+        //                         text: res.data.message,
+        //                         buttonText: "Okay",
+        //                         duration: 3000
+        //                     })
+        //                     this.setState({ isLoading: false });
+        //                 }
+        //             }else if(res.data.code==401){
+        //                 this.setState({ isLoading: false });
+        //                 Toast.show({
+        //                     text: res.data.message,
+        //                     buttonText: "Okay",
+        //                     position: "top",
+        //                     type: "danger",
+        //                     duration: 3000
+        //                 })
+        //                 this.props.navigation.navigate('Home');
+        //             }
+        //         });
+        //     }
+        //     else{
+        //         Toast.show({
+        //             text: "no token Found ! Login Again",
+        //             buttonText: "Okay",
+        //             position: "top",
+        //             type: "danger",
+        //             duration: 3000
+        //         });
+        //         this.props.navigation.navigate('Home')
+        //     }
+        // });
     };
+    toggleSwitch1(itemId) {
+        console.log(itemId);
+        this.setState({
+            checkbox1: !this.state.checkbox1
+        });
+    }
     decreaseValue(selectedItem,index){
         let { myItems } = this.state;
         let targetPost = myItems[index];
@@ -142,6 +163,31 @@ class PickupList extends Component{
                 }
             });
     }
+
+    searchFilterFunction = text => {
+        debugger;
+        console.log(text);
+        let trucks=this.state.myItems;
+        let newData = trucks.filter((truck) => {
+            debugger;
+            console.log(truck);
+            console.log(truck.name);
+            console.log(truck.name.title);
+            console.log(truck.name.title.toLowerCase());
+            console.log(text);
+            const itemData = truck.name.title.toString().toUpperCase();
+            console.log(itemData);
+            console.log(text.toString().toLowerCase());
+            console.log(text.toString().toLowerCase());
+
+            const textData = text.toString().toUpperCase();
+                console.log(textData);
+                alert(itemData.indexOf(textData));
+            return itemData.indexOf(textData) > -1;
+        });
+        this.setState({ myItems: newData });
+    };
+
   render() {
       const { isLoading} = this.state;
       var items=[];
@@ -152,7 +198,7 @@ class PickupList extends Component{
 
     return (
       <Container>
-          <Header style={{ backgroundColor : '#da4439'}}>
+          <Header searchBar style={{ backgroundColor : '#da4439'}} rounded>
               <Left>
                   <Button transparent onPress={() => this.props.navigation.goBack()}>
                       <Icon name="arrow-back" />
@@ -161,7 +207,16 @@ class PickupList extends Component{
               <Body>
               <Title>No-{this.state.myPONumber}</Title>
               </Body>
-              <Right />
+              <Right>
+
+                  <Item>
+                      <Icon active name="search" />
+                      <Input placeholder="Search" />
+                  </Item>
+                  <Button onPress={this.filterList} transparent>
+                      <Text>Search</Text>
+                  </Button>
+              </Right>
           </Header>
 
         <Content>
@@ -172,15 +227,20 @@ class PickupList extends Component{
                 size="large"
             />
             )}
+            <List items={this.state.items}/>
             <FlatList
                 extraData={this.state}
                 data={this.state.myItems}
                 showsVerticalScrollIndicator={false}
                 renderItem={({item,index}) =>
-                    <ListItem style={styles.top}>
+                    <ListItem  style={styles.top}>
+                        <CheckBox
+                            checked={item.checked}
+                            onPress={() => this.toggleSwitch1(item.checked)}
+                        />
                         <Left style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',
                         }}>
-                            <Text style={{fontSize:12}}>{item.productName} {"\n"} <Text style={{fontWeight:'bold',marginTop:5}}>QTY: {item.quantity}</Text></Text>
+                            <Text style={{fontSize:12}}>{item.productName} {"\n"} <Text style={[styles.mytext, (item.remainingQuantity==item.quantity) ? styles.textvalid : styles.textinvalid]}>{item.status} {item.name.title} QTY: {item.quantity}</Text></Text>
                         </Left>
                         <Right style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',
                         }}>
@@ -233,6 +293,15 @@ const styles = StyleSheet.create({
         paddingTop: 30,
         borderRadius: 2,
 
+    },
+    mytext: {
+        fontWeight:'bold',marginTop:5, backgroundColor: 'white', borderRadius: 5,
+    },
+    textvalid: {
+         color:"#9b7fcc",
+    },
+    textinvalid: {
+        color:"#C00",
     },
     buttonBox:{
         borderWidth:1,
