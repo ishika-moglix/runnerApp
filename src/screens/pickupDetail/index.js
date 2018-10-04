@@ -26,7 +26,16 @@ class PickupList extends Component{
         const {state} = props.navigation;
         this.state = {
             myPONumber: state.params.poNumber,
-            myItems:'',
+            // myItems:'',
+            myItems:[
+                { "productName": "5001","name":{"title":"mr","first":"charlie","last":"lévesque"}, "quantity": "2" , "remainingQuantity": "1", "status": true},
+                { "productName": "5002","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "22", "remainingQuantity": "22" , "status": false},
+                { "productName": "5005","name":{"title":"shree","first":"charlie","last":"lévesque"}, "quantity": "23" , "remainingQuantity": "23", "status": "false"},
+                { "productName": "5007","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "3", "remainingQuantity": "3" , "status": "false"},
+                { "productName": "5006","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "7", "remainingQuantity": "7" , "status": "false"},
+                { "productName": "5003","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "5" , "remainingQuantity": "5", "status": "false"},
+                { "productName": "5004","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "4" , "remainingQuantity": "4", "status": "false"}
+                ],
             myToken:'',
             isLoading: true,
             UserAuth:string='',
@@ -180,11 +189,11 @@ class PickupList extends Component{
                     <ListItem style={styles.top}>
                         <Left style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',
                         }}>
-                            <Text style={{fontSize:12}}>{item.productName} {"\n"} <Text style={{fontWeight:'bold',marginTop:5}}>QTY: {item.quantity}</Text></Text>
+                            <Text style={{fontSize:12}}>{item.productName} {"\n"} <Text style={{fontWeight:'bold',marginTop:5 ,color:"#F29C00"}}>Qty: {item.quantity}</Text></Text>
                         </Left>
                         <Right style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',
                         }}>
-
+                    
                     <Button style={styles.flex1} disabled={item.remainingQuantity==0} transparent onPress={() => this.decreaseValue( item, index )}>
                     <Icon name="remove" />
                     </Button>
