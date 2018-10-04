@@ -214,17 +214,16 @@ class SideBar extends Component {
       <Container>
         <Content
           bounces={false}
-          style={{ flex: 1, backgroundColor: "#fff", top: -1 ,zIndex:-1}}
+          style={{ flex: 1, backgroundColor: "#fff", top: -1 ,zIndex:-1 ,}}
         >
-          <Image source={drawerCover} style={{width:"80%",height:30,maxHeight:100,marginLeft:20,marginTop:30 ,marginBottom:40}} />
+          <Image source={drawerCover} style={{width:"80%",height:30,maxHeight:100,marginLeft:20,marginTop:30 ,marginBottom:40 ,}} />
           {/*<Image square style={styles.drawerImage} source={drawerImage} />*/}
 
-          <List
+          <List style ={{ backgroundColor:"#f5f7f9"}}
             dataArray={datas}
             renderRow={data =>
-              <ListItem
+              <ListItem  
                 button
-                noBorder
                 onPress={() => this.props.navigation.navigate(data.route,{'from':data.sidebar})}
               >
                 <Left>
@@ -259,7 +258,7 @@ class SideBar extends Component {
               <Button
                   transparent
                   onPress={() => this.moveHome()}>
-                  <Text>Logout</Text>
+                  <Text style = {{color:"#fff"}}>Logout</Text>
               </Button>
           </Footer>
       </Container>

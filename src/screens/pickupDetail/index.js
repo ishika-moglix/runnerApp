@@ -29,7 +29,11 @@ class PickupList extends Component{
         const {state} = props.navigation;
         this.state = {
             myPONumber: state.params.poNumber,
+<<<<<<< HEAD
+            // myItems:'',
+=======
             //myItems:'',
+>>>>>>> 2db723ae37e1f8e7ca0e870df11ec0f2a67355aa
             myItems:[
                 { "productName": "5001","name":{"title":"mr","first":"charlie","last":"lévesque"}, "quantity": "2" , "remainingQuantity": "1", "status": true},
                 { "productName": "5002","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "22", "remainingQuantity": "22" , "status": false},
@@ -38,9 +42,13 @@ class PickupList extends Component{
                 { "productName": "5006","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "7", "remainingQuantity": "7" , "status": "false"},
                 { "productName": "5003","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "5" , "remainingQuantity": "5", "status": "false"},
                 { "productName": "5004","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "4" , "remainingQuantity": "4", "status": "false"}
+<<<<<<< HEAD
+                ],
+=======
             ],
             data: [],
             error: null,
+>>>>>>> 2db723ae37e1f8e7ca0e870df11ec0f2a67355aa
             myToken:'',
             checkbox1: false,
             isLoading: false,
@@ -244,7 +252,7 @@ class PickupList extends Component{
                         </Left>
                         <Right style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',
                         }}>
-
+                    
                     <Button style={styles.flex1} disabled={item.remainingQuantity==0} transparent onPress={() => this.decreaseValue( item, index )}>
                     <Icon name="remove" />
                     </Button>
