@@ -21,10 +21,6 @@ var options = {
     }
 };
 let mytest;
-var arr=[{image:require("../../../assets/launchscreen-bg.png")},
-    {
-        image:require("../../../assets/logo-kitchen-sink.png")
-    }];
 class Invoiceinfo extends Component {
 
     constructor(props) {
@@ -37,6 +33,7 @@ class Invoiceinfo extends Component {
         this.state = {
             myItems:state.params.invoice.invoiceUrl,
             active: false,
+            myarr:[],
             myImgaeBase:'',
             invoiceNo: state.params.invoice.invoiceNumber,
             packetI: state.params.invoice.packetId,
@@ -92,8 +89,11 @@ class Invoiceinfo extends Component {
     renderImages(){
         return (
             <View>
-        {arr.map(country => (
-            <Image source = {country.image} style={{width: 100, height: 100}} />
+        {this.state.myarr.map(myresponse => (
+            <Image  source={{
+                isStatic: true,
+                uri: 'data:image/jpeg;base64,'+myresponse,
+            }} style={{width: 100, height: 100}} />
         ))}
             </View>
         )
@@ -106,7 +106,6 @@ class Invoiceinfo extends Component {
 
       //const source = {uri:'file:///sdcard/test.pdf'};
       //const source = {uri:"data:application/pdf;base64,..."};
-//<Image source = {arr[0].image} style={{width: 100, height: 100}} />
       return (
           <View style={styles.container2}>
               <Pdf
@@ -182,8 +181,9 @@ class Invoiceinfo extends Component {
                // You can also display the image using data:
                 //let source = { uri: 'data:image/jpeg;base64,' + response.data };
                 let source = 'data:image/jpeg;base64,' + response.data;
-                //arr.push({image:source});
-                this.state.myImgaeBase= response.data;
+                this.setState({ myarr: this.state.myarr.concat(response.data) });
+                console.log(this.state.myarr);
+                //this.state.myImgaeBase= response.data;
                 this.forceUpdate();
                // this.storePicture(response);
             }
