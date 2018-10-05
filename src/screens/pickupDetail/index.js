@@ -25,84 +25,96 @@ import axios from "axios/index";
 
 class PickupList extends Component{
     constructor(props) {
+        //finalArray:[];
+        //let count=0;
         super(props);
         const {state} = props.navigation;
         this.state = {
             myPONumber: state.params.poNumber,
-            myItems:[
-                { "productName": "5001","name":{"title":"mr","first":"charlie","last":"lévesque"}, "quantity": "2" , "remainingQuantity": "1", "status": true},
-                { "productName": "5002","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "22", "remainingQuantity": "22" , "status": false},
-                { "productName": "5005","name":{"title":"shree","first":"charlie","last":"lévesque"}, "quantity": "23" , "remainingQuantity": "23", "status": "false"},
-                { "productName": "5007","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "3", "remainingQuantity": "3" , "status": "false"},
-                { "productName": "5006","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "7", "remainingQuantity": "7" , "status": "false"},
-                { "productName": "5003","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "5" , "remainingQuantity": "5", "status": "false"},
-                { "productName": "5004","name":{"title":"ms","first":"charlie","last":"lévesque"}, "quantity": "4" , "remainingQuantity": "4", "status": "false"}
-                ],
+            checkbox1: false,
+            myItems:[],
             data: [],
             error: null,
+            mycounter:0,
             myToken:'',
-            checkbox1: false,
             isLoading: false,
             UserAuth:string='',
             showToast: false
         };
         console.log("PROPS " + state.params.poNumber);
-        // AsyncStorage.getItem('token', (err, result) => {
-        //     this.state.myToken=result;
-        //     const user = {
-        //         "poIds":this.state.myPONumber,
-        //     };
-        //     if(result){
-        //         this.state.UserAuth='Bearer '.concat(result);
-        //     axios.post(global.url+`/api/runner/poDetail.json`, user,{ headers: { 'Authorization': this.state.UserAuth } })
-        //         .then(res => {
-        //             if(res.data.code==200){
-        //                 if(res.data.success){
-        //                     console.log("my po items are here");
-        //                     console.log(res.data.data.poItems);
-        //                     //this.setState({ myItems: res.data.data.poItems });
-        //                     this.state.myItems=res.data.data.poItems;
-        //                     console.log(this.state.myItems);
-        //                     this.setState({ isLoading: false });
-        //                     this.forceUpdate();
-        //                 }else{
-        //                     Toast.show({
-        //                         text: res.data.message,
-        //                         buttonText: "Okay",
-        //                         duration: 3000
-        //                     })
-        //                     this.setState({ isLoading: false });
-        //                 }
-        //             }else if(res.data.code==401){
-        //                 this.setState({ isLoading: false });
-        //                 Toast.show({
-        //                     text: res.data.message,
-        //                     buttonText: "Okay",
-        //                     position: "top",
-        //                     type: "danger",
-        //                     duration: 3000
-        //                 })
-        //                 this.props.navigation.navigate('Home');
-        //             }
-        //         });
-        //     }
-        //     else{
-        //         Toast.show({
-        //             text: "no token Found ! Login Again",
-        //             buttonText: "Okay",
-        //             position: "top",
-        //             type: "danger",
-        //             duration: 3000
-        //         });
-        //         this.props.navigation.navigate('Home')
-        //     }
-        // });
-    };
-    toggleSwitch1(itemId) {
-        console.log(itemId);
-        this.setState({
-            checkbox1: !this.state.checkbox1
+        AsyncStorage.getItem('token', (err, result) => {
+            this.state.myToken=result;
+            const user = {
+                "poIds":this.state.myPONumber,
+            };
+            if(result){
+                this.state.UserAuth='Bearer '.concat(result);
+            axios.post(global.url+`/api/runner/poDetail.json`, user,{ headers: { 'Authorization': this.state.UserAuth } })
+                .then(res => {
+                    if(res.data.code==200){
+                        if(res.data.success){
+                            console.log("my po items are here");
+                            console.log(res.data.data.poItems);
+                            //this.setState({ myItems: res.data.data.poItems });
+                            this.state.myItems=res.data.data.poItems;
+                            console.log(this.state.myItems);
+                            this.setState({ isLoading: false });
+                            this.forceUpdate();
+                        }else{
+                            Toast.show({
+                                text: res.data.message,
+                                buttonText: "Okay",
+                                duration: 3000
+                            });
+                            this.setState({ isLoading: false });
+                        }
+                    }else if(res.data.code==401){
+                        this.setState({ isLoading: false });
+                        Toast.show({
+                            text: res.data.message,
+                            buttonText: "Okay",
+                            position: "top",
+                            type: "danger",
+                            duration: 3000
+                        });
+                        this.props.navigation.navigate('Home');
+                    }
+                });
+            }
+            else{
+                Toast.show({
+                    text: "no token Found ! Login Again",
+                    buttonText: "Okay",
+                    position: "top",
+                    type: "danger",
+                    duration: 3000
+                });
+                this.props.navigation.navigate('Home')
+            }
         });
+    };
+    toggleSwitch1(indexNo) {
+        console.log(indexNo);
+        this.state.mycounter=0;
+        for(var t=0;t<this.state.myItems.length;t++){
+            console.log(this.state.myItems[t]);
+            console.log(t);
+            if(indexNo==t){
+                console.log("matched item"+t);
+                //this.state.myItems[t].status=!this.state.myItems[t].status;
+                console.log(this.state.myItems);
+                let newState = Object.assign({}, this.state);
+                newState.myItems[t].status = !this.state.myItems[t].status;
+                this.setState(newState);
+            }
+            console.log("updated items are here ");
+            console.log(this.state.myItems);
+            if(this.state.myItems[t].status && this.state.myItems[t].status==true){
+                this.state.mycounter=this.state.mycounter+1;
+            }
+
+        }
+
     }
     decreaseValue(selectedItem,index){
         let { myItems } = this.state;
@@ -232,24 +244,24 @@ class PickupList extends Component{
                 data={this.state.myItems}
                 showsVerticalScrollIndicator={false}
                 renderItem={({item,index}) =>
-                    <ListItem  style={styles.top}>
-                        <CheckBox
-                            checked={item.checked}
-                            onPress={() => this.toggleSwitch1(item.checked)}
+                    <ListItem  style={styles.top}  onPress={() => this.toggleSwitch1(index)}>
+                        <CheckBox style = {{borderRadius:100 ,marginTop:5}}
+                                  checked={(item.status)}
                         />
-                        <Left style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',
+                        <Left style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',marginLeft:8,
                         }}>
-                            <Text style={{fontSize:12}}>{item.productName} {"\n"} <Text style={[styles.mytext, (item.remainingQuantity==item.quantity) ? styles.textvalid : styles.textinvalid]}>{item.status} {item.name.title} QTY: {item.quantity}</Text></Text>
+                            <Text style={{fontSize:14}}>{item.productName}{"\n"}<Text style={[item.status ? ( (item.remainingQuantity==item.quantity) ? styles.textvalid : styles.textinvalid) : styles.mytext]}>{item.status} QTY: {item.quantity}</Text></Text>
                         </Left>
+
                         <Right style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',
                         }}>
 
                     <Button style={styles.flex1} disabled={item.remainingQuantity==0} transparent onPress={() => this.decreaseValue( item, index )}>
-                    <Icon name="remove" />
+                    <Icon style={{fontSize:14}}  name="remove" />
                     </Button>
                             <Text style={styles.remainingQty}>{item.remainingQuantity}</Text>
                     <Button style={styles.flex1}  disabled={item.remainingQuantity==item.quantity} transparent onPress={() => this.increaseValue( item, index )}>
-                    <Icon name="add" />
+                    <Icon style={{fontSize:14}} name="add" />
                     </Button>
                         </Right>
                     </ListItem>
@@ -261,7 +273,7 @@ class PickupList extends Component{
         <Footer>
           <FooterTab>
             <Button onPress={() => this.markPickupdone()} active full>
-              <Text>Pickup Done</Text>
+              <Text>{this.state.mycounter}/{this.state.myItems.length} Pickup Done</Text>
             </Button>
           </FooterTab>
         </Footer>
@@ -294,13 +306,13 @@ const styles = StyleSheet.create({
 
     },
     mytext: {
-        fontWeight:'bold',marginTop:5, backgroundColor: 'white', borderRadius: 5,
+        color:"#000000",
     },
     textvalid: {
-         color:"#9b7fcc",
+         color:"#00ff00",
     },
     textinvalid: {
-        color:"#C00",
+        color:"#FF4500",
     },
     buttonBox:{
         borderWidth:1,

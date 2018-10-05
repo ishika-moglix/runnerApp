@@ -11,6 +11,7 @@ import Pdf from 'react-native-pdf';
 import { AsyncStorage } from "react-native";
 //import {TabTwo} from "../tab/tabTwo";
 import axios from "axios/index";
+import RNImageToPdf from "react-native-image-to-pdf";
 var ImagePicker = require('react-native-image-picker');
 var options = {
     title: 'Upload POD',
@@ -98,6 +99,15 @@ class Invoiceinfo extends Component {
             </View>
         )
     }
+    mergeImage(){
+        RNImageToPdf.createPDFbyImages({
+            imagePaths: this.state.myarr,
+            name: "PDF_Name"
+        }).then((pdf) => {
+            console.log("pdf ", pdf);
+            alert(pdf);
+        }).catch((err) => alert(err));
+    }
     renderPdf() {
       if(this.state.myItems){
       const source = {uri:'http://'+this.state.myItems,cache:true};
@@ -124,6 +134,12 @@ class Invoiceinfo extends Component {
                   isStatic: true,
                   uri: 'data:image/jpeg;base64,'+this.state.myImgaeBase,
               }} style={{width: 100, height: 100}} />
+              <Button full primary
+                      onPress={() => this.mergeImage()}
+                  // onPress={() => this.openPicker()}
+              >
+                  <Text style={{color: 'black'}}> Merge Images </Text>
+              </Button>
           </View>
       )
       }
@@ -142,7 +158,7 @@ class Invoiceinfo extends Component {
                         onPress={() => this.openPicker()}
                         // onPress={() => this.openPicker()}
                 >
-                    <Text style={{color: 'black'}}> Upload Pod </Text>
+                    <Text style={{color: 'black'}}> Upload Podo </Text>
                 </Button>
             </View>
         );

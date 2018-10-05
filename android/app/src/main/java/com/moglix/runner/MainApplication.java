@@ -3,6 +3,7 @@ package com.moglix.runner;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.anyline.RNImageToPDF.RNImageToPdfPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.imagepicker.ImagePickerPackage;
 import org.wonday.pdf.RCTPdfView;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNImageToPdfPackage(),
             new PickerPackage(),
             new ImagePickerPackage(),
             new RCTPdfView(),
