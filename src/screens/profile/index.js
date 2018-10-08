@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import {
-  Container, Header, Title, ListItem,
-  Content, Button, Icon, Text, Body, Left, Right} from "native-base";
+    Container, Header, Title, ListItem,
+    Content, Button, Icon, Text, Body, Left, Right, Toast
+} from "native-base";
 import { StyleSheet } from "react-native";
 import axios from "axios/index";
 import { AsyncStorage } from "react-native";
@@ -20,19 +21,37 @@ class Profile extends Component {
             const user = {};
             if(result){
                 this.state.AuthStr = 'Bearer '.concat(result);
-            }else {
-            this.state.AuthStr = 'Bearer '.concat('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I');
-            }
-            axios.post(global.url+`/api/auth/profile.json`,user, { headers: { 'Authorization': this.state.AuthStr } })
-                .then(res => {
-                    if(res.data.success && res.data.code==200){
-                        console.log("my po items are here");
-                        console.log(res.data.data);
-                        this.setState({ profileInfo: res.data.data });
-                    }else{
-                        alert(res.data.message);
-                    }
+                axios.post(global.url+`/api/auth/profile.json`,user, { headers: { 'Authorization': this.state.AuthStr } })
+                    .then(res => {
+                        if(res.data.success && res.data.code==200){
+                            console.log("my po items are here");
+                            console.log(res.data.data);
+                            this.setState({ profileInfo: res.data.data });
+                        }else if(res.data.code==401){
+                            this.setState({ isLoading: false });
+                            Toast.show({
+                                text: res.data.message,
+                                buttonText: "Okay",
+                                position: "top",
+                                type: "danger",
+                                duration: 3000
+                            });
+                            this.props.navigation.navigate('Home');
+                        }else{
+                            alert(res.data.message);
+                        }
+                    });
+            }else{
+                Toast.show({
+                    text: "no token Found ! Login Again",
+                    buttonText: "Okay",
+                    position: "top",
+                    type: "danger",
+                    duration: 3000
                 });
+                this.props.navigation.navigate('Home')
+            }
+
         });
 
     };

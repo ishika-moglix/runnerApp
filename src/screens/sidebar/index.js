@@ -25,14 +25,14 @@ const datas = [
     {
         name: "Delivery",
         route: "NHDelivery",
-        icon: "phone-portrait",
+        icon: "paper-plane",
           sidebar:true,
         bg: "#C5F442"
       },
     {
         name: "Profile",
         route: "NHProfile",
-        icon: "user",
+        icon: "flame",
         sidebar:false,
         bg: "#C5F442"
     }
@@ -222,7 +222,7 @@ class SideBar extends Component {
           <List style ={{ backgroundColor:"#f5f7f9"}}
             dataArray={datas}
             renderRow={data =>
-              <ListItem  
+              <ListItem
                 button
                 onPress={() => this.props.navigation.navigate(data.route,{'from':data.sidebar})}
               >

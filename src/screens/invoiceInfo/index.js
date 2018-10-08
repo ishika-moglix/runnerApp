@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {
-  Container,Fab,
-    IconNB, Header, Title, Content, Text, Button, Icon, Footer, FooterTab, Left, Right, Body
+    Container, Fab,
+    IconNB, Header, Title, Content, Text, Button, Icon, Footer, FooterTab, Left, Right, Body, Toast
 } from "native-base";
 //import Pdf from 'react-native-pdf';
 //import styles from "./styles";
@@ -45,8 +45,15 @@ class Invoiceinfo extends Component {
         AsyncStorage.getItem('token', (err, result) => {
             if (result) {
                 this.state.AuthStr = 'Bearer '.concat(result);
-            } else {
-                this.state.AuthStr = 'Bearer '.concat('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I');
+            } else{
+                Toast.show({
+                    text: "no token Found ! Login Again",
+                    buttonText: "Okay",
+                    position: "top",
+                    type: "danger",
+                    duration: 3000
+                });
+                this.props.navigation.navigate('Home')
             }
         });
     };
@@ -99,23 +106,18 @@ class Invoiceinfo extends Component {
             </View>
         )
     }
-    mergeImage(){
-        RNImageToPdf.createPDFbyImages({
-            imagePaths: this.state.myarr,
-            name: "PDF_Name"
-        }).then((pdf) => {
-            console.log("pdf ", pdf);
-            alert(pdf);
-        }).catch((err) => alert(err));
-    }
+    // mergeImage(){
+    //     RNImageToPdf.createPDFbyImages({
+    //         imagePaths: this.state.myarr,
+    //         name: "PDF_Name"
+    //     }).then((pdf) => {
+    //         console.log("pdf ", pdf);
+    //         alert(pdf);
+    //     }).catch((err) => alert(err));
+    // }
     renderPdf() {
       if(this.state.myItems){
       const source = {uri:'http://'+this.state.myItems,cache:true};
-      //const source = require('./test.pdf');  // ios only
-      //const source = {uri:'bundle-assets://test.pdf'};
-
-      //const source = {uri:'file:///sdcard/test.pdf'};
-      //const source = {uri:"data:application/pdf;base64,..."};
       return (
           <View style={styles.container2}>
               <Pdf
@@ -134,12 +136,6 @@ class Invoiceinfo extends Component {
                   isStatic: true,
                   uri: 'data:image/jpeg;base64,'+this.state.myImgaeBase,
               }} style={{width: 100, height: 100}} />
-              <Button full primary
-                      onPress={() => this.mergeImage()}
-                  // onPress={() => this.openPicker()}
-              >
-                  <Text style={{color: 'black'}}> Merge Images </Text>
-              </Button>
           </View>
       )
       }
@@ -158,21 +154,21 @@ class Invoiceinfo extends Component {
                         onPress={() => this.openPicker()}
                         // onPress={() => this.openPicker()}
                 >
-                    <Text style={{color: 'black'}}> Upload Podo </Text>
+                    <Text style={{color: 'black'}}> Upload Pod </Text>
                 </Button>
             </View>
         );
     }
-    openPicker2(){
-        console.log("open picker new");
-        ImagePicker.openPicker({
-            width: 300,
-            height: 400,
-            cropping: true
-        }).then(image => {
-            console.log(image);
-        });
-    }
+    // openPicker2(){
+    //     console.log("open picker new");
+    //     ImagePicker.openPicker({
+    //         width: 300,
+    //         height: 400,
+    //         cropping: true
+    //     }).then(image => {
+    //         console.log(image);
+    //     });
+    // }
     openPicker(){
         /**
          * The first arg is the options object for customization (it can also be null or omitted for default options),
@@ -197,11 +193,9 @@ class Invoiceinfo extends Component {
                // You can also display the image using data:
                 //let source = { uri: 'data:image/jpeg;base64,' + response.data };
                 let source = 'data:image/jpeg;base64,' + response.data;
-                this.setState({ myarr: this.state.myarr.concat(response.data) });
-                console.log(this.state.myarr);
-                //this.state.myImgaeBase= response.data;
+                this.state.myImgaeBase= response.data;
                 this.forceUpdate();
-               // this.storePicture(response);
+                this.storePicture(response);
             }
         });
     }
@@ -244,73 +238,6 @@ class Invoiceinfo extends Component {
         console.log(file);
         if (file) {
             this.setState({ isLoading: true });
-            // Create the form data object
-            // let filename = file.uri
-            // let fileUrl = (!filename.match(/^file:/) ? 'file://' : '') + filename
-            // console.log("fileurl ="+fileUrl);
-            // console.log("filename ="+filename);
-            // console.log("name= "+fileUrl.split(/[\\/]/).pop());
-            // GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest
-            // global.FormData = global.originalFormData
-//            console.log("type =" + mime.lookup(fileUrl));
-//             var photo = {
-//                 // uri: 'file://'+file.path,
-//                 uri: file.path,
-//                 type: file.type,
-//                 name: file.fileName,
-//             };
-//             console.log(photo);
-            // const testbody = new FormData();
-            // testbody.append('fileToUpload', photo);
-            // console.log(testbody);
-            // var xhr = new XMLHttpRequest();
-            // xhr.open('POST', `http://emsqa.moglilabs.com/api/runner/uplodaDemoFile.json`);
-            // xhr.send(testbody);
-
-            // const formdata = new FormData();
-            // formdata.append('fileToUpload', photo);
-            // console.log("formdata is here");
-            // console.log(formdata);
-            // this.mytest=formdata;
-            // let options1: FileUploadOptions = {
-            //     fileKey: "upload_data",
-            //     fileName: filename,
-            //     chunkedMode: false,
-            //     mimeType: "multipart/form-data",
-            //     params: {'supplier_id': param1, 'doc_name': "pan_card"}
-            // };
-            // formdata.append('packetId', '58984')
-            // formdata.append('podDate', '2018-08-22')
-            // Create the config object for the POST
-            // You typically have an OAuth2 token that you use for authentication
-            // const AuthStr = 'Bearer '.concat('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I');
-            // const config = {
-            //     method: 'POST',
-            //
-            //     headers: {
-            //         'Accept': 'application/json',
-            //         'Content-Type': 'multipart/form-data;',
-            //         // 'Authorization': 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I'
-            //     },
-            //     // mimeType: "multipart/form-data",
-            //     // data: this.mytest,
-            //     body: formdata
-            // };
-            /*axios.post(`http://emsqa.moglilabs.com/api/runner/uplodaDemoFile.json`, config)
-                .then(res => {
-
-                    console.log(JSON.stringify(res));
-                });
-            fetch('http://emsqa.moglilabs.com/api/runner/uplodaDemoFile.json', config)
-                .then(responseData => {
-                    // Log the response form the server
-                    // Here we get what we sent to Postman back
-                    console.log(responseData);
-                })
-                .catch(err => {
-                    console.log("error log is here"+err);
-                });*/
-
             const parts = file.path.split('/');
             const data = new FormData();
             data.append('fileToUpload', {

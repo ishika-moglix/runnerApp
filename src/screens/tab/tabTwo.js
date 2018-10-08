@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import {
-    Container,Header,Body,
-    Content,Icon,Title,
-    Button,Right,
-    Item,Left,
+    Container, Header, Body,
+    Content, Icon, Title,
+    Button, Right,
+    Item, Left,
     Input,
     Form,
-    Text
+    Text, Toast
 } from "native-base";
 
 import styles from "../form/styles";
@@ -48,23 +48,41 @@ export default class TabTwo extends Component {
             };
             if(result){
                 this.state.myToken = 'Bearer '.concat(result);
-            }else {
-                this.state.myToken = 'Bearer '.concat('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I');
-            }
-            axios.post(global.url+`/api/runner/invoiceDetail.json`, user,{ headers: { 'Authorization': this.state.myToken } })
-                .then(res => {
-                    this.setState({ isLoading: false });
-                    if(res.data.success && res.data.code==200){
-                        console.log("my po items are here");
-                        console.log(res.data.data.invoice.invoiceUrl);
-                        //this.setState({ myItems: res.data.data.poItems });
-                        this.state.myItems=res.data.data.invoice;
-                        this.props.navigation.navigate('Invoiceinfo', { invoice: this.state.myItems });
-                    }else{
-                        alert(res.data.message);
-                    }
+                axios.post(global.url+`/api/runner/invoiceDetail.json`, user,{ headers: { 'Authorization': this.state.myToken } })
+                    .then(res => {
+                        this.setState({ isLoading: false });
+                        if(res.data.success && res.data.code==200){
+                            console.log("my po items are here");
+                            console.log(res.data.data.invoice.invoiceUrl);
+                            //this.setState({ myItems: res.data.data.poItems });
+                            this.state.myItems=res.data.data.invoice;
+                            this.props.navigation.navigate('Invoiceinfo', { invoice: this.state.myItems });
+                        }else if(res.data.code==401){
+                            this.setState({ isLoading: false });
+                            Toast.show({
+                                text: res.data.message,
+                                buttonText: "Okay",
+                                position: "top",
+                                type: "danger",
+                                duration: 3000
+                            });
+                            this.props.navigation.navigate('Home');
+                        }else{
+                            alert(res.data.message);
+                        }
+                    });
+                console.log(this.state.myItems);
+            }else{
+                Toast.show({
+                    text: "no token Found ! Login Again",
+                    buttonText: "Okay",
+                    position: "top",
+                    type: "danger",
+                    duration: 3000
                 });
-            console.log(this.state.myItems);
+                this.props.navigation.navigate('Home')
+            }
+
         });
 
     };

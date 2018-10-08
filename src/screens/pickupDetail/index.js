@@ -33,9 +33,9 @@ class PickupList extends Component{
             myPONumber: state.params.poNumber,
             checkbox1: false,
             myItems:[],
+            mycounter:0,
             data: [],
             error: null,
-            mycounter:0,
             myToken:'',
             isLoading: false,
             UserAuth:string='',
@@ -95,7 +95,8 @@ class PickupList extends Component{
     };
     toggleSwitch1(indexNo) {
         console.log(indexNo);
-        this.state.mycounter=0;
+       // this.state.mycounter=0;
+        var count=0;
         for(var t=0;t<this.state.myItems.length;t++){
             console.log(this.state.myItems[t]);
             console.log(t);
@@ -107,12 +108,9 @@ class PickupList extends Component{
                 newState.myItems[t].status = !this.state.myItems[t].status;
                 this.setState(newState);
             }
-            console.log("updated items are here ");
-            console.log(this.state.myItems);
-            if(this.state.myItems[t].status && this.state.myItems[t].status==true){
-                this.state.mycounter=this.state.mycounter+1;
-            }
-
+            this.setState({
+                mycounter:this.state.myItems.filter(props => props.status).length
+            });
         }
 
     }
@@ -135,10 +133,13 @@ class PickupList extends Component{
         console.log(this.state.myItems.length);
         for(var t=0;t<this.state.myItems.length;t++){
             console.log(this.state.myItems[t].productId);
-            pickupArray.push({
-                "id": this.state.myItems[t].id,
-                "quantity": this.state.myItems[t].remainingQuantity
-            })
+            if(this.state.myItems[t].status){
+                pickupArray.push({
+                    "id": this.state.myItems[t].id,
+                    "quantity": this.state.myItems[t].remainingQuantity
+                })
+            }
+            console.log(pickupArray);
         }
         axios.post(global.url+`/api/runner/markPickupDone.json`,{
             "pickupItems": pickupArray
@@ -175,29 +176,19 @@ class PickupList extends Component{
             });
     }
 
-    searchFilterFunction = text => {
-        debugger;
-        console.log(text);
-        let trucks=this.state.myItems;
-        let newData = trucks.filter((truck) => {
-            debugger;
-            console.log(truck);
-            console.log(truck.name);
-            console.log(truck.name.title);
-            console.log(truck.name.title.toLowerCase());
-            console.log(text);
-            const itemData = truck.name.title.toString().toUpperCase();
-            console.log(itemData);
-            console.log(text.toString().toLowerCase());
-            console.log(text.toString().toLowerCase());
-
-            const textData = text.toString().toUpperCase();
-                console.log(textData);
-                alert(itemData.indexOf(textData));
-            return itemData.indexOf(textData) > -1;
-        });
-        this.setState({ myItems: newData });
-    };
+    // searchFilterFunction = text => {
+    //     debugger;
+    //     console.log(text);
+    //     let trucks=this.state.myItems;
+    //     let newData = trucks.filter((truck) => {
+    //         const itemData = truck.name.title.toString().toUpperCase();
+    //         const textData = text.toString().toUpperCase();
+    //             console.log(textData);
+    //             alert(itemData.indexOf(textData));
+    //         return itemData.indexOf(textData) > -1;
+    //     });
+    //     this.setState({ myItems: newData });
+    // };
 
   render() {
       const { isLoading} = this.state;
@@ -218,16 +209,6 @@ class PickupList extends Component{
               <Body>
               <Title>No-{this.state.myPONumber}</Title>
               </Body>
-              <Right>
-
-                  <Item>
-                      <Icon active name="search" />
-                      <Input placeholder="Search" />
-                  </Item>
-                  <Button onPress={this.filterList} transparent>
-                      <Text>Search</Text>
-                  </Button>
-              </Right>
           </Header>
 
         <Content>
@@ -244,23 +225,23 @@ class PickupList extends Component{
                 data={this.state.myItems}
                 showsVerticalScrollIndicator={false}
                 renderItem={({item,index}) =>
-                    <ListItem  style={styles.top}  onPress={() => this.toggleSwitch1(index)}>
-                        <CheckBox style = {{borderRadius:100 ,marginTop:5}}
+                    <ListItem  style={styles.top} >
+                        <CheckBox onPress={() => this.toggleSwitch1(index)} style = {{borderRadius:100 ,marginTop:6,marginLeft:-25}}
                                   checked={(item.status)}
                         />
                         <Left style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',marginLeft:8,
                         }}>
-                            <Text style={{fontSize:14}}>{item.productName}{"\n"}<Text style={[item.status ? ( (item.remainingQuantity==item.quantity) ? styles.textvalid : styles.textinvalid) : styles.mytext]}>{item.status} QTY: {item.quantity}</Text></Text>
+                            <Text onPress={() => this.toggleSwitch1(index)} style={{fontSize:14}}>{item.productName}{"\n"}<Text style={[item.status ? ( (item.remainingQuantity==item.quantity) ? styles.textvalid : styles.textinvalid) : styles.mytext]}>{item.status} QTY: {item.quantity}</Text></Text>
                         </Left>
 
                         <Right style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',
                         }}>
 
-                    <Button style={styles.flex1} disabled={item.remainingQuantity==0} transparent onPress={() => this.decreaseValue( item, index )}>
+                    <Button style={styles.flex1} disabled={item.remainingQuantity==1} transparent onPress={() => this.decreaseValue( item, index )}>
                     <Icon style={{fontSize:14}}  name="remove" />
                     </Button>
                             <Text style={styles.remainingQty}>{item.remainingQuantity}</Text>
-                    <Button style={styles.flex1}  disabled={item.remainingQuantity==item.quantity} transparent onPress={() => this.increaseValue( item, index )}>
+                    <Button style={styles.flex1} disabled={item.remainingQuantity==item.quantity} transparent onPress={(e) => this.increaseValue( item, index )}>
                     <Icon style={{fontSize:14}} name="add" />
                     </Button>
                         </Right>
@@ -270,12 +251,17 @@ class PickupList extends Component{
             />
         </Content>
 
-        <Footer>
-          <FooterTab>
-            <Button onPress={() => this.markPickupdone()} active full>
-              <Text>{this.state.mycounter}/{this.state.myItems.length} Pickup Done</Text>
-            </Button>
-          </FooterTab>
+        <Footer style={{backgroundColor:"white"}}>
+              <View style={styles.container2}>
+                  <View style={styles.textContainer}>
+                      <Text>{this.state.mycounter}/{this.state.myItems.length} Items</Text>
+                  </View>
+                  <View style={styles.buttonContainer}>
+                      <Button onPress={() => this.markPickupdone()}>
+                          <Text> Pickup Done</Text>
+                      </Button>
+                  </View>
+              </View>
         </Footer>
       </Container>
     );
@@ -288,6 +274,24 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.4,
         shadowOffset: { height: -5, width:-5},
         shadowRadius: 10,
+    },
+    textContainer:{
+      paddingLeft:25,
+      flex:1
+    },
+    container2: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    buttonContainer: {
+        flex: 1,
+        justifyContent:"flex-end",
+        marginRight:-50
+
+
+
     },
     indicator: {
         flex: 1,
