@@ -79,7 +79,6 @@ class Verify extends Component {
                 { this.renderHeader() }
                 { this.renderImage() }
                 { this.renderForm() }
-                { this.renderFooter() }
             </Container>
         );
     }
@@ -105,9 +104,8 @@ class Verify extends Component {
     renderImage(){
         return (
             <View style={styles.loginImageSection}>
-                <Image style={styles.loginImage}
-                       source={require('../../../assets/moglixRunner.png')}
-                       style={styles.images}
+                <Image style ={{width:120,height:100,textAlign:"center"}}
+                       source={require('../../../assets/moglixRunner.png')} resizeMode="contain"
                 />
             </View>
         );
@@ -152,11 +150,15 @@ const styles = StyleSheet.create({
     },
     loginImageSection: {
         alignSelf: "center",
-        height: 100,
-        marginTop: 15,
+        height: 80,
+        marginTop:35,
+        marginBottom:20,
+        textAlign:"center"
     },
     loginImage:{
-        width: 150, height: 150
+        width: 60,
+        height: 50,
+
     },
     footerStyle: {
         margin: 10,
@@ -165,7 +167,7 @@ const styles = StyleSheet.create({
     },
     image: {
         width: '100%',
-        height: '50%',
+        height: '80%',
         justifyContent: 'center',
         alignItems: 'center',
     }

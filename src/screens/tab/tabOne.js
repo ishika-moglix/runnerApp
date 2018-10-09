@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import {Header,Container, Content,Icon,Title, Button,Right,Item,Body, Input, Form,Left, Text} from "native-base";
-import {View} from "react-native";
-import styles from "../form/styles";
+import {Header,Container, Content,Icon,Title,  Button,Right,Item,Body, Input, Form,Left, Text} from "native-base";
+import {StyleSheet,View} from "react-native";
+import Home from "../home";
+
 
 //import PickupList from "../pickupDetail";
 //import TabThree from "./tabThree";
@@ -49,14 +50,14 @@ export default class TabOne extends Component {
   render() {
         if(this.state.showHeader){
             return (
-                <Container style={styles.container}>
+                <Container >
                     { this.renderHeader()}
                     { this.renderForm() }
                 </Container>
             );
         }else{
             return (
-                <Container style={styles.container}>
+                <Container>
                     { this.renderForm() }
                 </Container>
             );
@@ -97,3 +98,10 @@ export default class TabOne extends Component {
       )
   }
 }
+const styles = StyleSheet.create({
+    container: {
+        shadowColor: '#000000',
+        shadowOpacity: 0.4,
+        shadowOffset: { height: -5, width:-5},
+        shadowRadius: 10,
+    }});

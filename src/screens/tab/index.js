@@ -19,14 +19,6 @@ const datas = [
   {
     route: "BasicTab",
     text: "Basic Tabs"
-  },
-  {
-    route: "ConfigTab",
-    text: "Advanced Tabs"
-  },
-  {
-    route: "ScrollableTab",
-    text: "Scrollable Tabs"
   }
 ];
 

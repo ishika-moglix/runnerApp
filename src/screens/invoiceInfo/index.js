@@ -62,7 +62,7 @@ class Invoiceinfo extends Component {
             <View >
                 <Header style={{ backgroundColor : '#da4439'}}>
                     <Left>
-                        <Button transparent onPress={() => this.props.navigation.goBack()}>
+                        <Button  transparent onPress={() => this.props.navigation.goBack()}>
                             <Icon name="arrow-back" />
                         </Button>
                     </Left>

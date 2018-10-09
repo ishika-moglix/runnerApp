@@ -8,11 +8,15 @@ import {
 } from "native-base";
 import Container from "./Container";
 import axios from 'axios';
-import { AsyncStorage,ActivityIndicator } from "react-native";
+import { AsyncStorage,Dimensions,ActivityIndicator } from "react-native";
 //import styles from "./styles";
 
 const launchscreenBg = require("../../../assets/launchscreen-bg.png");
 const launchscreenLogo = require("../../../assets/logo-kitchen-sink.png");
+const imageHeight = Math.round(Dimensions.width * 9 / 16);
+const imageWidth = Dimensions.width;
+
+
 class Home extends Component {
     constructor(props) {
         console.log(global.foo);
@@ -109,7 +113,7 @@ class Home extends Component {
                         size="large"
                     />
                 )}
-                { this.renderFooter() }
+
             </Container>
         );
     }
@@ -131,9 +135,8 @@ class Home extends Component {
     renderImage(){
         return (
             <View style={styles.loginImageSection}>
-                <Image style={styles.loginImage}
-                    source={require('../../../assets/moglixRunner.png')}
-                    style={styles.images}
+                <Image style ={{width:120,height:100,textAlign:"center"}}
+                    source={require('../../../assets/moglixRunner.png')} resizeMode="contain"
                 />
             </View>
         );
@@ -149,10 +152,10 @@ class Home extends Component {
                     <Text>+91</Text><Input type="number" value={this.state.myNumber} onChangeText={(text)=> this.onChanged(text)} keyboardType='numeric' placeholder='' maxLength={10} minLength={9} />
                 </Item>
                 <View style={{margin:12}} />
-                <Button block success
+                <Button full  success
                         type="button"
                         disabled={this.state.isDisabled}
-                    style={{marginTop: 15, alignSelf: "center" }}
+                    style={{marginTop: 15, alignSelf: "center",flex:1,width:'100%' }}
                     onPress={() => this.loginSubmit()}
                 >
                     <Text>Login</Text>
@@ -179,11 +182,15 @@ const styles = StyleSheet.create({
     },
     loginImageSection: {
         alignSelf: "center",
-        height: 100,
-        marginTop: 15,
+        height: 80,
+        marginTop:35,
+        marginBottom:20,
+        textAlign:"center"
     },
     loginImage:{
-        width: 150, height: 150
+        width: 60,
+        height: 50,
+
     },
     footerStyle: {
         margin: 10,

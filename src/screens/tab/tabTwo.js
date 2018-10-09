@@ -8,10 +8,8 @@ import {
     Form,
     Text, Toast
 } from "native-base";
-
-import styles from "../form/styles";
 import axios from "axios/index";
-import { AsyncStorage,View,ActivityIndicator } from "react-native";
+import { AsyncStorage,StyleSheet,View,ActivityIndicator } from "react-native";
 
 export default class TabTwo extends Component {
     constructor(props) {
@@ -171,3 +169,11 @@ export default class TabTwo extends Component {
         )
     }
 }
+const styles = StyleSheet.create({
+    container: {
+        shadowColor: '#000000',
+        shadowOpacity: 0.4,
+        shadowOffset: {height: -5, width: -5},
+        shadowRadius: 10,
+    }
+} );
