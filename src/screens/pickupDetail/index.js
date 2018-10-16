@@ -18,15 +18,11 @@ import {
     List, ListItem,
     Body,
 } from "native-base";
-import { AsyncStorage,FlatList,ButtonBox,View,StyleSheet,ActivityIndicator } from "react-native";
+import { AsyncStorage,FlatList,ButtonBox,View,StyleSheet,ActivityIndicator,TextInput } from "react-native";
 import axios from "axios/index";
-//import styles from "./styles";
-
 
 class PickupList extends Component{
     constructor(props) {
-        //finalArray:[];
-        //let count=0;
         super(props);
         const {state} = props.navigation;
         this.state = {
@@ -34,6 +30,7 @@ class PickupList extends Component{
             checkbox1: false,
             myItems:[],
             mycounter:0,
+            testValue:'4',
             data: [],
             error: null,
             myToken:'',
@@ -41,7 +38,6 @@ class PickupList extends Component{
             UserAuth:string='',
             showToast: false
         };
-        console.log("PROPS " + state.params.poNumber);
         AsyncStorage.getItem('token', (err, result) => {
             this.state.myToken=result;
             const user = {
@@ -53,9 +49,6 @@ class PickupList extends Component{
                 .then(res => {
                     if(res.data.code==200){
                         if(res.data.success){
-                            console.log("my po items are here");
-                            console.log(res.data.data.poItems);
-                            //this.setState({ myItems: res.data.data.poItems });
                             this.state.myItems=res.data.data.poItems;
                             console.log(this.state.myItems);
                             this.setState({ isLoading: false });
@@ -126,14 +119,52 @@ class PickupList extends Component{
         ++targetPost.remainingQuantity;
         this.setState({ myItems });
     }
+    testPickup(text,index){
+        console.log(text);
+        let newText = text;
+        // let numbers = '0123456789';
+        // var i ;
+        // for (i=0; i < text.length; i++) {
+        //     if(numbers.indexOf(text[i]) > -1 ) {
+        //         newText = newText + text[i];
+        //     }
+        //     else {
+        //         // your call back function
+        //         Toast.show({
+        //             text: "only number required !",
+        //             buttonText: "Okay",
+        //             position: "top",
+        //             type: "warning",
+        //             duration: 3000
+        //         });
+        //     }
+        // };
+        if(newText <= this.state.myItems[index].quantity){
+                    let { myItems } = this.state;
+                    let targetPost = myItems[index];
+                    targetPost.remainingQuantity=newText;
+                    this.setState({ myItems });
+        }else{
+                Toast.show({
+                    text: "Selected Qty can not be more than ordered",
+                    buttonText: "Okay",
+                    position: "top",
+                    type: "warning",
+                    duration: 3000
+                });
+                    let { myItems } = this.state;
+                    let targetPost = myItems[index];
+                    targetPost.remainingQuantity=targetPost.quantity;
+                    this.setState({ myItems });
+        }
+    }
     markPickupdone(){
         let pickupArray=[];
         console.log("mark pickup done clicked");
         console.log(this.state.myItems);
         console.log(this.state.myItems.length);
         for(var t=0;t<this.state.myItems.length;t++){
-            console.log(this.state.myItems[t].productId);
-            if(this.state.myItems[t].status){
+            if(this.state.myItems[t].status && this.state.myItems[t].remainingQuantity!="" && this.state.myItems[t].remainingQuantity!="0"){
                 pickupArray.push({
                     "id": this.state.myItems[t].id,
                     "quantity": this.state.myItems[t].remainingQuantity
@@ -175,20 +206,9 @@ class PickupList extends Component{
                 }
             });
     }
-
-    // searchFilterFunction = text => {
-    //     debugger;
-    //     console.log(text);
-    //     let trucks=this.state.myItems;
-    //     let newData = trucks.filter((truck) => {
-    //         const itemData = truck.name.title.toString().toUpperCase();
-    //         const textData = text.toString().toUpperCase();
-    //             console.log(textData);
-    //             alert(itemData.indexOf(textData));
-    //         return itemData.indexOf(textData) > -1;
-    //     });
-    //     this.setState({ myItems: newData });
-    // };
+    myalert(val){
+        console.log(val);
+    }
 
   render() {
       const { isLoading} = this.state;
@@ -240,7 +260,8 @@ class PickupList extends Component{
                     <Button style={styles.flex1} disabled={item.remainingQuantity==1} transparent onPress={() => this.decreaseValue( item, index )}>
                     <Icon style={{fontSize:14}}  name="remove" />
                     </Button>
-                            <Text style={styles.remainingQty}>{item.remainingQuantity}</Text>
+                            <TextInput keyboardType='numeric' onChangeText={(text)=> this.testPickup(text,index)} style={styles.remainingQty} value={item.remainingQuantity.toString()} />
+
                     <Button style={styles.flex1} disabled={item.remainingQuantity==item.quantity} transparent onPress={(e) => this.increaseValue( item, index )}>
                     <Icon style={{fontSize:14}} name="add" />
                     </Button>

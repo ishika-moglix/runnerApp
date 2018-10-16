@@ -35,5 +35,12 @@ export default {
     fontWeight: "400",
     textAlign: "center",
     marginTop: Platform.OS === "android" ? -3 : undefined
-  }
+  },
+    loginImageSection: {
+        marginTop:20,
+        marginBotttom:30,
+        textAlign:"center",
+        marginLeft:15
+
+    },
 };

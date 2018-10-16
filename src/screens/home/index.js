@@ -8,7 +8,7 @@ import {
 } from "native-base";
 import Container from "./Container";
 import axios from 'axios';
-import { AsyncStorage,Dimensions,ActivityIndicator } from "react-native";
+import { AsyncStorage,Dimensions,ActivityIndicator,NetInfo } from "react-native";
 //import styles from "./styles";
 
 const launchscreenBg = require("../../../assets/launchscreen-bg.png");
@@ -19,10 +19,13 @@ const imageWidth = Dimensions.width;
 
 class Home extends Component {
     constructor(props) {
-        console.log(global.foo);
-       // AsyncStorage.clear();
-       // console.log(AsyncStorage.getItem('token'));
         super(props);
+        NetInfo.getConnectionInfo().then((connectionInfo) => {
+            console.log(connectionInfo.type);
+            if(connectionInfo.type=='none'){
+                alert("Please check your internet connection before process");
+            }
+        });
         this.state = {
             myNumber: '',
             isDisabled: true,

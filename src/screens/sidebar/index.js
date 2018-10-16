@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image,Keyboard,AsyncStorage} from "react-native";
+import { Image,Keyboard,AsyncStorage,View} from "react-native";
 import {
   Content,Footer, Text,Title, List, ListItem,
   Icon, Container,Button, Left, Right, Badge} from "native-base";
@@ -216,9 +216,10 @@ class SideBar extends Component {
           bounces={false}
           style={{ flex: 1, backgroundColor: "#fff", top: -1 ,zIndex:-1 ,}}
         >
-          <Image source={drawerCover} style={{width:"80%",height:30,maxHeight:100,marginLeft:20,marginTop:30 ,marginBottom:40 ,}} />
+            <View style={styles.loginImageSection}>
+          <Image resizeMode="contain" source={drawerCover} style={{width:"80%",height:50,textAlign:"center"}} />
           {/*<Image square style={styles.drawerImage} source={drawerImage} />*/}
-
+            </View>
           <List style ={{ backgroundColor:"#f5f7f9"}}
             dataArray={datas}
             renderRow={data =>
