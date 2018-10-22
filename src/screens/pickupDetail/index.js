@@ -10,6 +10,8 @@ import {
     Icon,
     Item,
     Input,
+    Card,
+    CardItem,
     CheckBox,
     Footer,
     FooterTab,
@@ -29,6 +31,7 @@ class PickupList extends Component{
             myPONumber: state.params.poNumber,
             checkbox1: false,
             myItems:[],
+            showAdd:false,
             mycounter:0,
             testValue:'4',
             data: [],
@@ -209,9 +212,15 @@ class PickupList extends Component{
     myalert(val){
         console.log(val);
     }
+    displayAdd(){
+        console.log("add address");
+        console.log(this.state.showAdd);
+        this.setState({ showAdd: !this.state.showAdd });
+    }
 
   render() {
       const { isLoading} = this.state;
+      const { showAdd} = this.state;
       var items=[];
       console.log("list is here");
       if(this.state.myItems){
@@ -240,6 +249,59 @@ class PickupList extends Component{
             />
             )}
             <List items={this.state.items}/>
+            <View>
+                <Left>
+                <Text> Address</Text>
+                </Left>
+                <Right>
+                <Button onPress={() => this.displayAdd()}>
+                    {showAdd && (
+                    <Text> Hide</Text>
+                    )}
+                    {!showAdd && (
+                        <Text> Show</Text>
+                    )}
+                </Button>
+                </Right>
+            </View>
+            {showAdd && (
+                <View>
+                    <Card>
+                        <CardItem header>
+                            <Text>From</Text>
+                        </CardItem>
+                        <CardItem>
+                            <Body>
+                            <Text>Company : Moglix</Text>
+                            <Text>Address : 327C,Sector 10</Text>
+                            <Text>City : Faridabad</Text>
+                            <Text>State : Haryana</Text>
+                            <Text>Phone : -</Text>
+                            <Text>Tin : -</Text>
+                            <Text>GSTIN : 06AAJCM7312H1ZI</Text>
+                            <Text>State Code : 06AAJCM7312H1ZI</Text>
+                            </Body>
+                        </CardItem>
+                    </Card>
+                    <Card>
+                        <CardItem header>
+                            <Text>To</Text>
+                        </CardItem>
+                        <CardItem>
+                            <Body>
+                            <Text>Company : ECS Corp</Text>
+                            <Text>Address : B31,Ansal Plaza</Text>
+                            <Text>City : Faridabad</Text>
+                            <Text>Email : abc@xyz.com</Text>
+                            <Text>Phone : -</Text>
+                            <Text>Tin : -</Text>
+                            <Text>GSTIN : 06AAJCM7312H1ZI</Text>
+                            <Text>State Code : 6</Text>
+                            </Body>
+                        </CardItem>
+                    </Card>
+                </View>
+            )}
             <FlatList
                 extraData={this.state}
                 data={this.state.myItems}
