@@ -29,8 +29,8 @@ class BasicTab extends Component {
       //console.log(AsyncStorage.getItem('token'));
     return (
       <Container>
-        <Header style={{ backgroundColor: '#da4439' }}
-                androidStatusBarColor="#da4439" hasTabs>
+        <Header style={{ backgroundColor: '#D9232D' }}
+                androidStatusBarColor="#D9232D" hasTabs>
             <Left>
             <Button
                 transparent
@@ -45,13 +45,13 @@ class BasicTab extends Component {
           <Right />
         </Header>
 
-        <Tabs tabBarUnderlineStyle={{borderBottomWidth:2}}>
-          <Tab tabStyle={{ backgroundColor: '#da4439' }}
-               androidStatusBarColor="#da4439" activeTabStyle={{backgroundColor: 'red'}}  textStyle={{color: '#fff'}} heading="Pickup">
+        <Tabs tabBarSelectedItemStyle={{borderBottomWidth:1}}>
+          <Tab tabStyle={{ backgroundColor: '#D9232D' }}
+               androidStatusBarColor="#D9232D" activeTabStyle={{backgroundColor: '#D9232D',color:'#fff'}}  textStyle={{color: '#dddddd'}} heading="Pickup">
             <TabOne navigation={this.props.navigation} />
           </Tab>
-          <Tab tabStyle={{ backgroundColor: '#da4439' }}
-               androidStatusBarColor="#da4439" textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: 'red'}}  heading="Delivery">
+          <Tab tabStyle={{ backgroundColor: '#D9232D' }}
+               androidStatusBarColor="#D9232D" textStyle={{color: '#dddddd'}} activeTabStyle={{backgroundColor: '#D9232D' ,color: '#fff',}}  heading="Delivery">
             <TabTwo navigation={this.props.navigation} />
           </Tab>
           {/*<Tab heading="Tab3">*/}

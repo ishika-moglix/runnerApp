@@ -50,23 +50,22 @@ export default class TabOne extends Component {
   render() {
         if(this.state.showHeader){
             return (
-                <Container >
+                <Container>
                     { this.renderHeader()}
                     { this.renderForm() }
                 </Container>
             );
         }else{
             return (
-                <Container>
-                    { this.renderForm() }
+                <Container style ={{backgroundColor:'#f2f2f2'}}>
+                    { this.renderForm()}
                 </Container>
             );
         }
-
-  }
+    }
     renderHeader() {
         return (
-            <View >
+            <View>
                 <Header style={{ backgroundColor : '#da4439'}}>
                     <Left>
                         <Button
@@ -85,18 +84,19 @@ export default class TabOne extends Component {
     }
   renderForm(){
       return (
-      <Content style={{ margin: 10, marginTop: 100 }}>
-          <Form >
-              <Item last>
-                  <Input keyboardType='numeric' value={this.state.mypoNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="PO Number" />
-              </Item>
+      <Content style={{ margin: 10, marginTop: 100}}>
+          <Form>
+              <View style={{borderColor:'#e0e0e',borderRadius:4,borderWidth:1,borderColor: '#d6d7da',
+                  marginLeft:15,marginRight:15,shadowColor:'rgba(0, 0, 0, 0.05)',shadowOffset: { height: 3, width:0}}}>
+                  <Input style={{textAlign:'center',backgroundColor:'#fff'}} keyboardType='numeric' value={this.state.mypoNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="PO Number" />
+              </View>
           </Form>
-          <Button block disabled={this.state.isDisabled} onPress={() => this.tab1click()} style={{ margin: 15, marginTop: 50 }}>
+          <Button block disabled={this.state.isDisabled} onPress={() => this.tab1click()} style={{  margin:15,marginTop: 20,paddingTop:5,paddingBottom:5 }}>
               <Text>Search PO</Text>
           </Button>
       </Content>
       )
-  }
+   }
 }
 const styles = StyleSheet.create({
     container: {
@@ -104,4 +104,5 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.4,
         shadowOffset: { height: -5, width:-5},
         shadowRadius: 10,
+
     }});

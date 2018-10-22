@@ -158,11 +158,12 @@ export default class TabTwo extends Component {
         return (
             <Content style={{ margin: 10, marginTop: 100 }}>
                 <Form >
-                    <Item last>
-                        <Input keyboardType='numeric' value={this.state.invoiceNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="Invoice Number"  />
-                    </Item>
+                    <View style={{borderColor:'#e0e0e',borderRadius:4,borderWidth:1,borderColor: '#d6d7da',
+                        marginLeft:15,marginRight:15}}>
+                        <Input  style={{textAlign:'center',backgroundColor:'#fff'}} keyboardType='numeric' value={this.state.invoiceNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="Invoice Number"  />
+                    </View>
                 </Form>
-                <Button block disabled={this.state.isDisabled || isLoading} onPress={() => this.tab2click()} style={{ margin: 15, marginTop: 50 }}>
+                <Button block disabled={this.state.isDisabled || isLoading} onPress={() => this.tab2click()} style={{ margin: 15, marginTop: 20 }}>
                     <Text>Search Invoice</Text>
                 </Button>
             </Content>
@@ -175,5 +176,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.4,
         shadowOffset: {height: -5, width: -5},
         shadowRadius: 10,
+        backgroundColor:'#f2f2f2'
     }
 } );

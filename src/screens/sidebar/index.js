@@ -220,7 +220,7 @@ class SideBar extends Component {
           <Image resizeMode="contain" source={drawerCover} style={{width:"80%",height:50,textAlign:"center"}} />
           {/*<Image square style={styles.drawerImage} source={drawerImage} />*/}
             </View>
-          <List style ={{ backgroundColor:"#f5f7f9"}}
+          <List style ={{ backgroundColor:"#fff"}}
             dataArray={datas}
             renderRow={data =>
               <ListItem
@@ -237,21 +237,21 @@ class SideBar extends Component {
                     {data.name}
                   </Text>
                 </Left>
-                {data.types &&
-                  <Right style={{ flex: 1 }}>
-                    <Badge
-                      style={{
-                        borderRadius: 3,
-                        height: 25,
-                        width: 72,
-                        backgroundColor: data.bg
-                      }}
-                    >
-                      <Text
-                        style={styles.badgeText}
-                      >{`${data.types} Types`}</Text>
-                    </Badge>
-                  </Right>}
+                {/*{data.types &&*/}
+                  {/*<Right style={{ flex: 1 }}>*/}
+                    {/*<Badge*/}
+                      {/*style={{*/}
+                        {/*borderRadius: 3,*/}
+                        {/*height: 25,*/}
+                        {/*width: 72,*/}
+                        {/*backgroundColor: data.bg*/}
+                      {/*}}*/}
+                    {/*>*/}
+                      {/*<Text*/}
+                        {/*style={styles.badgeText}*/}
+                      {/*>{`${data.types} Types`}</Text>*/}
+                    {/*</Badge>*/}
+                  {/*</Right>}*/}
               </ListItem>}
           />
         </Content>

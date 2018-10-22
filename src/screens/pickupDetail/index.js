@@ -249,21 +249,21 @@ class PickupList extends Component{
                         <CheckBox onPress={() => this.toggleSwitch1(index)} style = {{borderRadius:100 ,marginTop:6,marginLeft:-25}}
                                   checked={(item.status)}
                         />
-                        <Left style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',marginLeft:8,
+                        <Left style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',marginLeft:10
                         }}>
-                            <Text onPress={() => this.toggleSwitch1(index)} style={{fontSize:14}}>{item.productName}{"\n"}<Text style={[item.status ? ( (item.remainingQuantity==item.quantity) ? styles.textvalid : styles.textinvalid) : styles.mytext]}>{item.status} QTY: {item.quantity}</Text></Text>
+                            <Text onPress={() => this.toggleSwitch1(index)} style={{fontSize:14}}>{item.productName}{"\n"}<Text style={[item.status ? ( (item.remainingQuantity==item.quantity) ? styles.textvalid : styles.textinvalid) : styles.mytext]}>{item.status} QTY : {item.quantity}</Text></Text>
                         </Left>
 
                         <Right style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',
                         }}>
 
                     <Button style={styles.flex1} disabled={item.remainingQuantity==1} transparent onPress={() => this.decreaseValue( item, index )}>
-                    <Icon style={{fontSize:14}}  name="remove" />
+                    <Icon style={{fontSize:14,fontWeight:'bold',color:'#000'}}  name="remove" />
                     </Button>
                             <TextInput keyboardType='numeric' onChangeText={(text)=> this.testPickup(text,index)} style={styles.remainingQty} value={item.remainingQuantity.toString()} />
 
                     <Button style={styles.flex1} disabled={item.remainingQuantity==item.quantity} transparent onPress={(e) => this.increaseValue( item, index )}>
-                    <Icon style={{fontSize:14}} name="add" />
+                    <Icon style={{fontSize:14,fontWeight:'bold',color:'#000'}} name="add" />
                     </Button>
                         </Right>
                     </ListItem>
@@ -332,12 +332,21 @@ const styles = StyleSheet.create({
     },
     mytext: {
         color:"#000000",
+        fontWeight:'bold',
+
+
     },
     textvalid: {
-         color:"#00ff00",
+         color:"#59C100",
+         fontWeight:'bold',
+
+
     },
     textinvalid: {
-        color:"#FF4500",
+        color:"#F29502",
+        fontWeight:'bold',
+
+
     },
     buttonBox:{
         borderWidth:1,
@@ -367,18 +376,22 @@ const styles = StyleSheet.create({
     },
     remainingQty:{
         flexDirection: 'row',
-        fontSize:12,
+        fontSize:14,
         backgroundColor:'white',
         height:40,
         flex:2,
         textAlignVertical: "center",
-        textAlign: "center"
+        textAlign: "center",
+        fontWeight:'bold'
     },
     top:{
         alignItems:'flex-start',
         marginLeft:10,
         paddingLeft:15,
         marginTop:0
+    },
+    textv:{
+
     }
 
 

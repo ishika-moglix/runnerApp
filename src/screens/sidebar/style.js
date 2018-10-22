@@ -17,6 +17,12 @@ export default {
     zIndex:999,
     background:"blue"
   },
+    activeMenuItem: {
+        marginLeft: 0,
+        backgroundColor: "#FAA41A",
+        borderBottomWidth: 1,
+        borderColor: '#5B686E',
+    },
   drawerImage: {
     position: "absolute",
     left: Platform.OS === "android" ? deviceWidth / 10 : deviceWidth / 9,

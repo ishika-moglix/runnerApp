@@ -114,16 +114,16 @@ class Verify extends Component {
         return (
             <ScrollView style={{padding: 20}}>
                 <Text
-                    style={{fontSize: 15}}>
-                    Enter OTP sent to {"\n"} Your Mobile number
+                    style={{fontSize:15,padding:15}}>
+                    Enter OTP sent to {"\n"} <Text style ={{fontWeight:'bold',padding:2}}>+91 959982242 </Text>
                 </Text>
                 <Item>
-                    <Input type="number" value={this.state.myNumber} onChangeText={(text)=> this.onChanged(text)} keyboardType='numeric' placeholder='- - - - - -' maxLength={6}/>
+                    <Input style={{borderColor:'#e0e0e',borderWidth:0.5,paddingLeft:15,textAlign:'center'}} type="number" value={this.state.myNumber} onChangeText={(text)=> this.onChanged(text)} keyboardType='numeric' placeholder='- - - - - -' maxLength={6}/>
                 </Item>
                 <View style={{margin:12}} />
-                <Button full success
+                <Button full block
                         disabled={this.state.isDisabled}
-                        style={{marginTop: 15, alignSelf: "center" }}
+                        style={{marginTop:5, alignSelf: "center",flex:1,width:'100%'}}
                         onPress={() => this.verifyOtp()}
                 >
                     <Text>Verify</Text>

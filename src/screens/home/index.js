@@ -9,6 +9,7 @@ import {
 import Container from "./Container";
 import axios from 'axios';
 import { AsyncStorage,Dimensions,ActivityIndicator,NetInfo } from "react-native";
+<script src="http://localhost:8097"></script>
 //import styles from "./styles";
 
 const launchscreenBg = require("../../../assets/launchscreen-bg.png");
@@ -104,6 +105,7 @@ class Home extends Component {
     };
     render() {
         const { isLoading} = this.state;
+        <script src="http://localhost:8097"></script>
         return (
             <Container style={[ styles.container, this.props.style || {} ]}>
                 { this.renderHeader() }
@@ -151,11 +153,11 @@ class Home extends Component {
                     style={{fontSize: 15}}>
                     Enter Your Mobile number
                 </Text>
-                <Item>
+                <Item style={styles.borderCls}>
                     <Text>+91</Text><Input type="number" value={this.state.myNumber} onChangeText={(text)=> this.onChanged(text)} keyboardType='numeric' placeholder='' maxLength={10} minLength={9} />
                 </Item>
                 <View style={{margin:12}} />
-                <Button full  success
+                <Button full block
                         type="button"
                         disabled={this.state.isDisabled}
                     style={{marginTop: 15, alignSelf: "center",flex:1,width:'100%' }}
@@ -182,6 +184,10 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.4,
         shadowOffset: { height: -5, width:-5},
         shadowRadius: 10,
+    },
+    borderCls:{
+        borderWidth: 0.5,
+        borderColor: '#d6d7da',
     },
     loginImageSection: {
         alignSelf: "center",
