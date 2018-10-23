@@ -31,6 +31,7 @@ class PickupList extends Component{
             myPONumber: state.params.poNumber,
             checkbox1: false,
             myItems:[],
+            myAddress:[],
             showAdd:false,
             mycounter:0,
             testValue:'4',
@@ -53,6 +54,8 @@ class PickupList extends Component{
                     if(res.data.code==200){
                         if(res.data.success){
                             this.state.myItems=res.data.data.poItems;
+                            this.state.myAddress=res.data.data.address;
+                            console.log(res.data.data);
                             console.log(this.state.myItems);
                             this.setState({ isLoading: false });
                             this.forceUpdate();
@@ -249,11 +252,11 @@ class PickupList extends Component{
             />
             )}
             <List items={this.state.items}/>
-            <View>
-                <Left>
+            <View contentContainerStyle={{flex:1}}>
+                <Left style={styles.addtab1}>
                 <Text> Address</Text>
                 </Left>
-                <Right>
+                <Right style={styles.addtab2}>
                 <Button onPress={() => this.displayAdd()}>
                     {showAdd && (
                     <Text> Hide</Text>
@@ -266,40 +269,45 @@ class PickupList extends Component{
             </View>
             {showAdd && (
                 <View>
+                    {this.state.myAddress.from && (
                     <Card>
-                        <CardItem header>
+                        <CardItem header style={styles.blueBg}>
                             <Text>From</Text>
                         </CardItem>
                         <CardItem>
                             <Body>
-                            <Text>Company : Moglix</Text>
-                            <Text>Address : 327C,Sector 10</Text>
-                            <Text>City : Faridabad</Text>
-                            <Text>State : Haryana</Text>
-                            <Text>Phone : -</Text>
-                            <Text>Tin : -</Text>
-                            <Text>GSTIN : 06AAJCM7312H1ZI</Text>
-                            <Text>State Code : 06AAJCM7312H1ZI</Text>
+                            <Text>Company : {this.state.myAddress.from.company}</Text>
+                            <Text>Address : {this.state.myAddress.from.address}</Text>
+                            <Text>City : {this.state.myAddress.from.city}</Text>
+                            <Text>State : {this.state.myAddress.from.state}</Text>
+                            <Text>Phone : {this.state.myAddress.from.phone}</Text>
+                            <Text>Tin : {this.state.myAddress.from.tinNo}</Text>
+                            <Text>GSTIN : {this.state.myAddress.from.gstin}</Text>
+                            <Text>State Code : {this.state.myAddress.from.stateCode}</Text>
                             </Body>
                         </CardItem>
                     </Card>
+                    )}
+                    {this.state.myAddress.to && (
                     <Card>
-                        <CardItem header>
+                        <CardItem header style={styles.blueBg}>
                             <Text>To</Text>
                         </CardItem>
                         <CardItem>
                             <Body>
-                            <Text>Company : ECS Corp</Text>
-                            <Text>Address : B31,Ansal Plaza</Text>
-                            <Text>City : Faridabad</Text>
-                            <Text>Email : abc@xyz.com</Text>
-                            <Text>Phone : -</Text>
-                            <Text>Tin : -</Text>
-                            <Text>GSTIN : 06AAJCM7312H1ZI</Text>
-                            <Text>State Code : 6</Text>
+                            <Text><Text style={styles.boldText}>Company:</Text>{this.state.myAddress.to.company}</Text>
+                            <Text><Text style={styles.eqWidth}>Address:</Text>{this.state.myAddress.to.address}</Text>
+                            <Text><Text style={styles.eqWidth}>City:</Text>{this.state.myAddress.to.city}</Text>
+                            <Text><Text style={styles.eqWidth}>State</Text> : {this.state.myAddress.to.state}</Text>
+                            <Text><Text style={styles.eqWidth}>Email:</Text>{this.state.myAddress.to.email}</Text>
+                            <Text><Text style={styles.eqWidth}>Phone:</Text>{this.state.myAddress.to.phone}</Text>
+                            <Text><Text style={styles.eqWidth}>Tin:</Text>{this.state.myAddress.to.tinNo}</Text>
+                            <Text><Text style={styles.eqWidth}>GSTIN:</Text>{this.state.myAddress.to.gstin}</Text>
+                            <Text><Text style={styles.eqWidth}>State Code:</Text>{this.state.myAddress.to.stateCode}</Text>
                             </Body>
                         </CardItem>
                     </Card>
+                    )}
                 </View>
             )}
             <FlatList
@@ -372,9 +380,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent:"flex-end",
         marginRight:-50
-
-
-
     },
     indicator: {
         flex: 1,
@@ -452,9 +457,40 @@ const styles = StyleSheet.create({
         paddingLeft:15,
         marginTop:0
     },
-    textv:{
+    textv: {},
+    addtab1:{
 
+      marginRight:'auto',
+      paddingLeft:20,
+      flexDirection:'column',
+        alignItems: 'center',
+
+
+    },
+    addtab2:{
+        marginLeft:'auto',
+        paddingRight:20,
+        flexDirection:'column',
+        alignItems: 'center',
+     },
+    blueBg:{
+      backgroundColor:'#F5F8FF',
+      color:'#3875FD'
+
+    },
+    boldText:{
+      fontWeight:"500",
+        width:200,
+        fontSize:15
+    },
+    eqWidth:{
+        minWidth:200,
+        fontSize:15
     }
+
+
+
+
 
 
 });
