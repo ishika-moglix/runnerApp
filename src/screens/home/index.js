@@ -140,7 +140,7 @@ class Home extends Component {
     renderImage(){
         return (
             <View style={styles.loginImageSection}>
-                <Image style ={{width:120,height:100,textAlign:"center"}}
+                <Image style ={{width:120,height:100}}
                     source={require('../../../assets/moglixRunner.png')} resizeMode="contain"
                 />
             </View>

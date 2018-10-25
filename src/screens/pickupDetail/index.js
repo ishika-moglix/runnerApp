@@ -176,8 +176,10 @@ class PickupList extends Component{
                     "quantity": this.state.myItems[t].remainingQuantity
                 })
             }
-            console.log(pickupArray);
         }
+        console.log(pickupArray);
+        console.log(pickupArray.length);
+        if(pickupArray.length>0){
         axios.post(global.url+`/api/runner/markPickupDone.json`,{
             "pickupItems": pickupArray
         },{ headers: { 'Authorization': this.state.UserAuth } })
@@ -211,6 +213,15 @@ class PickupList extends Component{
                     this.props.navigation.navigate('Home');
                 }
             });
+        }else{
+            Toast.show({
+                text: "Select At least one item",
+                buttonText: "Okay",
+                position: "top",
+                type: "danger",
+                duration: 3000
+            })
+        }
     }
     myalert(val){
         console.log(val);
@@ -251,22 +262,22 @@ class PickupList extends Component{
                 size="large"
             />
             )}
-            <List items={this.state.items}/>
-            <View contentContainerStyle={{flex:1}}>
-                <Left style={styles.addtab1}>
-                <Text> Address</Text>
-                </Left>
-                <Right style={styles.addtab2}>
-                <Button onPress={() => this.displayAdd()}>
+           <View style ={{flexDirection:'row',backgroundColor:'#fff'}}>
+            <View style ={styles.addtab1}>
+               <Text style ={{fontWeight:'bold'}}> ADDRESSES</Text>
+            </View>
+             <View style ={styles.addtab2}>
+               <Button style = {styles.btnStyle} type="button"  onPress={() => this.displayAdd()}>
                     {showAdd && (
-                    <Text> Hide</Text>
+                    <Text style ={{color:'#4B83FD',fontWeight:'bold'}}> Hide</Text>
+
                     )}
                     {!showAdd && (
-                        <Text> Show</Text>
+                        <Text style ={{color:'#4B83FD',fontWeight:'bold'}}> Show</Text>
                     )}
                 </Button>
-                </Right>
-            </View>
+             </View>
+           </View>
             {showAdd && (
                 <View>
                     {this.state.myAddress.from && (
@@ -276,14 +287,127 @@ class PickupList extends Component{
                         </CardItem>
                         <CardItem>
                             <Body>
-                            <Text>Company : {this.state.myAddress.from.company}</Text>
-                            <Text>Address : {this.state.myAddress.from.address}</Text>
-                            <Text>City : {this.state.myAddress.from.city}</Text>
-                            <Text>State : {this.state.myAddress.from.state}</Text>
-                            <Text>Phone : {this.state.myAddress.from.phone}</Text>
-                            <Text>Tin : {this.state.myAddress.from.tinNo}</Text>
-                            <Text>GSTIN : {this.state.myAddress.from.gstin}</Text>
-                            <Text>State Code : {this.state.myAddress.from.stateCode}</Text>
+                            <View style = {styles.addressParent}>
+                            <View style = {styles.addressLeft}>
+                                <Text style={styles.boldText}>
+                                    Company
+                                 </Text>
+                            </View>
+                                <View styles ={styles.dots}>
+                                    <Text>:</Text>
+                                </View>
+
+                            <View style = {styles.addressRight}>
+                                  <Text style={[styles.rightText,styles.boldText]}>
+                                     {this.state.myAddress.from.company}
+                                </Text>
+                            </View>
+                            </View>
+                            <View style = {styles.addressParent}>
+                                <View style = {styles.addressLeft}>
+                                    <Text>
+                                        Address
+                                    </Text>
+                                </View>
+                                <View styles ={styles.dots}>
+                                    <Text>:</Text>
+                                </View>
+                                <View style = {styles.addressRight}>
+                                    <Text>
+                                         {this.state.myAddress.from.address}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style = {styles.addressParent}>
+                                <View style = {styles.addressLeft}>
+                                    <Text>
+                                        City
+                                    </Text>
+                                </View>
+                                <View styles ={styles.dots}>
+                                    <Text>:</Text>
+                                </View>
+                                <View style = {styles.addressRight}>
+                                    <Text>
+                                        {this.state.myAddress.from.city}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style = {styles.addressParent}>
+                                <View style = {styles.addressLeft}>
+                                    <Text>
+                                        State
+                                    </Text>
+                                </View>
+                                <View styles ={styles.dots}>
+                                    <Text>:</Text>
+                                </View>
+                                <View style = {styles.addressRight}>
+                                    <Text>
+                                         {this.state.myAddress.from.state}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style = {styles.addressParent}>
+                                <View style = {styles.addressLeft}>
+                                    <Text>
+                                        Phone
+                                    </Text>
+                                </View>
+                                <View styles ={styles.dots}>
+                                    <Text>:</Text>
+                                </View>
+                                <View style = {styles.addressRight}>
+                                    <Text>
+                                        {this.state.myAddress.from.phone}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style = {styles.addressParent}>
+                                <View style = {styles.addressLeft}>
+                                    <Text>
+                                        Tin
+                                    </Text>
+                                </View>
+                                <View styles ={styles.dots}>
+                                    <Text>:</Text>
+                                </View>
+                                <View style = {styles.addressRight}>
+                                    <Text>
+                                        {this.state.myAddress.from.tinNo}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style = {styles.addressParent}>
+                                <View style = {styles.addressLeft}>
+                                    <Text>
+                                        GSTIN
+                                    </Text>
+                                </View>
+                                <View styles ={styles.dots}>
+                                    <Text>:</Text>
+                                </View>
+                                <View style = {styles.addressRight}>
+                                    <Text>
+                                         {this.state.myAddress.from.gstin}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style = {styles.addressParent}>
+                                <View style = {styles.addressLeft}>
+                                    <Text>
+                                        State Code
+                                    </Text>
+                                </View>
+                                <View styles ={styles.dots}>
+                                    <Text>:</Text>
+                                </View>
+                                <View style = {styles.addressRight}>
+                                    <Text>
+                                        {this.state.myAddress.from.stateCode}
+                                    </Text>
+                                </View>
+                            </View>
                             </Body>
                         </CardItem>
                     </Card>
@@ -295,22 +419,154 @@ class PickupList extends Component{
                         </CardItem>
                         <CardItem>
                             <Body>
-                            <Text><Text style={styles.boldText}>Company:</Text>{this.state.myAddress.to.company}</Text>
-                            <Text><Text style={styles.eqWidth}>Address:</Text>{this.state.myAddress.to.address}</Text>
-                            <Text><Text style={styles.eqWidth}>City:</Text>{this.state.myAddress.to.city}</Text>
-                            <Text><Text style={styles.eqWidth}>State</Text> : {this.state.myAddress.to.state}</Text>
-                            <Text><Text style={styles.eqWidth}>Email:</Text>{this.state.myAddress.to.email}</Text>
-                            <Text><Text style={styles.eqWidth}>Phone:</Text>{this.state.myAddress.to.phone}</Text>
-                            <Text><Text style={styles.eqWidth}>Tin:</Text>{this.state.myAddress.to.tinNo}</Text>
-                            <Text><Text style={styles.eqWidth}>GSTIN:</Text>{this.state.myAddress.to.gstin}</Text>
-                            <Text><Text style={styles.eqWidth}>State Code:</Text>{this.state.myAddress.to.stateCode}</Text>
+                            <View style = {styles.addressParent}>
+                                <View style = {styles.addressLeft}>
+                                    <Text style={styles.boldText}>
+                                        Company
+                                    </Text>
+                                </View>
+                                <View styles ={styles.dots}>
+                                    <Text>:</Text>
+                                </View>
+                                <View style = {styles.addressRight}>
+
+                                    <Text style={[styles.rightText,styles.boldText]}>
+                                      {this.state.myAddress.to.company}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style = {styles.addressParent}>
+                                <View style = {styles.addressLeft}>
+                                    <Text>
+                                        Address
+                                    </Text>
+                                </View>
+                                <View styles ={styles.dots}>
+                                    <Text>:</Text>
+                                </View>
+                                <View style = {styles.addressRight}>
+                                    <Text>
+                                        {this.state.myAddress.to.address}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style = {styles.addressParent}>
+                                <View style = {styles.addressLeft}>
+                                    <Text>
+                                        City
+                                    </Text>
+                                </View>
+                                <View styles ={styles.dots}>
+                                    <Text>:</Text>
+                                </View>
+                                <View style = {styles.addressRight}>
+                                    <Text>
+                                        {this.state.myAddress.to.city}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style = {styles.addressParent}>
+                                <View style = {styles.addressLeft}>
+                                    <Text>
+                                        State
+                                    </Text>
+                                </View>
+                                <View styles ={styles.dots}>
+                                    <Text>:</Text>
+                                </View>
+                                <View style = {styles.addressRight}>
+                                    <Text>
+                                        {this.state.myAddress.to.state}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style = {styles.addressParent}>
+                                <View style = {styles.addressLeft}>
+                                    <Text>
+                                        Phone
+                                    </Text>
+                                </View>
+                                <View styles ={styles.dots}>
+                                    <Text>:</Text>
+                                </View>
+                                <View style = {styles.addressRight}>
+                                    <Text>
+                                        {this.state.myAddress.to.phone}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style = {styles.addressParent}>
+                                <View style = {styles.addressLeft}>
+                                    <Text>
+                                        Tin
+                                    </Text>
+                                </View>
+                                <View styles ={styles.dots}>
+                                    <Text>:</Text>
+                                </View>
+                                <View style = {styles.addressRight}>
+                                    <Text>
+                                        {this.state.myAddress.to.tinNo}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style = {styles.addressParent}>
+                                <View style = {styles.addressLeft}>
+                                    <Text>
+                                        GSTIN
+                                    </Text>
+                                </View>
+                                <View styles ={styles.dots}>
+                                    <Text>:</Text>
+                                </View>
+                                <View style = {styles.addressRight}>
+                                    <Text>
+                                        {this.state.myAddress.to.gstin}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style = {styles.addressParent}>
+                                <View style = {styles.addressLeft}>
+                                    <Text>
+                                        Email
+                                    </Text>
+                                </View>
+                                <View styles ={styles.dots}>
+                                    <Text>:</Text>
+                                </View>
+                                <View style = {styles.addressRight}>
+                                    <Text>
+                                        {this.state.myAddress.to.email}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style = {styles.addressParent}>
+                                <View style = {styles.addressLeft}>
+                                    <Text>
+                                        State Code
+                                    </Text>
+                                </View>
+                                <View styles ={styles.dots}>
+                                    <Text>:</Text>
+                                </View>
+                                <View style = {styles.addressRight}>
+                                    <Text>
+                                        {this.state.myAddress.to.stateCode}
+                                    </Text>
+                                </View>
+                            </View>
                             </Body>
                         </CardItem>
                     </Card>
                     )}
                 </View>
             )}
-            <FlatList
+            <View style ={{flexDirection:'row',backgroundColor:'#fff',marginTop:10,borderBottomWidth:0.5,borderColor:'#e0e0e0'}}>
+                <View style ={styles.addtab1}>
+                    <Text style ={{fontWeight:'bold'}}> ITEMS</Text>
+                </View>
+            </View>
+            <FlatList style ={{backgroundColor:'#fff'}}
                 extraData={this.state}
                 data={this.state.myItems}
                 showsVerticalScrollIndicator={false}
@@ -342,7 +598,7 @@ class PickupList extends Component{
             />
         </Content>
 
-        <Footer style={{backgroundColor:"white"}}>
+        <Footer style={{backgroundColor:"white",shadowColor:'#00000',shadowOffset:{width:0,height:-3},shadowOpacity:0.16, shadowRadius: 2}}>
               <View style={styles.container2}>
                   <View style={styles.textContainer}>
                       <Text>{this.state.mycounter}/{this.state.myItems.length} Items</Text>
@@ -449,7 +705,12 @@ const styles = StyleSheet.create({
         flex:2,
         textAlignVertical: "center",
         textAlign: "center",
-        fontWeight:'bold'
+        fontWeight:'bold',
+        borderWidth:0.5,
+        borderLeftWidth:0,
+        borderRightWidth:0,
+        borderColor:'#e0e0e0'
+
     },
     top:{
         alignItems:'flex-start',
@@ -457,41 +718,73 @@ const styles = StyleSheet.create({
         paddingLeft:15,
         marginTop:0
     },
-    textv: {},
+
     addtab1:{
-
-      marginRight:'auto',
-      paddingLeft:20,
-      flexDirection:'column',
-        alignItems: 'center',
-
-
-    },
+        flexGrow:1,
+        height:50,
+        justifyContent:'flex-start',
+        paddingLeft:30,
+        flexDirection:'row',
+        alignItems:'center',
+      },
     addtab2:{
-        marginLeft:'auto',
-        paddingRight:20,
-        flexDirection:'column',
-        alignItems: 'center',
-     },
+        flexGrow:1,
+        height:50,
+        justifyContent:'flex-end',
+        flexDirection:'row',
+        alignItems:'center',
+          paddingRight:10,
+         marginRight:'auto'
+      },
+
     blueBg:{
       backgroundColor:'#F5F8FF',
       color:'#3875FD'
-
     },
     boldText:{
       fontWeight:"500",
-        width:200,
-        fontSize:15
-    },
+   },
     eqWidth:{
         minWidth:200,
         fontSize:15
+    },
+    btnStyle:{
+        backgroundColor:'transparent',
+        shadowColor: '#fff',
+        shadowOpacity: 0,
+        borderWidth:0,
+        shadowOffset: { width: 0, height: 2 },
+        elevation:0
+   },
+   addressParent:{
+       //justifyContent: 'space-between',
+       flexDirection:'row',
+       paddingTop:8,
+       flexWrap: 'wrap',
+       alignItems: 'flex-start',
+     },
+   addressLeft:{
+       width:100,
+       paddingLeft:10,
+       height:40,
+       flex:1
+    },
+    addressRight:{
+        width:250,
+        paddingLeft:10,
+        height:40,
+        flex:3
+
+      },
+    rightText:{
+
+    },
+    dots:{
+       flex:1,
+       width:10,
+       paddingLeft:15,
+       paddingRight:15
     }
-
-
-
-
-
 
 });
 export default PickupList;
