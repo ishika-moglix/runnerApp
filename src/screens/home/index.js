@@ -8,8 +8,8 @@ import {
 } from "native-base";
 import Container from "./Container";
 import axios from 'axios';
-import { AsyncStorage,Dimensions,ActivityIndicator,NetInfo } from "react-native";
-<script src="http://localhost:8097"></script>
+import { Alert,AsyncStorage,Dimensions,ActivityIndicator,NetInfo } from "react-native";
+
 //import styles from "./styles";
 
 const launchscreenBg = require("../../../assets/launchscreen-bg.png");
@@ -54,7 +54,7 @@ class Home extends Component {
                         type: "success",
                         duration: 3000
                     });
-                    this.props.navigation.navigate("Verify", { userId: res.data.data.id });
+                    this.props.navigation.navigate("Verify", { userId: res.data.data.id, userNo: this.state.myNumber});
                 }else{
                     Toast.show({
                         text: res.data.message,
@@ -147,6 +147,7 @@ class Home extends Component {
         );
     }
     renderForm() {
+        const { isLoading} = this.state;
         return (
             <ScrollView style={{padding: 20}}>
                 <Text
@@ -159,7 +160,7 @@ class Home extends Component {
                 <View style={{margin:12}} />
                 <Button full block
                         type="button"
-                        disabled={this.state.isDisabled}
+                        disabled={this.state.isDisabled || isLoading}
                     style={{marginTop: 15, alignSelf: "center",flex:1,width:'100%' }}
                     onPress={() => this.loginSubmit()}
                 >

@@ -159,16 +159,6 @@ class Invoiceinfo extends Component {
             </View>
         );
     }
-    // openPicker2(){
-    //     console.log("open picker new");
-    //     ImagePicker.openPicker({
-    //         width: 300,
-    //         height: 400,
-    //         cropping: true
-    //     }).then(image => {
-    //         console.log(image);
-    //     });
-    // }
     openPicker(){
         /**
          * The first arg is the options object for customization (it can also be null or omitted for default options),
@@ -199,41 +189,6 @@ class Invoiceinfo extends Component {
             }
         });
     }
-    // uploadImage = event => {
-    //     const user = {
-    //         "phoneNumber": this.state.myNumber
-    //     };
-    //     const headers = {
-    //         'Content-Type': 'application/json',
-    //     };
-    //     AsyncStorage.getItem('token', (err, result) => {
-    //         console.log("storage token in pickup details");
-    //         console.log(result);
-    //         this.state.myToken=result;
-    //
-    //         const user = {
-    //             "packetId":58984,
-    //             "fileToUpload":'https://www.google.co.in/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
-    //             "podDate":'2018-08-22'
-    //         };
-    //         const AuthStr = 'Bearer '.concat('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjM0OCwiZXhwIjoxNTQwMTE2MzAyfQ.m333KIr9e01mCzSYaUJ9A5jlFeFUCqSBjlZJOfjiU9I');
-    //         axios.post(`http://emsqa.moglilabs.com/api/runner/markDeliveredPod.json`, user,{ headers: { 'Authorization': AuthStr } })
-    //             .then(res => {
-    //                 console.log(JSON.stringify(res));
-    //                 //console.log(res.data.data.id);
-    //                 if(res.data.success && res.data.code==200){
-    //                     console.log("my po items are here");
-    //                     console.log(res.data.data.poItems);
-    //                     //this.setState({ myItems: res.data.data.poItems });
-    //                     this.state.myItems=res.data.data.poItems;
-    //                     this.forceUpdate();
-    //                 }else{
-    //                     alert(res.data.message);
-    //                 }
-    //             });
-    //         console.log(this.state.myItems);
-    //     });
-    // };
     storePicture(file) {
         console.log(file);
         if (file) {
@@ -247,27 +202,6 @@ class Invoiceinfo extends Component {
             });
             data.append('packetId',this.state.packetI);
             data.append('podDate',finaldate);
-            console.log(data);
-            // axios({
-            //     method: 'post',
-            //     url: 'http://emsqa.moglilabs.com/api/runner/markDeliveredPod.json',
-            //     data: data,
-            //     responseType: 'json',
-            //     timeout: 3000,
-            //     headers:{'Authorization':this.state.AuthStr},
-            // }).then(res => {
-            //     this.setState({ isLoading: false });
-            //     console.log(res);
-            //    //alert(JSON.stringify(res));
-            //     res.json().then(function(data) {
-            //         alert(data)
-            //     })
-            //     //alert(res.json().messages);
-            // }).catch(err => {
-            //     console.log("error log is here"+err);
-            //     alert(JSON.stringify(err));
-            //     // alert(err);
-            // });
             fetch(global.url+'/api/runner/markDeliveredPod.json', {
                 method: 'post',
                 headers:{'Authorization':this.state.AuthStr},

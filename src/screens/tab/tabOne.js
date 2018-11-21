@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {Header,Container, Content,Icon,Title,  Button,Right,Item,Body, Input, Form,Left, Text} from "native-base";
-import {StyleSheet,View} from "react-native";
+import {StyleSheet,View,TextInput} from "react-native";
 import Home from "../home";
 
 
@@ -40,7 +40,7 @@ export default class TabOne extends Component {
                 alert("please enter numbers only");
             }
         };
-        if(newText.length==5){
+        if(newText.length>=5){
             this.state.isDisabled=false;
         }else{
             this.state.isDisabled=true;
@@ -88,7 +88,7 @@ export default class TabOne extends Component {
           <Form>
               <View style={{borderColor:'#e0e0e',borderRadius:4,borderWidth:1,borderColor: '#d6d7da',
                   marginLeft:15,marginRight:15,shadowColor:'rgba(0, 0, 0, 0.05)',shadowOffset: { height: 3, width:0}}}>
-                  <Input style={{textAlign:'center',backgroundColor:'#fff'}} keyboardType='numeric' value={this.state.mypoNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="PO Number" />
+                  <TextInput style = { styles.textInput } keyboardType='numeric' value={this.state.mypoNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="PO Number"></TextInput>
               </View>
           </Form>
           <Button block disabled={this.state.isDisabled} onPress={() => this.tab1click()} style={{  margin:15,marginTop: 20,paddingTop:5,paddingBottom:5 }}>
@@ -105,4 +105,14 @@ const styles = StyleSheet.create({
         shadowOffset: { height: -5, width:-5},
         shadowRadius: 10,
 
-    }});
+    },
+    textInput:
+        {
+            width: '100%',
+            paddingVertical: 0,
+            paddingHorizontal: 15,
+            height: 40,
+            margin: 0,
+            fontSize: 18,
+            backgroundColor: '#fff'
+        }});

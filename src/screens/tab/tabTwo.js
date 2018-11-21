@@ -9,7 +9,7 @@ import {
     Text, Toast
 } from "native-base";
 import axios from "axios/index";
-import { AsyncStorage,StyleSheet,View,ActivityIndicator } from "react-native";
+import { AsyncStorage,StyleSheet,View,TextInput,ActivityIndicator } from "react-native";
 
 export default class TabTwo extends Component {
     constructor(props) {
@@ -160,7 +160,7 @@ export default class TabTwo extends Component {
                 <Form >
                     <View style={{borderColor:'#e0e0e',borderRadius:4,borderWidth:1,borderColor: '#d6d7da',
                         marginLeft:15,marginRight:15}}>
-                        <Input  style={{textAlign:'center',backgroundColor:'#fff'}} keyboardType='numeric' value={this.state.invoiceNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="Invoice Number"  />
+                        <TextInput style = { styles.textInput } keyboardType='numeric' value={this.state.invoiceNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="Invoice Number"></TextInput>
                     </View>
                 </Form>
                 <Button block disabled={this.state.isDisabled || isLoading} onPress={() => this.tab2click()} style={{ margin: 15, marginTop: 20 }}>
@@ -177,5 +177,15 @@ const styles = StyleSheet.create({
         shadowOffset: {height: -5, width: -5},
         shadowRadius: 10,
         backgroundColor:'#f2f2f2'
-    }
+    },
+    textInput:
+        {
+            width: '100%',
+            paddingVertical: 0,
+            paddingHorizontal: 15,
+            height: 40,
+            margin: 0,
+            fontSize: 18,
+            backgroundColor: '#fff'
+        }
 } );

@@ -19,6 +19,7 @@ class Verify extends Component {
         const {state} = props.navigation;
         console.log("PROPS " + state.params.userId);
         this.state = {
+            UserNo:state.params.userNo,
             myNumber: '',
             isDisabled: true,
             userId:state.params.userId
@@ -115,7 +116,7 @@ class Verify extends Component {
             <ScrollView style={{padding: 20}}>
                 <Text
                     style={{fontSize:15,padding:15}}>
-                    Enter OTP sent to {"\n"} <Text style ={{fontWeight:'bold',padding:2}}>+91 959982242 </Text>
+                    Enter OTP sent to {"\n"} <Text style ={{fontWeight:'bold',padding:2}}>+91{this.state.UserNo} </Text>
                 </Text>
                 <Item>
                     <Input style={{borderColor:'#e0e0e',borderWidth:0.5,paddingLeft:15,textAlign:'center'}} type="number" value={this.state.myNumber} onChangeText={(text)=> this.onChanged(text)} keyboardType='numeric' placeholder='- - - - - -' maxLength={6}/>

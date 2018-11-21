@@ -170,7 +170,7 @@ class PickupList extends Component{
         console.log(this.state.myItems);
         console.log(this.state.myItems.length);
         for(var t=0;t<this.state.myItems.length;t++){
-            if(this.state.myItems[t].status && this.state.myItems[t].remainingQuantity!="" && this.state.myItems[t].remainingQuantity!="0"){
+            if(this.state.myItems[t].status && this.state.myItems[t].remainingQuantity!="" && this.state.myItems[t].remainingQuantity!="0" && this.state.myItems[t].remainingQuantity!="0.0" && this.state.myItems[t].remainingQuantity!="0.00" && this.state.myItems[t].remainingQuantity!="0.000"){
                 pickupArray.push({
                     "id": this.state.myItems[t].id,
                     "quantity": this.state.myItems[t].remainingQuantity
@@ -264,7 +264,7 @@ class PickupList extends Component{
             )}
            <View style ={{flexDirection:'row',backgroundColor:'#fff'}}>
             <View style ={styles.addtab1}>
-               <Text style ={{fontWeight:'bold'}}> ADDRESSES</Text>
+               <Text style ={{fontWeight:'bold'}}> ADDRESS</Text>
             </View>
              <View style ={styles.addtab2}>
                <Button style = {styles.btnStyle} type="button"  onPress={() => this.displayAdd()}>
@@ -766,13 +766,12 @@ const styles = StyleSheet.create({
    addressLeft:{
        width:100,
        paddingLeft:10,
-       height:40,
+
        flex:1
     },
     addressRight:{
         width:250,
         paddingLeft:10,
-        height:40,
         flex:3
 
       },
