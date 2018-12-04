@@ -4,6 +4,7 @@ import {
   Content,Footer, Text,Title, List, ListItem,
   Icon, Container,Button, Left, Right, Badge} from "native-base";
 import styles from "./style";
+import PickupList from "../pickupDetail";
 
  const drawerCover = require("../../../assets/side_menu_logo.png");
  //const drawerImage = require("../../../assets/logo-kitchen-sink.png");
@@ -32,6 +33,20 @@ const datas = [
     {
         name: "Profile",
         route: "NHProfile",
+        icon: "flame",
+        sidebar:false,
+        bg: "#C5F442"
+    },
+    {
+        name: "Pickup History",
+        route: "NHPickHistory",
+        icon: "flame",
+        sidebar:false,
+        bg: "#C5F442"
+    },
+    {
+        name: "Delivery History",
+        route: "NHDeliveryHistory",
         icon: "flame",
         sidebar:false,
         bg: "#C5F442"

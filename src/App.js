@@ -11,7 +11,9 @@ import Verify from "./screens/verification";
 import PickupList from "./screens/pickupDetail";
 import Invoiceinfo from "./screens/invoiceInfo";
 import Profile from "./screens/profile"
-import { AsyncStorage } from "react-native"
+import { AsyncStorage } from "react-native";
+import PickupHistory  from "./screens/pickupHistory";
+import DeliveryHistory  from "./screens/deliveryHistory";
 // To see all the requests in the chrome Dev tools in the network tab.
 XMLHttpRequest = GLOBAL.originalXMLHttpRequest ?
     GLOBAL.originalXMLHttpRequest :
@@ -32,7 +34,9 @@ const Drawer = DrawerNavigator(
       NHTab: { screen: BasicTab },
       Home: { screen: Home },
       NHInvoice:{screen:Invoiceinfo},
-      NHProfile: {screen: Profile}
+      NHProfile: {screen: Profile},
+      NHPickHistory: {screen:PickupHistory},
+      NHDeliveryHistory: {screen:DeliveryHistory}
   },
   {
     initialRouteName: "Home",
