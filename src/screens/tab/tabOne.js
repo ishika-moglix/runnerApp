@@ -85,12 +85,12 @@ export default class TabOne extends Component {
       return (
       <Content style={{ margin: 10, marginTop: 100}}>
           <Form>
-              <View style={{borderColor:'#e0e0e',borderRadius:4,borderWidth:1,borderColor: '#d6d7da',
+              <View style={{flex:2,flexDirection: 'row', justifyContent: 'flex-end',borderColor:'#e0e0e',borderRadius:4,borderWidth:1,borderColor: '#d6d7da',
                   marginLeft:15,marginRight:15,shadowColor:'rgba(0, 0, 0, 0.05)',shadowOffset: { height: 3, width:0}}}>
-                  <TextInput style = { styles.textInput } keyboardType='numeric' value={this.state.mypoNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="PO Number"></TextInput>
+                  <TextInput style = {styles.textInput } keyboardType='numeric' value={this.state.mypoNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="PO Number"></TextInput>
               </View>
           </Form>
-          <Button block disabled={this.state.isDisabled} onPress={() => this.tab1click()} style={{  margin:15,marginTop: 20,paddingTop:5,paddingBottom:5 }}>
+          <Button style ={{flex:1,flexDirection:'row', justifyContent:'flex-start'}}  disabled={this.state.isDisabled} onPress={() => this.tab1click()} style={{  margin:15,marginTop: 20,paddingTop:5,paddingBottom:5 }}>
               <Text>Search PO</Text>
           </Button>
       </Content>
@@ -123,9 +123,13 @@ export default class TabOne extends Component {
                <Text>
                    Warehouse Name
                </Text>
-                   <Text>Assigned By:</Text>
-                   <Text>User Name (27.11.2018)</Text>
-               <Icon name="ios-world-outline" style={{fontSize: 20, color: 'red'}}/>
+               <Left>
+                   <Text> Assigned By: </Text>
+                   <Text> User Name (27.11.2018)</Text>
+               </Left>
+               <Right>
+                   <Icon name="ios-home-outline" style={{fontSize: 30, color: 'red'}}/>
+               </Right>
                </Body>
            </CardItem>
            <CardItem header>
@@ -150,9 +154,13 @@ export default class TabOne extends Component {
                <Text>
                    Warehouse Name
                </Text>
-               <Text>Assigned By:</Text>
-               <Text>User Name (27.11.2018)</Text>
-               <Icon name="ios-world-outline" style={{fontSize: 20, color: 'red'}}/>
+               <Left>
+                   <Text> Assigned By: </Text>
+                   <Text> User Name (27.11.2018)</Text>
+               </Left>
+               <Right>
+                    <Icon name="ios-home-outline" style={{fontSize: 30, color: 'red'}}/>
+               </Right>
                </Body>
            </CardItem>
            <CardItem header>
@@ -177,9 +185,13 @@ export default class TabOne extends Component {
                <Text>
                    Warehouse Name
                </Text>
-               <Text>Assigned By:</Text>
-               <Text>User Name (27.11.2018)</Text>
-               <Icon name="ios-world-outline" style={{fontSize: 20, color: 'red'}}/>
+               <Left>
+                   <Text> Assigned By: </Text>
+                   <Text> User Name (27.11.2018)</Text>
+               </Left>
+               <Right>
+                   <Icon name="ios-home-outline" style={{fontSize: 30, color: 'red'}}/>
+               </Right>
                </Body>
            </CardItem>
            <CardItem header>
