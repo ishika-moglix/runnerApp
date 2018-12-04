@@ -13,12 +13,14 @@ export default class TabOne extends Component {
             this.state = {
                 mypoNumber: '',
                 isDisabled: true,
+                apiData:{"name": "testuser","user":"test"},
                 showHeader:state.params.from
             };
         }else{
             this.state = {
                 mypoNumber: '',
                 isDisabled: true,
+                apiData:[],
                 showHeader:false
             };
         }
@@ -49,18 +51,208 @@ export default class TabOne extends Component {
             return (
                 <Container>
                     { this.renderHeader()}
-                    { this.renderForm() }
-                    { this.renderList() }
+                    { this.renderScreen() }
                 </Container>
             );
         }else{
             return (
                 <Container style ={{backgroundColor:'#f2f2f2'}}>
-                    { this.renderForm() }
-                    { this.renderList() }
+                    { this.renderScreen() }
                 </Container>
             );
         }
+    }
+    renderScreen() {
+        return (
+            <View style={styles.contain}>
+                <Form>
+                <View style={styles.tbar}>
+                    <TextInput style = {styles.textInput } keyboardType='numeric' value={this.state.mypoNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="PO Number"></TextInput>
+                </View>
+                </Form>
+                <Button disabled={this.state.isDisabled} onPress={() => this.tab1click()} style= {{ paddingTop:5,paddingBottom:5,position:'absolute',right:15,top:0}}>
+                    <Text style ={{textAlign:'center'}}>Search PO</Text>
+                </Button>
+                <ScrollView style={styles.main}>
+                    <Card style ={{flex:1}}>
+                        <CardItem header>
+                            <Left>
+                                <Text>P.O No 74476</Text>
+                            </Left>
+                            <Right>
+                                <Text>10 items</Text>
+                            </Right>
+                        </CardItem>
+                        <CardItem>
+                            <Body>
+                            <Text>
+                                Pickup From
+                            </Text>
+                            <Text>
+                                Supplier Name - City Name
+                            </Text>
+                            <Text>
+                                Delivered To
+                            </Text>
+                            <Text>
+                                Warehouse Name
+                            </Text>
+                            <Left>
+                                <Text> Assigned By: </Text>
+                                <Text> User Name (27.11.2018)</Text>
+                            </Left>
+                            <Right>
+                                <Icon name="ios-home-outline" style={{fontSize: 30, color: 'red'}}/>
+                            </Right>
+                            </Body>
+                        </CardItem>
+                        <CardItem header>
+                            <Left>
+                                <Text>P.O No 74476</Text>
+                            </Left>
+                            <Right>
+                                <Text>10 items</Text>
+                            </Right>
+                        </CardItem>
+                        <CardItem>
+                            <Body>
+                            <Text>
+                                Pickup From
+                            </Text>
+                            <Text>
+                                Supplier Name - City Name
+                            </Text>
+                            <Text>
+                                Delivered To
+                            </Text>
+                            <Text>
+                                Warehouse Name
+                            </Text>
+                            <Left>
+                                <Text> Assigned By: </Text>
+                                <Text> User Name (27.11.2018)</Text>
+                            </Left>
+                            <Right>
+                                <Icon name="ios-home-outline" style={{fontSize: 30, color: 'red'}}/>
+                            </Right>
+                            </Body>
+                        </CardItem>
+                        <CardItem header>
+                            <Left>
+                                <Text>P.O No 74476</Text>
+                            </Left>
+                            <Right>
+                                <Text>10 items</Text>
+                            </Right>
+                        </CardItem>
+                        <CardItem>
+                            <Body>
+                            <Text>
+                                Pickup From
+                            </Text>
+                            <Text>
+                                Supplier Name - City Name
+                            </Text>
+                            <Text>
+                                Delivered To
+                            </Text>
+                            <Text>
+                                Warehouse Name
+                            </Text>
+                            <Left>
+                                <Text> Assigned By: </Text>
+                                <Text> User Name (27.11.2018)</Text>
+                            </Left>
+                            <Right>
+                                <Icon name="ios-home-outline" style={{fontSize: 30, color: 'red'}}/>
+                            </Right>
+                            </Body>
+                        </CardItem>
+                        <CardItem header>
+                            <Left>
+                                <Text>P.O No 74476</Text>
+                            </Left>
+                            <Right>
+                                <Text>10 items</Text>
+                            </Right>
+                        </CardItem>
+                        <CardItem>
+                            <Body>
+                            <Text>
+                                Pickup From
+                            </Text>
+                            <Text>
+                                Supplier Name - City Name
+                            </Text>
+                            <Text>
+                                Delivered To
+                            </Text>
+                            <Text>
+                                Warehouse Name
+                            </Text>
+                            <Text>Assigned By:</Text>
+                            <Text>User Name (27.11.2018)</Text>
+                            <Icon name="ios-world-outline" style={{fontSize: 20, color: 'red'}}/>
+                            </Body>
+                        </CardItem>
+                        <CardItem header>
+                            <Left>
+                                <Text>P.O No 74476</Text>
+                            </Left>
+                            <Right>
+                                <Text>10 items</Text>
+                            </Right>
+                        </CardItem>
+                        <CardItem>
+                            <Body>
+                            <Text>
+                                Pickup From
+                            </Text>
+                            <Text>
+                                Supplier Name - City Name
+                            </Text>
+                            <Text>
+                                Delivered To
+                            </Text>
+                            <Text>
+                                Warehouse Name
+                            </Text>
+                            <Text>Assigned By:</Text>
+                            <Text>User Name (27.11.2018)</Text>
+                            <Icon name="ios-world-outline" style={{fontSize: 20, color: 'red'}}/>
+                            </Body>
+                        </CardItem>
+                        <CardItem header>
+                            <Left>
+                                <Text>P.O No 74476</Text>
+                            </Left>
+                            <Right>
+                                <Text>10 items</Text>
+                            </Right>
+                        </CardItem>
+                        <CardItem>
+                            <Body>
+                            <Text>
+                                Pickup From
+                            </Text>
+                            <Text>
+                                Supplier Name - City Name
+                            </Text>
+                            <Text>
+                                Delivered To
+                            </Text>
+                            <Text>
+                                Warehouse Name
+                            </Text>
+                            <Text>Assigned By:</Text>
+                            <Text>User Name (27.11.2018)</Text>
+                            <Icon name="ios-world-outline" style={{fontSize: 20, color: 'red'}}/>
+                            </Body>
+                        </CardItem>
+                    </Card>
+                </ScrollView>
+            </View>
+        );
     }
     renderHeader() {
         return (
@@ -83,24 +275,20 @@ export default class TabOne extends Component {
     }
   renderForm(){
       return (
-      <Content style={{ margin: 10, marginTop: 100}}>
-          <Form>
-              <View style={{flex:2,flexDirection: 'row', justifyContent: 'flex-end',borderColor:'#e0e0e',borderRadius:4,borderWidth:1,borderColor: '#d6d7da',
-                  marginLeft:15,marginRight:15,shadowColor:'rgba(0, 0, 0, 0.05)',shadowOffset: { height: 3, width:0}}}>
-                  <TextInput style = {styles.textInput } keyboardType='numeric' value={this.state.mypoNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="PO Number"></TextInput>
-              </View>
-          </Form>
-          <Button style ={{flex:1,flexDirection:'row', justifyContent:'flex-start'}}  disabled={this.state.isDisabled} onPress={() => this.tab1click()} style={{  margin:15,marginTop: 20,paddingTop:5,paddingBottom:5 }}>
-              <Text>Search PO</Text>
-          </Button>
-      </Content>
-      )
-   }
-   renderList(){
-       return (
-           <View style={{backgroundColor:'white', flex:1}}>
-               <ScrollView style={{flex:1, backgroundColor:'white'}}>
-       <Card>
+      <Content  style={{margin: 10,marginTop: 15,height:0}}>
+        <Form>
+        <View  style={{
+            marginLeft:15,marginRight:15,shadowColor:'rgba(0, 0, 0, 0.05)',
+            shadowOffset: { height: 3, width:0}}}>
+            <TextInput style = {styles.textInput } keyboardType='numeric' value={this.state.mypoNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="PO Number"></TextInput>
+         </View>
+        </Form>
+        <Button disabled={this.state.isDisabled} onPress={() => this.tab1click()} style= {{ paddingTop:5,paddingBottom:5,position:'absolute',right:15,top:0}}>
+            <Text style ={{textAlign:'center'}}>Search PO</Text>
+         </Button>
+         <View>
+        <ScrollView style={{flex:1,flexGrow:1}}>
+         <Card style ={{flex:1}}>
            <CardItem header>
                <Left>
                <Text>P.O No 74476</Text>
@@ -276,9 +464,10 @@ export default class TabOne extends Component {
                </Body>
            </CardItem>
        </Card>
-               </ScrollView>
-           </View>
-       )
+       </ScrollView>
+       </View>
+      </Content>
+      )
    }
 }
 const styles = StyleSheet.create({
@@ -290,12 +479,49 @@ const styles = StyleSheet.create({
 
     },
     textInput:
-        {
-            width: '100%',
-            paddingVertical: 0,
+        {   width: '100%',
+            paddingVertical: 8,
             paddingHorizontal: 15,
-            height: 40,
             margin: 0,
             fontSize: 18,
-            backgroundColor: '#fff'
-        }});
+            backgroundColor: '#fff',
+            borderColor:'#008000',
+            borderRadius:4,
+            borderWidth:1,
+            position:'relative',
+   },
+        smallTxt:{
+            fontSize:12,
+
+        },
+    contain: {
+        flex: 1,margin: 10,marginTop: 15,height:0
+    },
+    tbar: {
+        marginLeft:15,marginRight:15,shadowColor:'rgba(0, 0, 0, 0.05)',
+        shadowOffset: { height: 3, width:0},
+        borderBottomWidth: 2,
+        borderColor: 'black',
+    },
+    main: {
+        flex: 1
+    },
+    item: {
+        height: 200,
+        width: 375,
+        marginTop: 10,
+        backgroundColor: 'green'
+    },
+    bbar: {
+        width: 375,
+        height: 100,
+        borderTopWidth: 5,
+        borderColor: 'black',
+        backgroundColor: 'red'
+    },
+    text: {
+        color: '#ffffff',
+        fontSize: 40
+    }
+    });
+
