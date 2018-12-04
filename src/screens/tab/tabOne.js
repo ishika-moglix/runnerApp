@@ -13,12 +13,14 @@ export default class TabOne extends Component {
             this.state = {
                 mypoNumber: '',
                 isDisabled: true,
+                apiData:{"name": "testuser","user":"test"},
                 showHeader:state.params.from
             };
         }else{
             this.state = {
                 mypoNumber: '',
                 isDisabled: true,
+                apiData:[],
                 showHeader:false
             };
         }
@@ -50,14 +52,14 @@ export default class TabOne extends Component {
                 <Container>
                     { this.renderHeader()}
                     { this.renderForm() }
-                    { this.renderList() }
+                  
                 </Container>
             );
         }else{
             return (
                 <Container style ={{backgroundColor:'#f2f2f2'}}>
-                    { this.renderForm() }
-                    { this.renderList() }
+                    { this.renderForm()}
+                   
                 </Container>
             );
         }
@@ -83,24 +85,19 @@ export default class TabOne extends Component {
     }
   renderForm(){
       return (
-      <Content style={{ margin: 10, marginTop: 100}}>
-          <Form>
-              <View style={{borderColor:'#e0e0e',borderRadius:4,borderWidth:1,borderColor: '#d6d7da',
-                  marginLeft:15,marginRight:15,shadowColor:'rgba(0, 0, 0, 0.05)',shadowOffset: { height: 3, width:0}}}>
-                  <TextInput style = { styles.textInput } keyboardType='numeric' value={this.state.mypoNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="PO Number"></TextInput>
-              </View>
-          </Form>
-          <Button block disabled={this.state.isDisabled} onPress={() => this.tab1click()} style={{  margin:15,marginTop: 20,paddingTop:5,paddingBottom:5 }}>
-              <Text>Search PO</Text>
-          </Button>
-      </Content>
-      )
-   }
-   renderList(){
-       return (
-           <View style={{backgroundColor:'white', flex:1}}>
-               <ScrollView style={{flex:1, backgroundColor:'white'}}>
-       <Card>
+      <Content  style={{margin: 10,marginTop: 15,height:0}}>
+        <Form>
+        <View  style={{marginLeft:15,marginRight:15,shadowColor:'rgba(0, 0, 0, 0.05)',
+            shadowOffset: { height: 3, width:0}}}>
+            <TextInput style = {styles.textInput } keyboardType='numeric' value={this.state.mypoNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="PO Number"></TextInput>
+         </View>
+        </Form>
+        <Button disabled={this.state.isDisabled} onPress={() => this.tab1click()} style= {{ paddingTop:5,paddingBottom:5,position:'absolute',right:15,top:0}}>
+            <Text style ={{textAlign:'center'}}>Search PO</Text>
+         </Button>
+         <View>
+        <ScrollView style={{flex:1,flexGrow:1}}>         
+         <Card style ={{flex:1}}>
            <CardItem header>
                <Left>
                <Text>P.O No 74476</Text>
@@ -264,9 +261,10 @@ export default class TabOne extends Component {
                </Body>
            </CardItem>
        </Card>
-               </ScrollView>
-           </View>
-       )
+       </ScrollView>
+       </View>
+      </Content>
+      ) 
    }
 }
 const styles = StyleSheet.create({
@@ -278,12 +276,20 @@ const styles = StyleSheet.create({
 
     },
     textInput:
-        {
-            width: '100%',
-            paddingVertical: 0,
+        {   width: '100%',
+            paddingVertical: 8,
             paddingHorizontal: 15,
-            height: 40,
             margin: 0,
             fontSize: 18,
-            backgroundColor: '#fff'
-        }});
+            backgroundColor: '#fff',
+            borderColor:'#008000',
+            borderRadius:4,
+            borderWidth:1,
+            position:'relative',
+   },
+        smallTxt:{
+            fontSize:12,
+            
+        }
+    }),
+       
