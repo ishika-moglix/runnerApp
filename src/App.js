@@ -14,6 +14,7 @@ import Profile from "./screens/profile"
 import { AsyncStorage } from "react-native";
 import PickupHistory  from "./screens/pickupHistory";
 import DeliveryHistory  from "./screens/deliveryHistory";
+import PickuphistoryDetail from "./screens/pickhistoryDetail";
 // To see all the requests in the chrome Dev tools in the network tab.
 XMLHttpRequest = GLOBAL.originalXMLHttpRequest ?
     GLOBAL.originalXMLHttpRequest :
@@ -65,7 +66,9 @@ const AppNavigator = StackNavigator(
   Drawer: { screen: Drawer },
   Verify: {screen: Verify},
   Invoiceinfo:{screen:Invoiceinfo},
-      PickupList: { screen: PickupList }
+      PickupList: { screen: PickupList },
+      PhistoryDetail: {screen: PickuphistoryDetail}
+
   },
   {
     initialRouteName: "Drawer",

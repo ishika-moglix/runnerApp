@@ -3,7 +3,7 @@ import {
     Container, IconNB, Header, Title, Content,Card,
     CardItem, Text, Button, Icon,  Left, Right, Body, Toast
 } from "native-base";
-import {ImageBackground,ActivityIndicator, StatusBar,ScrollView, Image, TextInput,  Dimensions, View, StyleSheet, Animated} from 'react-native';
+import {ImageBackground,TouchableOpacity,ActivityIndicator, StatusBar,ScrollView, Image, TextInput,  Dimensions, View, StyleSheet, Animated} from 'react-native';
 import { AsyncStorage } from "react-native";
 
 class PickupHistory extends Component {
@@ -22,7 +22,7 @@ class PickupHistory extends Component {
                     <Left>
                         <Button
                             transparent
-                            onPress={() => this.props.navigation.navigate("DrawerOpen")}>
+                            onPress={() => this.cardclick()}>
                             <Icon name="menu" />
                         </Button>
                     </Left>
@@ -52,9 +52,10 @@ class PickupHistory extends Component {
     }
     renderCard(){
         return (
-            <Content  style={{margin: 10,marginTop: 15,height:0}}>
+            <Content onPress={() => this.cardclick()} style={{margin: 10,marginTop: 15,height:0}}>
                     <ScrollView style={{flex:1,flexGrow:1}}>
-                        <Card style ={{flex:1}}>
+                        <Card style ={{flex:1}} >
+                            <TouchableOpacity onPress={this.cardclick}>
                             <CardItem header>
                                 <Left>
                                     <Text style={styles.textColor}>P.O No 74476</Text>
@@ -63,7 +64,7 @@ class PickupHistory extends Component {
                                     <Text>8/10 items</Text>
                                 </Right>
                             </CardItem>
-                            <CardItem style={styles.cardDesign}>
+                            <CardItem style={styles.cardDesign} >
                                 <Body>
                                 <Text style={styles.textTop}>
                                     Pickup From
@@ -84,6 +85,7 @@ class PickupHistory extends Component {
                                 </Text>
                                 </Body>
                             </CardItem>
+                            </TouchableOpacity>
                             <CardItem header>
                                 <Left>
                                     <Text style={styles.textColor}>P.O No 74476</Text>
@@ -234,6 +236,9 @@ class PickupHistory extends Component {
             </Content>
         )}
 
+    cardclick= () => {
+        this.props.navigation.navigate('PhistoryDetail');
+    };
 }
 
 const styles = StyleSheet.create({
