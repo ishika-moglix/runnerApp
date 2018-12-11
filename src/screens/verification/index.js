@@ -14,7 +14,9 @@ const launchscreenBg = require("../../../assets/launchscreen-bg.png");
 const launchscreenLogo = require("../../../assets/logo-kitchen-sink.png");
 
 class Verify extends Component {
+
     constructor(props) {
+        const IMEI = require('react-native-imei');
         super(props);
         const {state} = props.navigation;
         console.log("PROPS " + state.params.userId);
@@ -22,13 +24,17 @@ class Verify extends Component {
             UserNo:state.params.userNo,
             myNumber: '',
             isDisabled: true,
-            userId:state.params.userId
+            userId:state.params.userId,
+            imei:IMEI.getImei()
         }
     };
     verifyOtp= event => {
         const user = {
             "id":this.state.userId,
-            "otp": this.state.myNumber
+            "otp": this.state.myNumber,
+            "imei": [
+                this.state.imei
+            ]
         };
         const headers = {
             'Content-Type': 'application/json',

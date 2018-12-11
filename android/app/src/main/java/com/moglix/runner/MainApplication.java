@@ -3,6 +3,7 @@ package com.moglix.runner;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import codes.simen.IMEI.IMEI;
 import com.anyline.RNImageToPDF.RNImageToPdfPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -30,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new IMEI(),
             new RNImageToPdfPackage(),
             new PickerPackage(),
             new ImagePickerPackage(),

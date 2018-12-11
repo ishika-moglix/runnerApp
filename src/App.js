@@ -15,6 +15,7 @@ import { AsyncStorage } from "react-native";
 import PickupHistory  from "./screens/pickupHistory";
 import DeliveryHistory  from "./screens/deliveryHistory";
 import PickuphistoryDetail from "./screens/pickhistoryDetail";
+
 // To see all the requests in the chrome Dev tools in the network tab.
 XMLHttpRequest = GLOBAL.originalXMLHttpRequest ?
     GLOBAL.originalXMLHttpRequest :

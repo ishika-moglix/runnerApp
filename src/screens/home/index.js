@@ -11,7 +11,25 @@ import axios from 'axios';
 import { Alert,AsyncStorage,Dimensions,ActivityIndicator,NetInfo } from "react-native";
 
 //import styles from "./styles";
-
+// import { PermissionsAndroid } from 'react-native';
+// export async function request_READ_PHONE_STATE() {
+//     try {
+//         const granted = await PermissionsAndroid.request(
+//             PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE,
+//             {
+//                 'title': 'Read Device Information ',
+//                 'message': 'We Need Device information for some security.'
+//             }
+//         )
+//         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+//             console.log("You can use the camera")
+//         } else {
+//             console.log("Camera permission denied")
+//         }
+//     } catch (err) {
+//         console.warn(err)
+//     }
+// };
 const launchscreenBg = require("../../../assets/launchscreen-bg.png");
 const launchscreenLogo = require("../../../assets/logo-kitchen-sink.png");
 const imageHeight = Math.round(Dimensions.width * 9 / 16);
@@ -19,14 +37,22 @@ const imageWidth = Dimensions.width;
 
 
 class Home extends Component {
+    async componentDidMount() {
+
+        await request_READ_PHONE_STATE() ;
+
+    }
     constructor(props) {
+
         super(props);
+
         NetInfo.getConnectionInfo().then((connectionInfo) => {
             console.log(connectionInfo.type);
             if(connectionInfo.type=='none'){
                 alert("Please check your internet connection before process");
             }
         });
+
         this.state = {
             myNumber: '',
             isDisabled: true,
@@ -154,6 +180,7 @@ class Home extends Component {
                     style={{fontSize: 15}}>
                     Enter Your Mobile number
                 </Text>
+                <Text style={{textAlign: 'center' , marginBottom: 20, fontSize: 20}}> {this.state.device_IMEI} </Text>
                 <Item style={styles.borderCls}>
                     <Text>+91</Text><Input type="number" value={this.state.myNumber} onChangeText={(text)=> this.onChanged(text)} keyboardType='numeric' placeholder='' maxLength={10} minLength={9} />
                 </Item>

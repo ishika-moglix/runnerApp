@@ -38,6 +38,7 @@
     "react-native-image-crop-picker": "^0.21.3",
     "react-native-image-picker": "^0.27.2",
     "react-native-image-to-pdf": "^1.0.0",
+    "react-native-imei": "^0.1.2",
     "react-native-pdf": "^5.0.2",
     "react-native-splash-screen": "^3.1.1",
     "react-native-vector-icons": "^6.1.0",
