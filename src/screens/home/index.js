@@ -1,35 +1,12 @@
 import React, { Component } from "react";
 import {ImageBackground, StatusBar,ScrollView, Image, TextInput, View, StyleSheet, Animated} from 'react-native';
 import {
-    Left,
-    Right, Header, Title,
-    Body, Button, H3, Text, Item,
-    Input, Toast
-} from "native-base";
+    Left, Right, Header, Title, Body, Button, H3, Text, Item, Input, Toast} from "native-base";
 import Container from "./Container";
 import axios from 'axios';
-import { Alert,AsyncStorage,Dimensions,ActivityIndicator,NetInfo } from "react-native";
+import { Alert,AsyncStorage,Dimensions,ActivityIndicator,NetInfo,Linking } from "react-native";
+import VersionNumber from 'react-native-version-number';
 
-//import styles from "./styles";
-// import { PermissionsAndroid } from 'react-native';
-// export async function request_READ_PHONE_STATE() {
-//     try {
-//         const granted = await PermissionsAndroid.request(
-//             PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE,
-//             {
-//                 'title': 'Read Device Information ',
-//                 'message': 'We Need Device information for some security.'
-//             }
-//         )
-//         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-//             console.log("You can use the camera")
-//         } else {
-//             console.log("Camera permission denied")
-//         }
-//     } catch (err) {
-//         console.warn(err)
-//     }
-// };
 const launchscreenBg = require("../../../assets/launchscreen-bg.png");
 const launchscreenLogo = require("../../../assets/logo-kitchen-sink.png");
 const imageHeight = Math.round(Dimensions.width * 9 / 16);
@@ -45,11 +22,12 @@ class Home extends Component {
     constructor(props) {
 
         super(props);
-
         NetInfo.getConnectionInfo().then((connectionInfo) => {
             console.log(connectionInfo.type);
             if(connectionInfo.type=='none'){
                 alert("Please check your internet connection before process");
+            }else {
+                this.checkVersion();
             }
         });
 
@@ -57,9 +35,11 @@ class Home extends Component {
             myNumber: '',
             isDisabled: true,
             isLoading: false,
+            modalVisible: false,
         };
-        this.checkLogin();
+
     };
+
     loginSubmit = event => {
         this.setState({ isLoading: true});
         const user = {
@@ -93,6 +73,48 @@ class Home extends Component {
                 }
             })
     };
+    checkVersion(){
+        console.log(VersionNumber.appVersion);
+        fetch(global.url+'/api/auth/config.json', {
+            method: 'get'
+        }).then(res => {
+            res.json().then(function(data) {
+                console.log(data);
+                if(data.code==200 && data.success){
+                    console.log(data.list[1].value);
+                    console.log(VersionNumber.appVersion);
+                    if(data.list[1].value==VersionNumber.appVersion){
+                        console.log("things matched");
+                        this.checkLogin();
+                    }else{
+                        console.log("install new app");
+                        Alert.alert(
+                            'New Version is Available on Store',
+                            'Please Install New Version to Access',
+                            [
+                                {text: 'Update Now', onPress: () => Linking.openURL("market://details?id=com.moglix.runner")},
+                            ],
+                            { cancelable: false }
+                        )
+                        //this.toggleModal(true);
+                    }
+                }else{
+                    Toast.show({
+                        text: "Check your Internet",
+                        buttonText: "Okay",
+                        position: "top",
+                        type: "warning",
+                        duration: 2000
+                    });
+                }
+            })
+        }).catch(err => {
+            err.json().then(function(data) {
+                console.log(data);
+                alert(data.message);
+            })
+        });
+    }
     checkLogin(){
         AsyncStorage.getItem('token', (err, result) => {
             console.log("async token");
@@ -101,6 +123,9 @@ class Home extends Component {
                 this.props.navigation.navigate('NHTab');
             }
         });
+    }
+    toggleModal(visible) {
+        this.setState({ modalVisible: visible });
     }
     onChanged(text){
         let newText = '';
@@ -175,6 +200,7 @@ class Home extends Component {
     renderForm() {
         const { isLoading} = this.state;
         return (
+
             <ScrollView style={{padding: 20}}>
                 <Text
                     style={{fontSize: 15}}>
@@ -239,6 +265,25 @@ const styles = StyleSheet.create({
         height: '50%',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    modalContent: {
+        height: 100,
+        backgroundColor: "white",
+        padding: 22,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 4,
+        borderColor: "rgba(0, 0, 0, 0.1)"
+    },
+    modal: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    text: {
+        color: '#3f2949',
+        marginTop: 10
     }
 });
 export default Home;

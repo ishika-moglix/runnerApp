@@ -5,7 +5,8 @@ import { Left,
     Body,Button, H3, Text,Item,
     Input,Icon } from "native-base";
 import axios from "axios/index";
-import { AsyncStorage } from "react-native"
+import { AsyncStorage } from "react-native";
+import SmsListener from 'react-native-android-sms-listener'
 //import BasicTab from "../tab/basicTab";
 //import Container from "./Container";
 //import styles from "./styles";
@@ -16,6 +17,11 @@ const launchscreenLogo = require("../../../assets/logo-kitchen-sink.png");
 class Verify extends Component {
 
     constructor(props) {
+        SmsListener.addListener(message => {
+            console.log(message);
+            console.log(message.body);
+            alert(message.body);
+        });
         const IMEI = require('react-native-imei');
         super(props);
         const {state} = props.navigation;
