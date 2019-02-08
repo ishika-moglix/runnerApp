@@ -14,14 +14,28 @@ import {
     Right,
     Body,
 } from "native-base";
-import { AsyncStorage,FlatList,Dimensions,ButtonBox,View,ScrollView,StyleSheet,ActivityIndicator,TextInput } from "react-native";
+import { AsyncStorage,FlatList,Dimensions,ButtonBox,BackHandler,View,ScrollView,StyleSheet,ActivityIndicator,TextInput } from "react-native";
 var { width, height } = Dimensions.get('window');
 class PickuphistoryDetail extends Component{
     constructor(props) {
         super(props);
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
         const {state} = props.navigation;
     };
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
 
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    handleBackButtonClick() {
+        if(this.props.navigation.state.routeName=="PickuphistoryDetail"){
+            this.props.navigation.goBack(null);
+            return false;
+        }
+    }
   render() {
 
     return (

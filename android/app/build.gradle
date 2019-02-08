@@ -102,8 +102,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         vectorDrawables.useSupportLibrary = true
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5
-        versionName "1.1.2"
+        versionCode 14
+        versionName "1.1.8"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -151,7 +151,6 @@ android {
 
 dependencies {
     compile project(':react-native-version-number')
-    compile project(':react-native-android-sms-listener')
     compile project(':react-native-imei')
     compile project(':react-native-image-to-pdf')
     compile project(':react-native-image-crop-picker')

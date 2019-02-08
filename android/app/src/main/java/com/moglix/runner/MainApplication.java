@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.apsl.versionnumber.RNVersionNumberPackage;
-import com.centaurwarchief.smslistener.SmsListenerPackage;
 import codes.simen.IMEI.IMEI;
 import com.anyline.RNImageToPDF.RNImageToPdfPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
@@ -34,7 +33,6 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new RNVersionNumberPackage(),
-            new SmsListenerPackage(),
             new IMEI(),
             new RNImageToPdfPackage(),
             new PickerPackage(),

@@ -36,21 +36,21 @@ const datas = [
         icon: "flame",
         sidebar:false,
         bg: "#C5F442"
-    },
-    {
-        name: "Pickup History",
-        route: "NHPickHistory",
-        icon: "flame",
-        sidebar:false,
-        bg: "#C5F442"
-    },
-    {
-        name: "Delivery History",
-        route: "NHDeliveryHistory",
-        icon: "flame",
-        sidebar:false,
-        bg: "#C5F442"
     }
+    // {
+    //     name: "Pickup History",
+    //     route: "NHPickHistory",
+    //     icon: "flame",
+    //     sidebar:false,
+    //     bg: "#C5F442"
+    // },
+    // {
+    //     name: "Delivery History",
+    //     route: "NHDeliveryHistory",
+    //     icon: "flame",
+    //     sidebar:false,
+    //     bg: "#C5F442"
+    // }
   // {
   //   name: "Header",
   //   route: "Header",
@@ -232,7 +232,7 @@ class SideBar extends Component {
           style={{ flex: 1, backgroundColor: "#fff", top: -1 ,zIndex:-1 ,}}
         >
             <View style={styles.loginImageSection}>
-          <Image resizeMode="contain" source={drawerCover} style={{width:"80%",height:50,textAlign:"center"}} />
+          <Image resizeMode="contain" source={drawerCover} style={{width:"80%",height:50}} />
           {/*<Image square style={styles.drawerImage} source={drawerImage} />*/}
             </View>
           <List style ={{ backgroundColor:"#fff"}}

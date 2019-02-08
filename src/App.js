@@ -10,11 +10,12 @@ import TabTwo from "./screens/tab/tabTwo";
 import Verify from "./screens/verification";
 import PickupList from "./screens/pickupDetail";
 import Invoiceinfo from "./screens/invoiceInfo";
-import Profile from "./screens/profile"
+import Profile from "./screens/profile";
 import { AsyncStorage } from "react-native";
 import PickupHistory  from "./screens/pickupHistory";
 import DeliveryHistory  from "./screens/deliveryHistory";
 import PickuphistoryDetail from "./screens/pickhistoryDetail";
+
 
 // To see all the requests in the chrome Dev tools in the network tab.
 XMLHttpRequest = GLOBAL.originalXMLHttpRequest ?
@@ -49,18 +50,18 @@ const Drawer = DrawerNavigator(
   }
 );
 
-const Drawer2 = DrawerNavigator(
-    {
-        NHTab2: { screen: BasicTab },
-    },
-    {
-        initialRouteName: "NHTab2",
-        contentOptions: {
-            activeTintColor: "#e91e63"
-        },
-        contentComponent: props => <SideBar {...props} />
-    }
-);
+// const Drawer2 = DrawerNavigator(
+//     {
+//         NHTab2: { screen: BasicTab },
+//     },
+//     {
+//         initialRouteName: "NHTab2",
+//         contentOptions: {
+//             activeTintColor: "#e91e63"
+//         },
+//         contentComponent: props => <SideBar {...props} />
+//     }
+// );
 
 const AppNavigator = StackNavigator(
   {

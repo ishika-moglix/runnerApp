@@ -9,11 +9,12 @@ import {
     Text, Toast
 } from "native-base";
 import axios from "axios/index";
-import { AsyncStorage,StyleSheet,View,TextInput,ActivityIndicator } from "react-native";
+import { AsyncStorage,StyleSheet,View,TextInput,ActivityIndicator,BackHandler } from "react-native";
 
 export default class TabTwo extends Component {
     constructor(props) {
         super(props);
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
         const {state} = props.navigation;
         if(state.params){
             console.log(state.params.from);
@@ -35,6 +36,17 @@ export default class TabTwo extends Component {
                 showHeader:false,
             };
         }
+    }
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    handleBackButtonClick() {
+        return true;
     }
     tab2click= () => {
         this.setState({ isLoading: true });
@@ -163,8 +175,8 @@ export default class TabTwo extends Component {
                         <TextInput style = { styles.textInput } keyboardType='numeric' value={this.state.invoiceNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="Invoice Number"></TextInput>
                     </View>
                 </Form>
-                <Button block disabled={this.state.isDisabled || isLoading} onPress={() => this.tab2click()} style={{ margin: 15, marginTop: 20 }}>
-                    <Text>Search Invoice</Text>
+                <Button block disabled={this.state.isDisabled} onPress={() => this.tab2click()} style={{ paddingTop:5,paddingBottom:5,position:'absolute',right:15,top:0}}>
+                    <Text style ={{textAlign:'center'}}>Search Invoice</Text>
                 </Button>
             </Content>
         )

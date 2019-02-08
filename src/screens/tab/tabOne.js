@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import {Header,Container, Content,Icon,Title, Card,
     CardItem,  Button,Right,Item,Body, Input, Form,Left, Text} from "native-base";
-import {StyleSheet,View,TextInput,ScrollView} from "react-native";
+import {StyleSheet,View,TextInput,ScrollView,BackHandler} from "react-native";
 import Home from "../home";
 
 export default class TabOne extends Component {
     constructor(props) {
         super(props);
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
         const {state} = props.navigation;
         if(state.params){
             console.log(state.params.from);
@@ -24,6 +25,17 @@ export default class TabOne extends Component {
                 showHeader:false
             };
         }
+    }
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    handleBackButtonClick() {
+        return true;
     }
     tab1click= () => {
         this.props.navigation.navigate('PickupList', { poNumber: this.state.mypoNumber });
@@ -63,194 +75,20 @@ export default class TabOne extends Component {
         }
     }
     renderScreen() {
+        const { isLoading} = this.state;
         return (
-            <View style={styles.contain}>
+            <View style={{ margin: 10, marginTop: 100 }}>
                 <Form>
-                <View style={styles.tbar}>
+                <View style={{borderColor:'#e0e0e',borderRadius:4,borderWidth:1,borderColor: '#d6d7da',
+                    marginLeft:15,marginRight:15}}>
                     <TextInput style = {styles.textInput } keyboardType='numeric' value={this.state.mypoNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="PO Number"></TextInput>
+                    <Button block disabled={this.state.isDisabled} onPress={() => this.tab1click()} style={{ paddingTop:0,paddingBottom:5,position:'absolute',right:0,top:0}}>
+                        <Text style ={{textAlign:'center'}}>Search PO</Text>
+                    </Button>
                 </View>
+
+
                 </Form>
-                <Button disabled={this.state.isDisabled} onPress={() => this.tab1click()} style= {{ paddingTop:5,paddingBottom:5,position:'absolute',right:15,top:0}}>
-                    <Text style ={{textAlign:'center'}}>Search PO</Text>
-                </Button>
-                <ScrollView style={styles.main}>
-                    <Card style ={{flex:1}}>
-                        <CardItem header>
-                            <Left>
-                                <Text>P.O No 74476</Text>
-                            </Left>
-                            <Right>
-                                <Text>10 items</Text>
-                            </Right>
-                        </CardItem>
-                        <CardItem>
-                            <Body>
-                            <Text>
-                                Pickup From
-                            </Text>
-                            <Text>
-                                Supplier Name - City Name
-                            </Text>
-                            <Text>
-                                Delivered To
-                            </Text>
-                            <Text>
-                                Warehouse Name
-                            </Text>
-                            <Left>
-                                <Text> Assigned By: </Text>
-                                <Text> User Name (27.11.2018)</Text>
-                            </Left>
-                            <Right>
-                                <Icon name="ios-home-outline" style={{fontSize: 30, color: 'red'}}/>
-                            </Right>
-                            </Body>
-                        </CardItem>
-                        <CardItem header>
-                            <Left>
-                                <Text>P.O No 74476</Text>
-                            </Left>
-                            <Right>
-                                <Text>10 items</Text>
-                            </Right>
-                        </CardItem>
-                        <CardItem>
-                            <Body>
-                            <Text>
-                                Pickup From
-                            </Text>
-                            <Text>
-                                Supplier Name - City Name
-                            </Text>
-                            <Text>
-                                Delivered To
-                            </Text>
-                            <Text>
-                                Warehouse Name
-                            </Text>
-                            <Left>
-                                <Text> Assigned By: </Text>
-                                <Text> User Name (27.11.2018)</Text>
-                            </Left>
-                            <Right>
-                                <Icon name="ios-home-outline" style={{fontSize: 30, color: 'red'}}/>
-                            </Right>
-                            </Body>
-                        </CardItem>
-                        <CardItem header>
-                            <Left>
-                                <Text>P.O No 74476</Text>
-                            </Left>
-                            <Right>
-                                <Text>10 items</Text>
-                            </Right>
-                        </CardItem>
-                        <CardItem>
-                            <Body>
-                            <Text>
-                                Pickup From
-                            </Text>
-                            <Text>
-                                Supplier Name - City Name
-                            </Text>
-                            <Text>
-                                Delivered To
-                            </Text>
-                            <Text>
-                                Warehouse Name
-                            </Text>
-                            <Left>
-                                <Text> Assigned By: </Text>
-                                <Text> User Name (27.11.2018)</Text>
-                            </Left>
-                            <Right>
-                                <Icon name="ios-home-outline" style={{fontSize: 30, color: 'red'}}/>
-                            </Right>
-                            </Body>
-                        </CardItem>
-                        <CardItem header>
-                            <Left>
-                                <Text>P.O No 74476</Text>
-                            </Left>
-                            <Right>
-                                <Text>10 items</Text>
-                            </Right>
-                        </CardItem>
-                        <CardItem>
-                            <Body>
-                            <Text>
-                                Pickup From
-                            </Text>
-                            <Text>
-                                Supplier Name - City Name
-                            </Text>
-                            <Text>
-                                Delivered To
-                            </Text>
-                            <Text>
-                                Warehouse Name
-                            </Text>
-                            <Text>Assigned By:</Text>
-                            <Text>User Name (27.11.2018)</Text>
-                            <Icon name="ios-world-outline" style={{fontSize: 20, color: 'red'}}/>
-                            </Body>
-                        </CardItem>
-                        <CardItem header>
-                            <Left>
-                                <Text>P.O No 74476</Text>
-                            </Left>
-                            <Right>
-                                <Text>10 items</Text>
-                            </Right>
-                        </CardItem>
-                        <CardItem>
-                            <Body>
-                            <Text>
-                                Pickup From
-                            </Text>
-                            <Text>
-                                Supplier Name - City Name
-                            </Text>
-                            <Text>
-                                Delivered To
-                            </Text>
-                            <Text>
-                                Warehouse Name
-                            </Text>
-                            <Text>Assigned By:</Text>
-                            <Text>User Name (27.11.2018)</Text>
-                            <Icon name="ios-world-outline" style={{fontSize: 20, color: 'red'}}/>
-                            </Body>
-                        </CardItem>
-                        <CardItem header>
-                            <Left>
-                                <Text>P.O No 74476</Text>
-                            </Left>
-                            <Right>
-                                <Text>10 items</Text>
-                            </Right>
-                        </CardItem>
-                        <CardItem>
-                            <Body>
-                            <Text>
-                                Pickup From
-                            </Text>
-                            <Text>
-                                Supplier Name - City Name
-                            </Text>
-                            <Text>
-                                Delivered To
-                            </Text>
-                            <Text>
-                                Warehouse Name
-                            </Text>
-                            <Text>Assigned By:</Text>
-                            <Text>User Name (27.11.2018)</Text>
-                            <Icon name="ios-world-outline" style={{fontSize: 20, color: 'red'}}/>
-                            </Body>
-                        </CardItem>
-                    </Card>
-                </ScrollView>
             </View>
         );
     }
@@ -275,198 +113,17 @@ export default class TabOne extends Component {
     }
   renderForm(){
       return (
-      <Content  style={{margin: 10,marginTop: 15,height:0}}>
-        <Form>
-        <View  style={{
-            marginLeft:15,marginRight:15,shadowColor:'rgba(0, 0, 0, 0.05)',
-            shadowOffset: { height: 3, width:0}}}>
-            <TextInput style = {styles.textInput } keyboardType='numeric' value={this.state.mypoNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="PO Number"></TextInput>
-         </View>
-        </Form>
-        <Button disabled={this.state.isDisabled} onPress={() => this.tab1click()} style= {{ paddingTop:5,paddingBottom:5,position:'absolute',right:15,top:0}}>
-            <Text style ={{textAlign:'center'}}>Search PO</Text>
-         </Button>
-         <View>
-        <ScrollView style={{flex:1,flexGrow:1}}>
-         <Card style ={{flex:1}}>
-           <CardItem header>
-               <Left>
-               <Text>P.O No 74476</Text>
-               </Left>
-               <Right>
-                   <Text>10 items</Text>
-               </Right>
-           </CardItem>
-           <CardItem>
-               <Body>
-               <Text>
-                   Pickup From
-               </Text>
-               <Text>
-                   Supplier Name - City Name
-               </Text>
-               <Text>
-                   Delivered To
-               </Text>
-               <Text>
-                   Warehouse Name
-               </Text>
-               <Left>
-                   <Text> Assigned By: </Text>
-                   <Text> User Name (27.11.2018)</Text>
-               </Left>
-               <Right>
-                   <Icon name="ios-home-outline" style={{fontSize: 30, color: 'red'}}/>
-               </Right>
-               </Body>
-           </CardItem>
-           <CardItem header>
-               <Left>
-                   <Text>P.O No 74476</Text>
-               </Left>
-               <Right>
-                   <Text>10 items</Text>
-               </Right>
-           </CardItem>
-           <CardItem>
-               <Body>
-               <Text>
-                   Pickup From
-               </Text>
-               <Text>
-                   Supplier Name - City Name
-               </Text>
-               <Text>
-                   Delivered To
-               </Text>
-               <Text>
-                   Warehouse Name
-               </Text>
-               <Left>
-                   <Text> Assigned By: </Text>
-                   <Text> User Name (27.11.2018)</Text>
-               </Left>
-               <Right>
-                    <Icon name="ios-home-outline" style={{fontSize: 30, color: 'red'}}/>
-               </Right>
-               </Body>
-           </CardItem>
-           <CardItem header>
-               <Left>
-                   <Text>P.O No 74476</Text>
-               </Left>
-               <Right>
-                   <Text>10 items</Text>
-               </Right>
-           </CardItem>
-           <CardItem>
-               <Body>
-               <Text>
-                   Pickup From
-               </Text>
-               <Text>
-                   Supplier Name - City Name
-               </Text>
-               <Text>
-                   Delivered To
-               </Text>
-               <Text>
-                   Warehouse Name
-               </Text>
-               <Left>
-                   <Text> Assigned By: </Text>
-                   <Text> User Name (27.11.2018)</Text>
-               </Left>
-               <Right>
-                   <Icon name="ios-home-outline" style={{fontSize: 30, color: 'red'}}/>
-               </Right>
-               </Body>
-           </CardItem>
-           <CardItem header>
-               <Left>
-                   <Text>P.O No 74476</Text>
-               </Left>
-               <Right>
-                   <Text>10 items</Text>
-               </Right>
-           </CardItem>
-           <CardItem>
-               <Body>
-               <Text>
-                   Pickup From
-               </Text>
-               <Text>
-                   Supplier Name - City Name
-               </Text>
-               <Text>
-                   Delivered To
-               </Text>
-               <Text>
-                   Warehouse Name
-               </Text>
-               <Text>Assigned By:</Text>
-               <Text>User Name (27.11.2018)</Text>
-               <Icon name="ios-world-outline" style={{fontSize: 20, color: 'red'}}/>
-               </Body>
-           </CardItem>
-           <CardItem header>
-               <Left>
-                   <Text>P.O No 74476</Text>
-               </Left>
-               <Right>
-                   <Text>10 items</Text>
-               </Right>
-           </CardItem>
-           <CardItem>
-               <Body>
-               <Text>
-                   Pickup From
-               </Text>
-               <Text>
-                   Supplier Name - City Name
-               </Text>
-               <Text>
-                   Delivered To
-               </Text>
-               <Text>
-                   Warehouse Name
-               </Text>
-               <Text>Assigned By:</Text>
-               <Text>User Name (27.11.2018)</Text>
-               <Icon name="ios-world-outline" style={{fontSize: 20, color: 'red'}}/>
-               </Body>
-           </CardItem>
-           <CardItem header>
-               <Left>
-                   <Text>P.O No 74476</Text>
-               </Left>
-               <Right>
-                   <Text>10 items</Text>
-               </Right>
-           </CardItem>
-           <CardItem>
-               <Body>
-               <Text>
-                   Pickup From
-               </Text>
-               <Text>
-                   Supplier Name - City Name
-               </Text>
-               <Text>
-                   Delivered To
-               </Text>
-               <Text>
-                   Warehouse Name
-               </Text>
-               <Text>Assigned By:</Text>
-               <Text>User Name (27.11.2018)</Text>
-               <Icon name="ios-world-outline" style={{fontSize: 20, color: 'red'}}/>
-               </Body>
-           </CardItem>
-       </Card>
-       </ScrollView>
-       </View>
-      </Content>
+          <Content style={{ margin: 10, marginTop: 100 }}>
+              <Form >
+                  <View style={{borderColor:'#e0e0e',borderRadius:4,borderWidth:1,borderColor: '#d6d7da',
+                      marginLeft:15,marginRight:15}}>
+                      <TextInput style = { styles.textInput } keyboardType='numeric' value={this.state.mypoNumber} onChangeText={(text)=> this.onChanged(text)} maxLength={10} placeholder="PO Number"></TextInput>
+                  </View>
+              </Form>
+              <Button block disabled={this.state.isDisabled || isLoading} onPress={() => this.tab1click()} style={{ paddingTop:5,paddingBottom:5,position:'absolute',right:15,top:0}}>
+                  <Text style ={{textAlign:'center'}}>Search PO</Text>
+              </Button>
+          </Content>
       )
    }
 }
@@ -479,17 +136,15 @@ const styles = StyleSheet.create({
 
     },
     textInput:
-        {   width: '100%',
-            paddingVertical: 8,
+        {
+            width: '100%',
+            paddingVertical: 0,
             paddingHorizontal: 15,
+            height: 40,
             margin: 0,
             fontSize: 18,
-            backgroundColor: '#fff',
-            borderColor:'#008000',
-            borderRadius:4,
-            borderWidth:1,
-            position:'relative',
-   },
+            backgroundColor: '#fff'
+        },
         smallTxt:{
             fontSize:12,
 

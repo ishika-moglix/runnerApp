@@ -3,17 +3,31 @@ import {
     Container, IconNB, Header, Title, Content,Card,
     CardItem, Text, Button, Icon,  Left, Right, Body, Toast
 } from "native-base";
-import {ActivityIndicator, StatusBar,ScrollView, Image, TextInput,  Dimensions, View, StyleSheet, Animated} from 'react-native';
+import {ActivityIndicator,BackHandler, StatusBar,ScrollView, Image, TextInput,  Dimensions, View, StyleSheet, Animated} from 'react-native';
 
 class DeliveryHistory extends Component {
     constructor(props) {
-        console.log(global.foo);
         super(props);
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
         const {state} = props.navigation;
         this.state = {
             active: false,
         };
     };
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    handleBackButtonClick() {
+        if(this.props.navigation.state.routeName=="DeliveryHistory"){
+            this.props.navigation.goBack(null);
+            return false;
+        }
+    }
     renderHeader() {
         return (
             <View >

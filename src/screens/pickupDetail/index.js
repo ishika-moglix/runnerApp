@@ -20,12 +20,13 @@ import {
     List, ListItem,
     Body,
 } from "native-base";
-import { AsyncStorage,FlatList,ButtonBox,View,StyleSheet,ActivityIndicator,TextInput } from "react-native";
+import { AsyncStorage,FlatList,BackHandler,ButtonBox,View,StyleSheet,ActivityIndicator,TextInput } from "react-native";
 import axios from "axios/index";
 
 class PickupList extends Component{
     constructor(props) {
         super(props);
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
         const {state} = props.navigation;
         this.state = {
             myPONumber: state.params.poNumber,
@@ -49,36 +50,36 @@ class PickupList extends Component{
             };
             if(result){
                 this.state.UserAuth='Bearer '.concat(result);
-            axios.post(global.url+`/api/runner/poDetail.json`, user,{ headers: { 'Authorization': this.state.UserAuth } })
-                .then(res => {
-                    if(res.data.code==200){
-                        if(res.data.success){
-                            this.state.myItems=res.data.data.poItems;
-                            this.state.myAddress=res.data.data.address;
-                            console.log(res.data.data);
-                            console.log(this.state.myItems);
+                axios.post(global.url+`/api/runner/poDetail.json`, user,{ headers: { 'Authorization': this.state.UserAuth } })
+                    .then(res => {
+                        if(res.data.code==200){
+                            if(res.data.success){
+                                this.state.myItems=res.data.data.poItems;
+                                this.state.myAddress=res.data.data.address;
+                                console.log(res.data.data);
+                                console.log(this.state.myItems);
+                                this.setState({ isLoading: false });
+                                this.forceUpdate();
+                            }else{
+                                Toast.show({
+                                    text: res.data.message,
+                                    buttonText: "Okay",
+                                    duration: 3000
+                                });
+                                this.setState({ isLoading: false });
+                            }
+                        }else if(res.data.code==401){
                             this.setState({ isLoading: false });
-                            this.forceUpdate();
-                        }else{
                             Toast.show({
                                 text: res.data.message,
                                 buttonText: "Okay",
+                                position: "top",
+                                type: "danger",
                                 duration: 3000
                             });
-                            this.setState({ isLoading: false });
+                            this.props.navigation.navigate('Home');
                         }
-                    }else if(res.data.code==401){
-                        this.setState({ isLoading: false });
-                        Toast.show({
-                            text: res.data.message,
-                            buttonText: "Okay",
-                            position: "top",
-                            type: "danger",
-                            duration: 3000
-                        });
-                        this.props.navigation.navigate('Home');
-                    }
-                });
+                    });
             }
             else{
                 Toast.show({
@@ -92,9 +93,23 @@ class PickupList extends Component{
             }
         });
     };
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    handleBackButtonClick() {
+        if(this.props.navigation.state.routeName=="PickupList"){
+            this.props.navigation.goBack(null);
+            return false;
+        }
+    }
     toggleSwitch1(indexNo) {
         console.log(indexNo);
-       // this.state.mycounter=0;
+        // this.state.mycounter=0;
         var count=0;
         for(var t=0;t<this.state.myItems.length;t++){
             console.log(this.state.myItems[t]);
@@ -146,22 +161,22 @@ class PickupList extends Component{
         //     }
         // };
         if(newText <= this.state.myItems[index].quantity){
-                    let { myItems } = this.state;
-                    let targetPost = myItems[index];
-                    targetPost.remainingQuantity=newText;
-                    this.setState({ myItems });
+            let { myItems } = this.state;
+            let targetPost = myItems[index];
+            targetPost.remainingQuantity=newText;
+            this.setState({ myItems });
         }else{
-                Toast.show({
-                    text: "Selected Qty can not be more than ordered",
-                    buttonText: "Okay",
-                    position: "top",
-                    type: "warning",
-                    duration: 3000
-                });
-                    let { myItems } = this.state;
-                    let targetPost = myItems[index];
-                    targetPost.remainingQuantity=targetPost.quantity;
-                    this.setState({ myItems });
+            Toast.show({
+                text: "Selected Qty can not be more than ordered",
+                buttonText: "Okay",
+                position: "top",
+                type: "warning",
+                duration: 3000
+            });
+            let { myItems } = this.state;
+            let targetPost = myItems[index];
+            targetPost.remainingQuantity=targetPost.quantity;
+            this.setState({ myItems });
         }
     }
     markPickupdone(){
@@ -180,39 +195,39 @@ class PickupList extends Component{
         console.log(pickupArray);
         console.log(pickupArray.length);
         if(pickupArray.length>0){
-        axios.post(global.url+`/api/runner/markPickupDone.json`,{
-            "pickupItems": pickupArray
-        },{ headers: { 'Authorization': this.state.UserAuth } })
-            .then(res => {
-                if(res.data.success && res.data.code==200){
-                    console.log(res);
-                    Toast.show({
-                        text: res.data.message,
-                        buttonText: "Okay",
-                        position: "top",
-                        type: "success",
-                        duration: 3000
-                    });
-                    this.props.navigation.navigate('NHTab');
-                }else if(!res.data.success && res.data.code==200){
-                    Toast.show({
-                        text: res.data.message,
-                        buttonText: "Okay",
-                        position: "top",
-                        type: "warning",
-                        duration: 3000
-                    })
-                }else if(res.data.code==401){
-                    Toast.show({
-                        text: res.data.message,
-                        buttonText: "Okay",
-                        position: "top",
-                        type: "danger",
-                        duration: 3000
-                    });
-                    this.props.navigation.navigate('Home');
-                }
-            });
+            axios.post(global.url+`/api/runner/markPickupDone.json`,{
+                "pickupItems": pickupArray
+            },{ headers: { 'Authorization': this.state.UserAuth } })
+                .then(res => {
+                    if(res.data.success && res.data.code==200){
+                        console.log(res);
+                        Toast.show({
+                            text: res.data.message,
+                            buttonText: "Okay",
+                            position: "top",
+                            type: "success",
+                            duration: 3000
+                        });
+                        this.props.navigation.navigate('NHTab');
+                    }else if(!res.data.success && res.data.code==200){
+                        Toast.show({
+                            text: res.data.message,
+                            buttonText: "Okay",
+                            position: "top",
+                            type: "warning",
+                            duration: 3000
+                        })
+                    }else if(res.data.code==401){
+                        Toast.show({
+                            text: res.data.message,
+                            buttonText: "Okay",
+                            position: "top",
+                            type: "danger",
+                            duration: 3000
+                        });
+                        this.props.navigation.navigate('Home');
+                    }
+                });
         }else{
             Toast.show({
                 text: "Select At least one item",
@@ -232,387 +247,387 @@ class PickupList extends Component{
         this.setState({ showAdd: !this.state.showAdd });
     }
 
-  render() {
-      const { isLoading} = this.state;
-      const { showAdd} = this.state;
-      var items=[];
-      console.log("list is here");
-      if(this.state.myItems){
-          items=this.state.myItems;
-      }
+    render() {
+        const { isLoading} = this.state;
+        const { showAdd} = this.state;
+        var items=[];
+        console.log("list is here");
+        if(this.state.myItems){
+            items=this.state.myItems;
+        }
 
-    return (
-      <Container>
-          <Header searchBar style={{ backgroundColor : '#da4439'}} rounded>
-              <Left>
-                  <Button transparent onPress={() => this.props.navigation.goBack()}>
-                      <Icon name="arrow-back" />
-                  </Button>
-              </Left>
-              <Body>
-              <Title>No-{this.state.myPONumber}</Title>
-              </Body>
-          </Header>
+        return (
+            <Container>
+                <Header searchBar style={{ backgroundColor : '#da4439'}} rounded>
+                    <Left>
+                        <Button transparent onPress={() => this.props.navigation.goBack()}>
+                            <Icon name="arrow-back" />
+                        </Button>
+                    </Left>
+                    <Body>
+                    <Title>No-{this.state.myPONumber}</Title>
+                    </Body>
+                </Header>
 
-        <Content>
-            {isLoading && (
-            <ActivityIndicator
-                animating={true}
-                style={styles.indicator}
-                size="large"
-            />
-            )}
-           <View style ={{flexDirection:'row',backgroundColor:'#fff'}}>
-            <View style ={styles.addtab1}>
-               <Text style ={{fontWeight:'bold'}}> ADDRESS</Text>
-            </View>
-             <View style ={styles.addtab2}>
-               <Button style = {styles.btnStyle} type="button"  onPress={() => this.displayAdd()}>
-                    {showAdd && (
-                    <Text style ={{color:'#4B83FD',fontWeight:'bold'}}> Hide</Text>
-
-                    )}
-                    {!showAdd && (
-                        <Text style ={{color:'#4B83FD',fontWeight:'bold'}}> Show</Text>
-                    )}
-                </Button>
-             </View>
-           </View>
-            {showAdd && (
-                <View>
-                    {this.state.myAddress.from && (
-                    <Card>
-                        <CardItem header style={styles.blueBg}>
-                            <Text>From</Text>
-                        </CardItem>
-                        <CardItem>
-                            <Body>
-                            <View style = {styles.addressParent}>
-                            <View style = {styles.addressLeft}>
-                                <Text style={styles.boldText}>
-                                    Company
-                                 </Text>
-                            </View>
-                                <View styles ={styles.dots}>
-                                    <Text>:</Text>
-                                </View>
-
-                            <View style = {styles.addressRight}>
-                                  <Text style={[styles.rightText,styles.boldText]}>
-                                     {this.state.myAddress.from.company}
-                                </Text>
-                            </View>
-                            </View>
-                            <View style = {styles.addressParent}>
-                                <View style = {styles.addressLeft}>
-                                    <Text>
-                                        Address
-                                    </Text>
-                                </View>
-                                <View styles ={styles.dots}>
-                                    <Text>:</Text>
-                                </View>
-                                <View style = {styles.addressRight}>
-                                    <Text>
-                                         {this.state.myAddress.from.address}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style = {styles.addressParent}>
-                                <View style = {styles.addressLeft}>
-                                    <Text>
-                                        City
-                                    </Text>
-                                </View>
-                                <View styles ={styles.dots}>
-                                    <Text>:</Text>
-                                </View>
-                                <View style = {styles.addressRight}>
-                                    <Text>
-                                        {this.state.myAddress.from.city}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style = {styles.addressParent}>
-                                <View style = {styles.addressLeft}>
-                                    <Text>
-                                        State
-                                    </Text>
-                                </View>
-                                <View styles ={styles.dots}>
-                                    <Text>:</Text>
-                                </View>
-                                <View style = {styles.addressRight}>
-                                    <Text>
-                                         {this.state.myAddress.from.state}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style = {styles.addressParent}>
-                                <View style = {styles.addressLeft}>
-                                    <Text>
-                                        Phone
-                                    </Text>
-                                </View>
-                                <View styles ={styles.dots}>
-                                    <Text>:</Text>
-                                </View>
-                                <View style = {styles.addressRight}>
-                                    <Text>
-                                        {this.state.myAddress.from.phone}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style = {styles.addressParent}>
-                                <View style = {styles.addressLeft}>
-                                    <Text>
-                                        Tin
-                                    </Text>
-                                </View>
-                                <View styles ={styles.dots}>
-                                    <Text>:</Text>
-                                </View>
-                                <View style = {styles.addressRight}>
-                                    <Text>
-                                        {this.state.myAddress.from.tinNo}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style = {styles.addressParent}>
-                                <View style = {styles.addressLeft}>
-                                    <Text>
-                                        GSTIN
-                                    </Text>
-                                </View>
-                                <View styles ={styles.dots}>
-                                    <Text>:</Text>
-                                </View>
-                                <View style = {styles.addressRight}>
-                                    <Text>
-                                         {this.state.myAddress.from.gstin}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style = {styles.addressParent}>
-                                <View style = {styles.addressLeft}>
-                                    <Text>
-                                        State Code
-                                    </Text>
-                                </View>
-                                <View styles ={styles.dots}>
-                                    <Text>:</Text>
-                                </View>
-                                <View style = {styles.addressRight}>
-                                    <Text>
-                                        {this.state.myAddress.from.stateCode}
-                                    </Text>
-                                </View>
-                            </View>
-                            </Body>
-                        </CardItem>
-                    </Card>
-                    )}
-                    {this.state.myAddress.to && (
-                    <Card>
-                        <CardItem header style={styles.blueBg}>
-                            <Text>To</Text>
-                        </CardItem>
-                        <CardItem>
-                            <Body>
-                            <View style = {styles.addressParent}>
-                                <View style = {styles.addressLeft}>
-                                    <Text style={styles.boldText}>
-                                        Company
-                                    </Text>
-                                </View>
-                                <View styles ={styles.dots}>
-                                    <Text>:</Text>
-                                </View>
-                                <View style = {styles.addressRight}>
-
-                                    <Text style={[styles.rightText,styles.boldText]}>
-                                      {this.state.myAddress.to.company}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style = {styles.addressParent}>
-                                <View style = {styles.addressLeft}>
-                                    <Text>
-                                        Address
-                                    </Text>
-                                </View>
-                                <View styles ={styles.dots}>
-                                    <Text>:</Text>
-                                </View>
-                                <View style = {styles.addressRight}>
-                                    <Text>
-                                        {this.state.myAddress.to.address}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style = {styles.addressParent}>
-                                <View style = {styles.addressLeft}>
-                                    <Text>
-                                        City
-                                    </Text>
-                                </View>
-                                <View styles ={styles.dots}>
-                                    <Text>:</Text>
-                                </View>
-                                <View style = {styles.addressRight}>
-                                    <Text>
-                                        {this.state.myAddress.to.city}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style = {styles.addressParent}>
-                                <View style = {styles.addressLeft}>
-                                    <Text>
-                                        State
-                                    </Text>
-                                </View>
-                                <View styles ={styles.dots}>
-                                    <Text>:</Text>
-                                </View>
-                                <View style = {styles.addressRight}>
-                                    <Text>
-                                        {this.state.myAddress.to.state}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style = {styles.addressParent}>
-                                <View style = {styles.addressLeft}>
-                                    <Text>
-                                        Phone
-                                    </Text>
-                                </View>
-                                <View styles ={styles.dots}>
-                                    <Text>:</Text>
-                                </View>
-                                <View style = {styles.addressRight}>
-                                    <Text>
-                                        {this.state.myAddress.to.phone}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style = {styles.addressParent}>
-                                <View style = {styles.addressLeft}>
-                                    <Text>
-                                        Tin
-                                    </Text>
-                                </View>
-                                <View styles ={styles.dots}>
-                                    <Text>:</Text>
-                                </View>
-                                <View style = {styles.addressRight}>
-                                    <Text>
-                                        {this.state.myAddress.to.tinNo}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style = {styles.addressParent}>
-                                <View style = {styles.addressLeft}>
-                                    <Text>
-                                        GSTIN
-                                    </Text>
-                                </View>
-                                <View styles ={styles.dots}>
-                                    <Text>:</Text>
-                                </View>
-                                <View style = {styles.addressRight}>
-                                    <Text>
-                                        {this.state.myAddress.to.gstin}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style = {styles.addressParent}>
-                                <View style = {styles.addressLeft}>
-                                    <Text>
-                                        Email
-                                    </Text>
-                                </View>
-                                <View styles ={styles.dots}>
-                                    <Text>:</Text>
-                                </View>
-                                <View style = {styles.addressRight}>
-                                    <Text>
-                                        {this.state.myAddress.to.email}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style = {styles.addressParent}>
-                                <View style = {styles.addressLeft}>
-                                    <Text>
-                                        State Code
-                                    </Text>
-                                </View>
-                                <View styles ={styles.dots}>
-                                    <Text>:</Text>
-                                </View>
-                                <View style = {styles.addressRight}>
-                                    <Text>
-                                        {this.state.myAddress.to.stateCode}
-                                    </Text>
-                                </View>
-                            </View>
-                            </Body>
-                        </CardItem>
-                    </Card>
-                    )}
-                </View>
-            )}
-            <View style ={{flexDirection:'row',backgroundColor:'#fff',marginTop:10,borderBottomWidth:0.5,borderColor:'#e0e0e0'}}>
-                <View style ={styles.addtab1}>
-                    <Text style ={{fontWeight:'bold'}}> ITEMS</Text>
-                </View>
-            </View>
-            <FlatList style ={{backgroundColor:'#fff'}}
-                extraData={this.state}
-                data={this.state.myItems}
-                showsVerticalScrollIndicator={false}
-                renderItem={({item,index}) =>
-                    <ListItem  style={styles.top} >
-                        <CheckBox onPress={() => this.toggleSwitch1(index)} style = {{borderRadius:100 ,marginTop:6,marginLeft:-25}}
-                                  checked={(item.status)}
+                <Content>
+                    {isLoading && (
+                        <ActivityIndicator
+                            animating={true}
+                            style={styles.indicator}
+                            size="large"
                         />
-                        <Left style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',marginLeft:10
-                        }}>
-                            <Text onPress={() => this.toggleSwitch1(index)} style={{fontSize:14}}>{item.productName}{"\n"}<Text style={[item.status ? ( (item.remainingQuantity==item.quantity) ? styles.textvalid : styles.textinvalid) : styles.mytext]}>{item.status} QTY : {item.quantity}</Text></Text>
-                        </Left>
+                    )}
+                    <View style ={{flexDirection:'row',backgroundColor:'#fff'}}>
+                        <View style ={styles.addtab1}>
+                            <Text style ={{fontWeight:'bold'}}> ADDRESS</Text>
+                        </View>
+                        <View style ={styles.addtab2}>
+                            <Button style = {styles.btnStyle} type="button"  onPress={() => this.displayAdd()}>
+                                {showAdd && (
+                                    <Text style ={{color:'#4B83FD',fontWeight:'bold'}}> Hide</Text>
 
-                        <Right style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',
-                        }}>
+                                )}
+                                {!showAdd && (
+                                    <Text style ={{color:'#4B83FD',fontWeight:'bold'}}> Show</Text>
+                                )}
+                            </Button>
+                        </View>
+                    </View>
+                    {showAdd && (
+                        <View>
+                            {this.state.myAddress.from && (
+                                <Card>
+                                    <CardItem header style={styles.blueBg}>
+                                        <Text>From</Text>
+                                    </CardItem>
+                                    <CardItem>
+                                        <Body>
+                                        <View style = {styles.addressParent}>
+                                            <View style = {styles.addressLeft}>
+                                                <Text style={styles.boldText}>
+                                                    Company
+                                                </Text>
+                                            </View>
+                                            <View styles ={styles.dots}>
+                                                <Text>:</Text>
+                                            </View>
 
-                    <Button style={styles.flex1} disabled={item.remainingQuantity==1} transparent onPress={() => this.decreaseValue( item, index )}>
-                    <Icon style={{fontSize:14,fontWeight:'bold',color:'#000'}}  name="remove" />
-                    </Button>
-                            <TextInput keyboardType='numeric' onChangeText={(text)=> this.testPickup(text,index)} style={styles.remainingQty} value={item.remainingQuantity.toString()} />
+                                            <View style = {styles.addressRight}>
+                                                <Text style={[styles.rightText,styles.boldText]}>
+                                                    {this.state.myAddress.from.company}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style = {styles.addressParent}>
+                                            <View style = {styles.addressLeft}>
+                                                <Text>
+                                                    Address
+                                                </Text>
+                                            </View>
+                                            <View styles ={styles.dots}>
+                                                <Text>:</Text>
+                                            </View>
+                                            <View style = {styles.addressRight}>
+                                                <Text>
+                                                    {this.state.myAddress.from.address}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style = {styles.addressParent}>
+                                            <View style = {styles.addressLeft}>
+                                                <Text>
+                                                    City
+                                                </Text>
+                                            </View>
+                                            <View styles ={styles.dots}>
+                                                <Text>:</Text>
+                                            </View>
+                                            <View style = {styles.addressRight}>
+                                                <Text>
+                                                    {this.state.myAddress.from.city}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style = {styles.addressParent}>
+                                            <View style = {styles.addressLeft}>
+                                                <Text>
+                                                    State
+                                                </Text>
+                                            </View>
+                                            <View styles ={styles.dots}>
+                                                <Text>:</Text>
+                                            </View>
+                                            <View style = {styles.addressRight}>
+                                                <Text>
+                                                    {this.state.myAddress.from.state}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style = {styles.addressParent}>
+                                            <View style = {styles.addressLeft}>
+                                                <Text>
+                                                    Phone
+                                                </Text>
+                                            </View>
+                                            <View styles ={styles.dots}>
+                                                <Text>:</Text>
+                                            </View>
+                                            <View style = {styles.addressRight}>
+                                                <Text>
+                                                    {this.state.myAddress.from.phone}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style = {styles.addressParent}>
+                                            <View style = {styles.addressLeft}>
+                                                <Text>
+                                                    Tin
+                                                </Text>
+                                            </View>
+                                            <View styles ={styles.dots}>
+                                                <Text>:</Text>
+                                            </View>
+                                            <View style = {styles.addressRight}>
+                                                <Text>
+                                                    {this.state.myAddress.from.tinNo}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style = {styles.addressParent}>
+                                            <View style = {styles.addressLeft}>
+                                                <Text>
+                                                    GSTIN
+                                                </Text>
+                                            </View>
+                                            <View styles ={styles.dots}>
+                                                <Text>:</Text>
+                                            </View>
+                                            <View style = {styles.addressRight}>
+                                                <Text>
+                                                    {this.state.myAddress.from.gstin}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style = {styles.addressParent}>
+                                            <View style = {styles.addressLeft}>
+                                                <Text>
+                                                    State Code
+                                                </Text>
+                                            </View>
+                                            <View styles ={styles.dots}>
+                                                <Text>:</Text>
+                                            </View>
+                                            <View style = {styles.addressRight}>
+                                                <Text>
+                                                    {this.state.myAddress.from.stateCode}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        </Body>
+                                    </CardItem>
+                                </Card>
+                            )}
+                            {this.state.myAddress.to && (
+                                <Card>
+                                    <CardItem header style={styles.blueBg}>
+                                        <Text>To</Text>
+                                    </CardItem>
+                                    <CardItem>
+                                        <Body>
+                                        <View style = {styles.addressParent}>
+                                            <View style = {styles.addressLeft}>
+                                                <Text style={styles.boldText}>
+                                                    Company
+                                                </Text>
+                                            </View>
+                                            <View styles ={styles.dots}>
+                                                <Text>:</Text>
+                                            </View>
+                                            <View style = {styles.addressRight}>
 
-                    <Button style={styles.flex1} disabled={item.remainingQuantity==item.quantity} transparent onPress={(e) => this.increaseValue( item, index )}>
-                    <Icon style={{fontSize:14,fontWeight:'bold',color:'#000'}} name="add" />
-                    </Button>
-                        </Right>
-                    </ListItem>
-                }
-                keyExtractor={item => item.productName}
-            />
-        </Content>
+                                                <Text style={[styles.rightText,styles.boldText]}>
+                                                    {this.state.myAddress.to.company}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style = {styles.addressParent}>
+                                            <View style = {styles.addressLeft}>
+                                                <Text>
+                                                    Address
+                                                </Text>
+                                            </View>
+                                            <View styles ={styles.dots}>
+                                                <Text>:</Text>
+                                            </View>
+                                            <View style = {styles.addressRight}>
+                                                <Text>
+                                                    {this.state.myAddress.to.address}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style = {styles.addressParent}>
+                                            <View style = {styles.addressLeft}>
+                                                <Text>
+                                                    City
+                                                </Text>
+                                            </View>
+                                            <View styles ={styles.dots}>
+                                                <Text>:</Text>
+                                            </View>
+                                            <View style = {styles.addressRight}>
+                                                <Text>
+                                                    {this.state.myAddress.to.city}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style = {styles.addressParent}>
+                                            <View style = {styles.addressLeft}>
+                                                <Text>
+                                                    State
+                                                </Text>
+                                            </View>
+                                            <View styles ={styles.dots}>
+                                                <Text>:</Text>
+                                            </View>
+                                            <View style = {styles.addressRight}>
+                                                <Text>
+                                                    {this.state.myAddress.to.state}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style = {styles.addressParent}>
+                                            <View style = {styles.addressLeft}>
+                                                <Text>
+                                                    Phone
+                                                </Text>
+                                            </View>
+                                            <View styles ={styles.dots}>
+                                                <Text>:</Text>
+                                            </View>
+                                            <View style = {styles.addressRight}>
+                                                <Text>
+                                                    {this.state.myAddress.to.phone}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style = {styles.addressParent}>
+                                            <View style = {styles.addressLeft}>
+                                                <Text>
+                                                    Tin
+                                                </Text>
+                                            </View>
+                                            <View styles ={styles.dots}>
+                                                <Text>:</Text>
+                                            </View>
+                                            <View style = {styles.addressRight}>
+                                                <Text>
+                                                    {this.state.myAddress.to.tinNo}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style = {styles.addressParent}>
+                                            <View style = {styles.addressLeft}>
+                                                <Text>
+                                                    GSTIN
+                                                </Text>
+                                            </View>
+                                            <View styles ={styles.dots}>
+                                                <Text>:</Text>
+                                            </View>
+                                            <View style = {styles.addressRight}>
+                                                <Text>
+                                                    {this.state.myAddress.to.gstin}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style = {styles.addressParent}>
+                                            <View style = {styles.addressLeft}>
+                                                <Text>
+                                                    Email
+                                                </Text>
+                                            </View>
+                                            <View styles ={styles.dots}>
+                                                <Text>:</Text>
+                                            </View>
+                                            <View style = {styles.addressRight}>
+                                                <Text>
+                                                    {this.state.myAddress.to.email}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style = {styles.addressParent}>
+                                            <View style = {styles.addressLeft}>
+                                                <Text>
+                                                    State Code
+                                                </Text>
+                                            </View>
+                                            <View styles ={styles.dots}>
+                                                <Text>:</Text>
+                                            </View>
+                                            <View style = {styles.addressRight}>
+                                                <Text>
+                                                    {this.state.myAddress.to.stateCode}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        </Body>
+                                    </CardItem>
+                                </Card>
+                            )}
+                        </View>
+                    )}
+                    <View style ={{flexDirection:'row',backgroundColor:'#fff',marginTop:10,borderBottomWidth:0.5,borderColor:'#e0e0e0'}}>
+                        <View style ={styles.addtab1}>
+                            <Text style ={{fontWeight:'bold'}}> ITEMS</Text>
+                        </View>
+                    </View>
+                    <FlatList style ={{backgroundColor:'#fff'}}
+                              extraData={this.state}
+                              data={this.state.myItems}
+                              showsVerticalScrollIndicator={false}
+                              renderItem={({item,index}) =>
+                                  <ListItem  style={styles.top} >
+                                      <CheckBox onPress={() => this.toggleSwitch1(index)} style = {{borderRadius:100 ,marginTop:6,marginLeft:-25}}
+                                                checked={(item.status)}
+                                      />
+                                      <Left style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',marginLeft:10
+                                      }}>
+                                          <Text onPress={() => this.toggleSwitch1(index)} style={{fontSize:14}}><Text style={styles.mytext}>{item.brandName} - </Text>{item.productName}{"\n"}<Text style={[item.status ? ( (item.remainingQuantity==item.quantity) ? styles.textvalid : styles.textinvalid) : styles.mytext]}>{item.status} QTY : {item.quantity}</Text></Text>
+                                      </Left>
 
-        <Footer style={{backgroundColor:"white",shadowColor:'#00000',shadowOffset:{width:0,height:-3},shadowOpacity:0.16, shadowRadius: 2}}>
-              <View style={styles.container2}>
-                  <View style={styles.textContainer}>
-                      <Text>{this.state.mycounter}/{this.state.myItems.length} Items</Text>
-                  </View>
-                  <View style={styles.buttonContainer}>
-                      <Button onPress={() => this.markPickupdone()}>
-                          <Text> Pickup Done</Text>
-                      </Button>
-                  </View>
-              </View>
-        </Footer>
-      </Container>
-    );
-  }
+                                      <Right style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between',
+                                      }}>
+
+                                          <Button style={styles.flex1} disabled={item.remainingQuantity==1} transparent onPress={() => this.decreaseValue( item, index )}>
+                                              <Icon style={{fontSize:14,fontWeight:'bold',color:'#000'}}  name="remove" />
+                                          </Button>
+                                          <TextInput keyboardType='numeric' onChangeText={(text)=> this.testPickup(text,index)} style={styles.remainingQty} value={item.remainingQuantity.toString()} />
+
+                                          <Button style={styles.flex1} disabled={item.remainingQuantity==item.quantity} transparent onPress={(e) => this.increaseValue( item, index )}>
+                                              <Icon style={{fontSize:14,fontWeight:'bold',color:'#000'}} name="add" />
+                                          </Button>
+                                      </Right>
+                                  </ListItem>
+                              }
+                              keyExtractor={item => item.productName}
+                    />
+                </Content>
+
+                <Footer style={{backgroundColor:"white",shadowColor:'#00000',shadowOffset:{width:0,height:-3},shadowOpacity:0.16, shadowRadius: 2}}>
+                    <View style={styles.container2}>
+                        <View style={styles.textContainer}>
+                            <Text>{this.state.mycounter}/{this.state.myItems.length} Items</Text>
+                        </View>
+                        <View style={styles.buttonContainer}>
+                            <Button onPress={() => this.markPickupdone()}>
+                                <Text> Pickup Done</Text>
+                            </Button>
+                        </View>
+                    </View>
+                </Footer>
+            </Container>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -623,8 +638,8 @@ const styles = StyleSheet.create({
         shadowRadius: 10,
     },
     textContainer:{
-      paddingLeft:25,
-      flex:1
+        paddingLeft:25,
+        flex:1
     },
     container2: {
         flex: 1,
@@ -660,8 +675,8 @@ const styles = StyleSheet.create({
 
     },
     textvalid: {
-         color:"#59C100",
-         fontWeight:'bold',
+        color:"#59C100",
+        fontWeight:'bold',
 
 
     },
@@ -726,24 +741,24 @@ const styles = StyleSheet.create({
         paddingLeft:30,
         flexDirection:'row',
         alignItems:'center',
-      },
+    },
     addtab2:{
         flexGrow:1,
         height:50,
         justifyContent:'flex-end',
         flexDirection:'row',
         alignItems:'center',
-          paddingRight:10,
-         marginRight:'auto'
-      },
+        paddingRight:10,
+        marginRight:'auto'
+    },
 
     blueBg:{
-      backgroundColor:'#F5F8FF',
-      color:'#3875FD'
+        backgroundColor:'#F5F8FF',
+        color:'#3875FD'
     },
     boldText:{
-      fontWeight:"500",
-   },
+        fontWeight:"500",
+    },
     eqWidth:{
         minWidth:200,
         fontSize:15
@@ -755,34 +770,34 @@ const styles = StyleSheet.create({
         borderWidth:0,
         shadowOffset: { width: 0, height: 2 },
         elevation:0
-   },
-   addressParent:{
-       //justifyContent: 'space-between',
-       flexDirection:'row',
-       paddingTop:8,
-       flexWrap: 'wrap',
-       alignItems: 'flex-start',
-     },
-   addressLeft:{
-       width:100,
-       paddingLeft:10,
+    },
+    addressParent:{
+        //justifyContent: 'space-between',
+        flexDirection:'row',
+        paddingTop:8,
+        flexWrap: 'wrap',
+        alignItems: 'flex-start',
+    },
+    addressLeft:{
+        width:100,
+        paddingLeft:10,
 
-       flex:1
+        flex:1
     },
     addressRight:{
         width:250,
         paddingLeft:10,
         flex:3
 
-      },
+    },
     rightText:{
 
     },
     dots:{
-       flex:1,
-       width:10,
-       paddingLeft:15,
-       paddingRight:15
+        flex:1,
+        width:10,
+        paddingLeft:15,
+        paddingRight:15
     }
 
 });

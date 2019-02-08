@@ -6,7 +6,7 @@ import {
 //import Pdf from 'react-native-pdf';
 //import styles from "./styles";
 //import styles from "../form/styles";
-import {ImageBackground,ActivityIndicator, StatusBar,ScrollView, Image, TextInput,  Dimensions, View, StyleSheet, Animated} from 'react-native';
+import {ImageBackground,BackHandler,ActivityIndicator, StatusBar,ScrollView, Image, TextInput,  Dimensions, View, StyleSheet, Animated} from 'react-native';
 import Pdf from 'react-native-pdf';
 import { AsyncStorage } from "react-native";
 //import {TabTwo} from "../tab/tabTwo";
@@ -25,8 +25,8 @@ let mytest;
 class Invoiceinfo extends Component {
 
     constructor(props) {
-        console.log(global.foo);
         super(props);
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
         var today = new Date();
         finaldate=today.getFullYear() +"-"+ parseInt(today.getMonth()+1) + "-" +today.getDate();
         const {state} = props.navigation;
@@ -57,6 +57,20 @@ class Invoiceinfo extends Component {
             }
         });
     };
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    handleBackButtonClick() {
+        if(this.props.navigation.state.routeName=="Invoiceinfo"){
+            this.props.navigation.goBack(null);
+            return false;
+        }
+    }
     renderHeader() {
         return (
             <View >
@@ -219,6 +233,15 @@ class Invoiceinfo extends Component {
                 this.setState({ isLoading: false });
                 console.log("error log is here"+err);
                 //alert(JSON.stringify(err));
+                Toast.show({
+                    text: "Session Expired. Login Again",
+                    buttonText: "Okay",
+                    position: "top",
+                    type: "danger",
+                    duration: 2000
+                });
+                AsyncStorage.clear();
+                this.props.navigation.navigate('Home');
                 err.json().then(function(data) {
                     console.log(data);
                     alert(data.message);

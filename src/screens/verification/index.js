@@ -1,15 +1,11 @@
 import React, { Component } from "react";
-import {ImageBackground, StatusBar,ScrollView, Image, TextInput, View, StyleSheet, Animated} from 'react-native';
+import {ImageBackground,BackHandler, StatusBar,ScrollView, Image, TextInput, View, StyleSheet, Animated} from 'react-native';
 import { Left,
     Right,Header,Title, Container,
     Body,Button, H3, Text,Item,
     Input,Icon } from "native-base";
 import axios from "axios/index";
 import { AsyncStorage } from "react-native";
-import SmsListener from 'react-native-android-sms-listener'
-//import BasicTab from "../tab/basicTab";
-//import Container from "./Container";
-//import styles from "./styles";
 
 const launchscreenBg = require("../../../assets/launchscreen-bg.png");
 const launchscreenLogo = require("../../../assets/logo-kitchen-sink.png");
@@ -17,12 +13,14 @@ const launchscreenLogo = require("../../../assets/logo-kitchen-sink.png");
 class Verify extends Component {
 
     constructor(props) {
-        SmsListener.addListener(message => {
-            console.log(message);
-            console.log(message.body);
-            alert(message.body);
-        });
-        const IMEI = require('react-native-imei');
+        super(props);
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+        // SmsListener.addListener(message => {
+        //     console.log(message);
+        //     console.log(message.body);
+        //     //alert(message.body);
+        // });
+         const IMEI = require('react-native-imei');
         super(props);
         const {state} = props.navigation;
         console.log("PROPS " + state.params.userId);
@@ -34,6 +32,20 @@ class Verify extends Component {
             imei:IMEI.getImei()
         }
     };
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    handleBackButtonClick() {
+        if(this.props.navigation.state.routeName=="Verify"){
+            this.props.navigation.goBack(null);
+            return false;
+        }
+    }
     verifyOtp= event => {
         const user = {
             "id":this.state.userId,

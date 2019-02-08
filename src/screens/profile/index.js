@@ -3,18 +3,30 @@ import {
     Container, Header, Title, ListItem,
     Content, Button, Icon, Text, Body, Left, Right, Toast
 } from "native-base";
-import { StyleSheet } from "react-native";
+import { StyleSheet,BackHandler } from "react-native";
 import axios from "axios/index";
 import { AsyncStorage } from "react-native";
 
 class Profile extends Component {
     constructor(props) {
         super(props);
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
         this.getProfile();
         this.state = {
             profileInfo: [],
             AuthStr: '',
         };
+    }
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    handleBackButtonClick() {
+        return true;
     }
     getProfile= () => {
         AsyncStorage.getItem('token', (err, result) => {
@@ -40,7 +52,7 @@ class Profile extends Component {
                         }else{
                             alert(res.data.message);
                         }
-                    });
+                    }).catch(err => this.myerror());;
             }else{
                 Toast.show({
                     text: "no token Found ! Login Again",
@@ -55,6 +67,17 @@ class Profile extends Component {
         });
 
     };
+    myerror(){
+        Toast.show({
+            text: "Session Expired. Login Again",
+            buttonText: "Okay",
+            position: "top",
+            type: "danger",
+            duration: 2000
+        });
+        AsyncStorage.clear();
+        this.props.navigation.navigate('Home');
+    }
   render() {
     return (
       <Container style={styles.container}>
