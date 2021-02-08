@@ -1,51 +1,38 @@
 {
-  "name": "NativebaseKitchenSink",
-  "version": "2.7.0",
+  "name": "moglix_runner",
+  "version": "0.0.1",
   "private": true,
-  "devDependencies": {
-    "babel-eslint": "7.2.3",
-    "eslint": "4.4.1",
-    "eslint-plugin-flowtype": "2.35.0",
-    "eslint-plugin-import": "2.7.0",
-    "eslint-plugin-jsx-a11y": "6.0.2",
-    "eslint-plugin-prettier": "2.1.2",
-    "eslint-plugin-react": "7.1.0",
-    "eslint-plugin-react-native": "3.0.1",
-    "flow-bin": "0.52.0",
-    "flow-typed": "2.1.5",
-    "husky": "0.14.3",
-    "jest": "23.3.0",
-    "prettier": "1.5.3",
-    "react-test-renderer": "16.4.1"
-  },
   "scripts": {
-    "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "test": "node node_modules/jest/bin/jest.js --watch"
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@react-native-community/masked-view": "^0.1.10",
+    "@react-navigation/drawer": "^5.12.3",
+    "@react-navigation/native": "^5.9.2",
+    "@react-navigation/stack": "^5.14.2",
+    "native-base": "^2.15.2",
+    "react": "16.13.1",
+    "react-native": "0.63.4",
+    "react-native-gesture-handler": "^1.9.0",
+    "react-native-reanimated": "^1.13.2",
+    "react-native-safe-area-context": "^3.1.9",
+    "react-native-screens": "^2.17.1"
+  },
+  "devDependencies": {
+    "@babel/core": "7.12.13",
+    "@babel/runtime": "7.12.13",
+    "@react-native-community/eslint-config": "1.1.0",
+    "babel-jest": "25.5.1",
+    "eslint": "6.8.0",
+    "jest": "25.5.4",
+    "metro-react-native-babel-preset": "0.59.0",
+    "react-test-renderer": "16.13.1"
   },
   "jest": {
     "preset": "react-native"
-  },
-  "dependencies": {
-    "axios": "^0.18.0",
-    "color": "1.0.3",
-    "lodash": "4.13.1",
-    "moment": "2.13.0",
-    "native-base": "2.7.0",
-    "react": "16.4.1",
-    "react-native": "0.56.0",
-    "react-native-app-link": "^1.0.0",
-    "react-native-image-crop-picker": "^0.21.3",
-    "react-native-image-picker": "^0.27.2",
-    "react-native-image-to-pdf": "^1.0.0",
-    "react-native-imei": "^0.1.2",
-    "react-native-pdf": "^5.0.2",
-    "react-native-splash-screen": "^3.1.1",
-    "react-native-vector-icons": "^6.1.0",
-    "react-native-version-number": "^0.3.5",
-    "react-navigation": "1.5.0",
-    "rn-fetch-blob": "^0.10.13",
-    "uglify-es": "^3.2.2"
   }
 }
