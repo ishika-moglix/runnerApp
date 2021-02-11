@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
+import axios from "axios";
+import { connect } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import AuthActions from "../redux/actions/auth";
 
+import LoadingScreen from "../containers/Loading";
 import LoginScreen from "../containers/Login";
 import VerificationScreen from "../containers/Verification";
 import HomeScreen from "../containers/Home";
@@ -19,11 +23,27 @@ import CustomDrawer from "../components/Drawer";
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-export default Routes = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+const Routes = (props) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get("https://runnerqa.moglilabs.com/api/auth/getConfiguration")
+      .then(({ data: { list } }) => {
+        props.setBaseUrl(
+          "https://runnerqa.moglilabs.com/api/" ||
+            list.find((_) => _.name == "BASE_URL").value
+        );
+      });
+  }, []);
 
   const changeLoginState = () => {
     setIsLoggedIn(!isLoggedIn);
+  };
+
+  const changeLoading = () => {
+    setLoading(!loading);
   };
 
   const DrawerStack = () => {
@@ -48,7 +68,21 @@ export default Routes = () => {
 
   return (
     <NavigationContainer>
-      {isLoggedIn ? (
+      {loading ? (
+        <Stack.Navigator>
+          <Stack.Screen
+            component={LoadingScreen}
+            options={{
+              headerShown: false,
+            }}
+            name="Loading"
+            initialParams={{
+              setLoading: changeLoading,
+              setIsLoggedIn: changeLoginState,
+            }}
+          />
+        </Stack.Navigator>
+      ) : isLoggedIn ? (
         <Stack.Navigator>
           <Stack.Screen
             component={DrawerStack}
@@ -105,3 +139,13 @@ export default Routes = () => {
     </NavigationContainer>
   );
 };
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setBaseUrl: (url) => dispatch(AuthActions.setBaseUrl(url)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Routes);
