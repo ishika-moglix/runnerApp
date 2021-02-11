@@ -1,18 +1,20 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import LoginScreen from '../containers/Login';
-import VerificationScreen from '../containers/Verification';
-import HomeScreen from '../containers/Home';
-import PickupScreen from '../containers/Pickup';
-import AddressScreen from '../containers/Address';
-import DeliveryScreen from '../containers/Delivery';
-import ReturnScreen from '../containers/Return';
+import LoginScreen from "../containers/Login";
+import VerificationScreen from "../containers/Verification";
+import HomeScreen from "../containers/Home";
+import PickupScreen from "../containers/Pickup";
+import AddressScreen from "../containers/Address";
+import DeliveryScreen from "../containers/Delivery";
+import ReturnScreen from "../containers/Return";
+import ItemDetailsScreen from "../containers/ItemDetails";
+import ItemsImagesScreen from "../containers/ItemsImages";
 
-import CustomDrawer from '../components/Drawer';
+import CustomDrawer from "../components/Drawer";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -34,7 +36,8 @@ export default Routes = () => {
             }}
             {...props}
           />
-        )}>
+        )}
+      >
         <Drawer.Screen name="Home" component={HomeScreen} />
         <Drawer.Screen name="Pickup" component={PickupScreen} />
         <Drawer.Screen name="Delivery" component={DeliveryScreen} />
@@ -57,6 +60,20 @@ export default Routes = () => {
           <Stack.Screen
             name="Address"
             component={AddressScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="ItemDetails"
+            component={ItemDetailsScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="ItemsImages"
+            component={ItemsImagesScreen}
             options={{
               headerShown: false,
             }}
