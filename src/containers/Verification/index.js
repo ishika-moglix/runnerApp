@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Image,
@@ -17,39 +17,71 @@ import {
   Toast,
   Button,
 } from "native-base";
-import { login } from "../../services/auth";
+import { login, sendOtp } from "../../services/auth";
 import DeviceInfo from "react-native-device-info";
 
 export default VerificationScreen = (props) => {
   const [otp, setOtp] = useState("");
+  const [resendOtp, setResendOtp] = useState(false);
   const [loader, setLoader] = useState(false);
+
+  useEffect(() => {
+    resendOtpTimer();
+  }, []);
+
+  const resendOtpTimer = () => {
+    setResendOtp(false);
+    setTimeout(() => {
+      setResendOtp(true);
+    }, 30000);
+  };
+
+  const onResendOtp = async () => {
+    try {
+      const { data, error } = await sendOtp(props.route.params.phone);
+      resendOtpTimer();
+      if (data && data.success) {
+        Toast.show({
+          text: data.message,
+          buttonText: "Okay",
+          duration: 1500,
+          style: { margin: 20 },
+        });
+      } else if (data && data.message && !data.success) {
+        Toast.show({
+          text: data.message,
+          buttonText: "Okay",
+          duration: 1500,
+          style: { margin: 20 },
+        });
+      } else {
+        Toast.show({
+          text: "Something went wrong!",
+          buttonText: "Okay",
+          duration: 1500,
+          style: { margin: 20 },
+        });
+      }
+    } catch (e) {
+      Toast.show({
+        text: "Something went wrong!",
+        buttonText: "Okay",
+        duration: 1500,
+        style: { margin: 20 },
+      });
+    }
+  };
 
   const onVerify = async () => {
     if (otp.length === 6) {
       try {
         setLoader(true);
-        const { data } = {
-          data: {
-            success: true,
-            code: 200,
-            message: "OTP successfully verified.",
-            data: {
-              userId: 545,
-              userEmail: "anuj@g.com",
-              userName: "anuj",
-              userPhone: 8383822601,
-              token:
-                "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjU0NSwiZXhwIjoxNjEzMTk3MzYwfQ.1m0Sah41QZQZwUQqKCIdtrtGzp1Orn12MQzz7hlYzlY",
-            },
-          },
-        };
-        // await login({
-        //   id: props.route.params.id,
-        //   imei: [],
-        //   Device_id: DeviceInfo.getUniqueId(),
-        //   otp,
-        // });
-        console.log(data.data.token);
+        const { data } = await login({
+          id: props.route.params.id,
+          imei: [DeviceInfo.getUniqueId()],
+          device_id: DeviceInfo.getUniqueId(),
+          otp,
+        });
         AsyncStorage.setItem("token", data.data.token);
         console.log(data);
         setLoader(false);
@@ -173,9 +205,12 @@ export default VerificationScreen = (props) => {
           <Button
             style={{ marginTop: 20, alignSelf: "center" }}
             transparent
-            // onPress={}
+            onPress={onResendOtp}
+            disabled={!resendOtp}
           >
-            <Text style={{ color: "#097EFF" }}>Resend OTP</Text>
+            <Text style={{ color: resendOtp ? "#097EFF" : "#C3C3C3" }}>
+              Resend OTP
+            </Text>
           </Button>
           <Text
             style={{

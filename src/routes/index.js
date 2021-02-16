@@ -17,6 +17,7 @@ import DeliveryScreen from "../containers/Delivery";
 import ReturnScreen from "../containers/Return";
 import ItemDetailsScreen from "../containers/ItemDetails";
 import ItemsImagesScreen from "../containers/ItemsImages";
+import SupplierReturnScreen from "../containers/SupplierReturn";
 
 import CustomDrawer from "../components/Drawer";
 
@@ -58,10 +59,41 @@ const Routes = (props) => {
           />
         )}
       >
-        <Drawer.Screen name="Home" component={HomeScreen} />
-        <Drawer.Screen name="Pickup" component={PickupScreen} />
-        <Drawer.Screen name="Delivery" component={DeliveryScreen} />
-        <Drawer.Screen name="Return" component={ReturnScreen} />
+        <Drawer.Screen
+          options={{
+            unmountOnBlur: true,
+          }}
+          name="Home"
+          component={HomeScreen}
+        />
+        <Drawer.Screen
+          options={{
+            unmountOnBlur: true,
+          }}
+          name="Pickup"
+          component={PickupScreen}
+        />
+        <Drawer.Screen
+          options={{
+            unmountOnBlur: true,
+          }}
+          name="Delivery"
+          component={DeliveryScreen}
+        />
+        <Drawer.Screen
+          options={{
+            unmountOnBlur: true,
+          }}
+          name="Return"
+          component={ReturnScreen}
+        />
+        <Drawer.Screen
+          options={{
+            unmountOnBlur: true,
+          }}
+          name="Supplier Return"
+          component={SupplierReturnScreen}
+        />
       </Drawer.Navigator>
     );
   };

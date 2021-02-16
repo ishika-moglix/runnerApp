@@ -1,8 +1,7 @@
 import axios from "axios";
-import store from "../redux";
 
 const axiosInstance = axios.create({
-  baseURL: store.getState().auth.url,
+  baseURL: "https://runnerqa.moglilabs.com/api",
   headers: {
     "Content-Type": "application/json",
   },

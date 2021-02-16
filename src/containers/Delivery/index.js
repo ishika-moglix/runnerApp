@@ -1,26 +1,25 @@
+import { connect } from "react-redux";
 import { Container, Icon } from "native-base";
-import React from "react";
-import { Image, TouchableOpacity, View, FlatList } from "react-native";
-
+import React, { useEffect } from "react";
+import {
+  Image,
+  TouchableOpacity,
+  View,
+  FlatList,
+  Text,
+  ActivityIndicator,
+} from "react-native";
+import moment from "moment";
 import CompanyCard from "../../components/Cards/CompayCard";
 import Header from "../../components/Header";
+import { Map, List } from "immutable";
+import TaskActions from "../../redux/actions/tasks";
 
-let data = [
-  {
-    company: "ECS Company",
-    items: 4,
-  },
-  {
-    company: "ANU Enterprise",
-    items: 3,
-  },
-  {
-    company: "Papney & Co.",
-    items: 5,
-  },
-];
+const DeliveryScreen = (props) => {
+  useEffect(() => {
+    props.fetchTask("delivery", props.currentdate, 1);
+  }, []);
 
-export default DeliveryScreen = (props) => {
   const openDrawer = () => {
     props.navigation.openDrawer();
   };
@@ -34,6 +33,10 @@ export default DeliveryScreen = (props) => {
       />
     );
   };
+
+  useEffect(() => {
+    console.log(props.task, "checkk");
+  });
 
   return (
     <Container style={{ backgroundColor: "#F2F2F2" }}>
@@ -62,12 +65,50 @@ export default DeliveryScreen = (props) => {
           padding: 20,
         }}
       >
-        <FlatList
-          data={data}
-          renderItem={renderCards}
-          keyExtractor={(item, index) => `${index}-item`}
-        />
+        {props.task.get("loading") ? (
+          <ActivityIndicator
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              alignSelf: "center",
+            }}
+            color={"#D9232D"}
+          />
+        ) : (
+          <FlatList
+            ListEmptyComponent={() => (
+              <Text
+                style={{
+                  fontSize: 18,
+                  textAlign: "center",
+                  alignSelf: "center",
+                }}
+              >
+                No data found
+              </Text>
+            )}
+            data={(props.task.get("data") || new List([])).toArray() || []}
+            renderItem={renderCards}
+            keyExtractor={(item, index) => `${index}-item`}
+          />
+        )}
       </View>
     </Container>
   );
 };
+
+const mapStateToProps = (state, props) => ({
+  task:
+    state.tasks.getIn([
+      "delivery",
+      moment(state.home.get("currentdate")).format("DD-MM-YYYY"),
+    ]) || new Map({}),
+  currentdate: state.home.get("currentdate"),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchTask: (taskType, date, page) =>
+    dispatch(TaskActions.fetchTaskData(taskType, date, page)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeliveryScreen);

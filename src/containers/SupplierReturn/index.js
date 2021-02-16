@@ -1,24 +1,24 @@
 import { connect } from "react-redux";
-import { Container, Icon } from "native-base";
 import React, { useEffect } from "react";
+import { Container, Icon } from "native-base";
 import {
   Image,
   TouchableOpacity,
   View,
-  Text,
   FlatList,
+  Text,
   ActivityIndicator,
 } from "react-native";
 
 import CompanyCard from "../../components/Cards/CompayCard";
-import moment from "moment";
 import Header from "../../components/Header";
 import { Map, List } from "immutable";
 import TaskActions from "../../redux/actions/tasks";
+import moment from "moment";
 
-const ReturnScreen = (props) => {
+const SupplierReturnScreen = (props) => {
   useEffect(() => {
-    props.fetchTask("return", props.currentdate, 1);
+    props.fetchTask("return_delivery", props.currentdate, 1);
   }, []);
 
   const openDrawer = () => {
@@ -27,14 +27,18 @@ const ReturnScreen = (props) => {
 
   const renderCards = ({ item, index }) => {
     return (
-      <CompanyCard type={"Return"} navigation={props.navigation} item={item} />
+      <CompanyCard
+        type={"SupplierReturn"}
+        navigation={props.navigation}
+        item={item}
+      />
     );
   };
 
   return (
     <Container style={{ backgroundColor: "#F2F2F2" }}>
       <Header
-        headertext={"Returns"}
+        headertext={"Supplier Return"}
         leftComponent={() => (
           <TouchableOpacity onPress={openDrawer}>
             <Image
@@ -93,7 +97,7 @@ const ReturnScreen = (props) => {
 const mapStateToProps = (state, props) => ({
   task:
     state.tasks.getIn([
-      "return",
+      "return_delivery",
       moment(state.home.get("currentdate")).format("DD-MM-YYYY"),
     ]) || new Map({}),
   currentdate: state.home.get("currentdate"),
@@ -104,4 +108,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(TaskActions.fetchTaskData(taskType, date, page)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReturnScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SupplierReturnScreen);

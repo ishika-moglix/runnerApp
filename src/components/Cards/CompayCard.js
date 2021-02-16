@@ -1,6 +1,14 @@
 import React from "react";
 import { Card, CardItem, Button, Icon } from "native-base";
 import { Text, TouchableOpacity } from "react-native";
+import { Map } from "immutable";
+
+const ITEM_COUNT = new Map({
+  Return: "returnTaskItemCount",
+  SupplierReturn: "supplierReturnTaskItemCount",
+  Delivery: "deliveryTaskItemCount",
+  Pickup: "pickupTaskItemCount",
+});
 
 export default CompanyCard = (props) => {
   return (
@@ -14,11 +22,12 @@ export default CompanyCard = (props) => {
           borderBottomWidth: 1,
         }}
       >
-        <Text>{props.item.company}</Text>
+        <Text>{props.item.contactName}</Text>
         <TouchableOpacity
           onPress={() =>
             props.navigation.navigate("Address", {
-              company: props.item.company,
+              company: props.item.contactName,
+              data: props.item,
             })
           }
         >
@@ -41,7 +50,7 @@ export default CompanyCard = (props) => {
           }}
           onPress={() =>
             props.navigation.navigate("ItemDetails", {
-              company: props.item.company,
+              company: props.item.contactName,
               type: props.type,
             })
           }
@@ -55,7 +64,7 @@ export default CompanyCard = (props) => {
               }}
             >
               {" "}
-              {props.item.items}
+              {props.item[ITEM_COUNT.find((val, key) => key == props.type)]}
             </Text>
           </Text>
           <Icon type={"MaterialCommunityIcons"} name={"chevron-right"} />
