@@ -49,10 +49,14 @@ export default CompanyCard = (props) => {
             justifyContent: "space-between",
           }}
           onPress={() =>
-            props.navigation.navigate("ItemDetails", {
-              company: props.item.contactName,
-              type: props.type,
-            })
+            props.navigation.navigate(
+              props.type ? "Pickup-Tasks" : "ItemDetails",
+              {
+                company: props.item.contactName,
+                type: props.type,
+                data: props.item,
+              }
+            )
           }
         >
           <Text>

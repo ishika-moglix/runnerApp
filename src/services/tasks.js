@@ -38,4 +38,41 @@ const getPickupTask = async (type, date, page) =>
     },
   });
 
-export { getTask, getPickupTask };
+const getPickupTaskByPoId = async (pickupTaskId, poId) =>
+  axiosInstance.get(`tasks/pickups/pickupTaskItems/search`, {
+    params: {
+      pickupTaskId,
+      poId,
+    },
+    headers: {
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  });
+
+const getPickupTaskById = async (pickupTaskId) =>
+  axiosInstance.get(`tasks/pickups/pickupTaskItems`, {
+    params: {
+      pickupTaskId,
+    },
+    headers: {
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  });
+
+const getPdfByPoId = async (poId) =>
+  axiosInstance.get(`tasks/s3ChallanUrl`, {
+    params: {
+      poId,
+    },
+    headers: {
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  });
+
+export {
+  getTask,
+  getPickupTask,
+  getPickupTaskByPoId,
+  getPickupTaskById,
+  getPdfByPoId,
+};

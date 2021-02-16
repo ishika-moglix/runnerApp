@@ -18,6 +18,8 @@ import ReturnScreen from "../containers/Return";
 import ItemDetailsScreen from "../containers/ItemDetails";
 import ItemsImagesScreen from "../containers/ItemsImages";
 import SupplierReturnScreen from "../containers/SupplierReturn";
+import PickupTasksScreen from "../containers/PickupTasks";
+import FileViewerScreen from "../containers/FileViewer";
 
 import CustomDrawer from "../components/Drawer";
 
@@ -131,6 +133,13 @@ const Routes = (props) => {
             }}
           />
           <Stack.Screen
+            name="Pickup-Tasks"
+            component={PickupTasksScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
             name="ItemDetails"
             component={ItemDetailsScreen}
             options={{
@@ -140,6 +149,13 @@ const Routes = (props) => {
           <Stack.Screen
             name="ItemsImages"
             component={ItemsImagesScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="FileViewer"
+            component={FileViewerScreen}
             options={{
               headerShown: false,
             }}
