@@ -28,7 +28,7 @@ export default AddressCard = (props) => {
             <Text
               style={{
                 width: "30%",
-                fontWeight: index != 0 ? "normal" : "bold",
+                fontWeight: "normal",
               }}
             >
               {item.title}
@@ -37,7 +37,7 @@ export default AddressCard = (props) => {
               style={{
                 width: "10%",
                 textAlign: "center",
-                fontWeight: index != 0 ? "normal" : "bold",
+                fontWeight: "normal",
               }}
             >
               :
@@ -45,7 +45,7 @@ export default AddressCard = (props) => {
             <Text
               style={{
                 width: "60%",
-                fontWeight: index != 0 ? "normal" : "bold",
+                fontWeight: "normal",
               }}
             >
               {props.item[item.key]}

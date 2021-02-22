@@ -15,6 +15,7 @@ import {
   TouchableOpacity,
   Text,
   View,
+  Image,
   FlatList,
   ActivityIndicator,
 } from "react-native";
@@ -80,16 +81,20 @@ const PickupTasksScreen = (props) => {
 
   const renderItems = ({ item, index }) => {
     return (
-      <Card
+      <View
         style={{
-          marginTop: 12,
+          marginTop: 9,
+          backgroundColor: "#fff",
+          padding: 12,
+          borderRadius: 8,
         }}
       >
-        <CardItem
+        <View
           style={{
             borderBottomColor: "#E0E0E0",
             borderBottomWidth: 1,
             flexDirection: "row",
+            paddingBottom: 12,
             alignItems: "center",
             justifyContent: "space-between",
           }}
@@ -102,12 +107,13 @@ const PickupTasksScreen = (props) => {
               style={{ color: "#2680EB" }}
             />
           </TouchableOpacity>
-        </CardItem>
-        <CardItem>
+        </View>
+        <View>
           <TouchableOpacity
             style={{
               flexDirection: "row",
               width: "100%",
+              paddingTop: 12,
               alignItems: "center",
               justifyContent: "space-between",
             }}
@@ -122,8 +128,8 @@ const PickupTasksScreen = (props) => {
               type={"MaterialCommunityIcons"}
             />
           </TouchableOpacity>
-        </CardItem>
-      </Card>
+        </View>
+      </View>
     );
   };
 
@@ -131,18 +137,54 @@ const PickupTasksScreen = (props) => {
     <Container
       style={{
         flex: 1,
-        backgroundColor: "#F2F2F2",
+        backgroundColor: "#F7F7FA",
       }}
     >
       <Header
-        headertext={"Pickup-Tasks"}
         leftComponent={() => (
-          <TouchableOpacity onPress={goBack}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
             <Icon
-              name={"chevron-left"}
-              style={{ color: "#fff" }}
+              onPress={goBack}
+              name={"arrow-left"}
               type={"MaterialCommunityIcons"}
             />
+            <Text
+              style={{
+                width: "100%",
+                marginLeft: 12,
+                fontSize: 16,
+              }}
+            >
+              Pickup Tasks
+            </Text>
+          </View>
+        )}
+        rightComponent={() => (
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate("Profile")}
+            style={{
+              alignItems: "center",
+            }}
+          >
+            <Icon
+              name={"account-circle"}
+              type={"MaterialCommunityIcons"}
+              style={{ color: "#000" }}
+            />
+            {props.home.getIn(["profile", "data", "name"]) ? (
+              <Text
+                style={{
+                  fontSize: 10,
+                }}
+              >
+                {props.home.getIn(["profile", "data", "name"])}
+              </Text>
+            ) : null}
           </TouchableOpacity>
         )}
       />
@@ -151,7 +193,7 @@ const PickupTasksScreen = (props) => {
           padding: 20,
         }}
       >
-        <Item style={{ backgroundColor: "#fff" }} regular>
+        <Item style={{ backgroundColor: "#fff", borderRadius: 8 }} regular>
           <Icon
             name={"magnify"}
             type={"MaterialCommunityIcons"}
@@ -202,6 +244,7 @@ const PickupTasksScreen = (props) => {
 
 const mapStateToProps = (state) => ({
   pickupTask: state.tasks.getIn(["pickUpTasks"]) || new Map({}),
+  home: state.home,
 });
 
 const mapDispatchToProps = (dispatch) => ({

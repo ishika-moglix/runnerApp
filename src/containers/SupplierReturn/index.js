@@ -21,8 +21,8 @@ const SupplierReturnScreen = (props) => {
     props.fetchTask("return_delivery", props.currentdate, 1);
   }, []);
 
-  const openDrawer = () => {
-    props.navigation.openDrawer();
+  const goBack = () => {
+    props.navigation.goBack();
   };
 
   const renderCards = ({ item, index }) => {
@@ -36,24 +36,57 @@ const SupplierReturnScreen = (props) => {
   };
 
   return (
-    <Container style={{ backgroundColor: "#F2F2F2" }}>
+    <Container style={{ backgroundColor: "#F7F7FA" }}>
       <Header
         headertext={"Supplier Return"}
         leftComponent={() => (
-          <TouchableOpacity onPress={openDrawer}>
-            <Image
-              style={{ width: 20, height: 20 }}
-              source={require("../../assets/menu.png")}
-            />
-          </TouchableOpacity>
-        )}
-        rightComponent={() => (
-          <TouchableOpacity>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
             <Icon
-              name={"magnify"}
-              style={{ color: "#fff" }}
+              onPress={goBack}
+              name={"arrow-left"}
               type={"MaterialCommunityIcons"}
             />
+            <Text
+              style={{
+                width: "100%",
+                marginLeft: 12,
+                fontSize: 16,
+              }}
+            >
+              Supplier Return
+              {props.task.get("data")
+                ? `(${props.task.get("data").size})`
+                : null}
+            </Text>
+          </View>
+        )}
+        rightComponent={() => (
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate("Profile")}
+            style={{
+              alignItems: "center",
+            }}
+          >
+            <Icon
+              name={"account-circle"}
+              type={"MaterialCommunityIcons"}
+              style={{ color: "#000" }}
+            />
+            {props.home.getIn(["profile", "data", "name"]) ? (
+              <Text
+                style={{
+                  fontSize: 10,
+                }}
+              >
+                {props.home.getIn(["profile", "data", "name"])}
+              </Text>
+            ) : null}
           </TouchableOpacity>
         )}
       />
@@ -101,6 +134,7 @@ const mapStateToProps = (state, props) => ({
       moment(state.home.get("currentdate")).format("DD-MM-YYYY"),
     ]) || new Map({}),
   currentdate: state.home.get("currentdate"),
+  home: state.home,
 });
 
 const mapDispatchToProps = (dispatch) => ({
