@@ -1,32 +1,46 @@
-import {Button} from 'native-base';
-import React from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import { Button } from "native-base";
+import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  AsyncStorage,
+} from "react-native";
 
 export default CustomDrawer = (props) => {
+  const onLogout = () => {
+    AsyncStorage.removeItem("token");
+    props.initialParams.setIsLoggedIn();
+  };
+
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: '#F0F0F0',
-      }}>
+        backgroundColor: "#F0F0F0",
+      }}
+    >
       <View
         style={{
-          width: '100%',
+          width: "100%",
           padding: 12,
-          flexDirection: 'row',
-          alignItems: 'center',
-          backgroundColor: '#fff',
-        }}>
+          flexDirection: "row",
+          alignItems: "center",
+          backgroundColor: "#fff",
+        }}
+      >
         <Image
-          resizeMode={'contain'}
-          source={require('../../assets/moglix-logo.jpg')}
-          style={{width: '40%', height: 50}}
+          resizeMode={"contain"}
+          source={require("../../assets/moglix-logo.jpg")}
+          style={{ width: "40%", height: 50 }}
         />
         <Text
           style={{
             fontSize: 16,
-            fontWeight: 'bold',
-          }}>
+            fontWeight: "bold",
+          }}
+        >
           Runner App
         </Text>
       </View>
@@ -34,41 +48,46 @@ export default CustomDrawer = (props) => {
         style={{
           marginVertical: 20,
           marginLeft: 20,
-        }}>
+        }}
+      >
         {props.state.routeNames.map((route, routeKey) => (
           <TouchableOpacity
             onPress={() => props.navigation.navigate(route)}
             style={{
               paddingVertical: 12,
-              borderBottomColor: '#AAAAAA',
+              borderBottomColor: "#AAAAAA",
               borderBottomWidth:
                 routeKey + 1 === props.state.routeNames.length ? 0 : 1,
             }}
-            key={routeKey}>
+            key={routeKey}
+          >
             <Text
               style={{
                 fontSize: 20,
-              }}>
+              }}
+            >
               {route}
             </Text>
           </TouchableOpacity>
         ))}
       </View>
       <Button
-        onPress={props.initialParams.setIsLoggedIn}
+        onPress={onLogout}
         style={{
-          position: 'absolute',
+          position: "absolute",
           bottom: 20,
-          left: '10%',
-          width: '80%',
-          borderColor: '#0D80FF',
+          left: "10%",
+          width: "80%",
+          borderColor: "#0D80FF",
         }}
         bordered
-        block>
+        block
+      >
         <Text
           style={{
-            color: '#0D80FF',
-          }}>
+            color: "#0D80FF",
+          }}
+        >
           Logout
         </Text>
       </Button>
