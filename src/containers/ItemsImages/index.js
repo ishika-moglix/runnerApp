@@ -125,7 +125,7 @@ export default ItemsImages = (props) => {
     <Container
       style={{
         flex: 1,
-        backgroundColor: "#F2F2F2",
+        backgroundColor: "#F7F7FA",
       }}
     >
       <Header

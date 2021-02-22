@@ -4,25 +4,24 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
 import AuthActions from "../redux/actions/auth";
 
 import LoadingScreen from "../containers/Loading";
 import LoginScreen from "../containers/Login";
 import VerificationScreen from "../containers/Verification";
+import AddressScreen from "../containers/Address";
 import HomeScreen from "../containers/Home";
 import PickupScreen from "../containers/Pickup";
-import AddressScreen from "../containers/Address";
 import DeliveryScreen from "../containers/Delivery";
 import ReturnScreen from "../containers/Return";
 import ItemDetailsScreen from "../containers/ItemDetails";
 import ItemsImagesScreen from "../containers/ItemsImages";
 import SupplierReturnScreen from "../containers/SupplierReturn";
-
-import CustomDrawer from "../components/Drawer";
+import PickupTasksScreen from "../containers/PickupTasks";
+import FileViewerScreen from "../containers/FileViewer";
+import ProfileScreen from "../containers/Profile";
 
 const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
 
 const Routes = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -47,57 +46,6 @@ const Routes = (props) => {
     setLoading(!loading);
   };
 
-  const DrawerStack = () => {
-    return (
-      <Drawer.Navigator
-        drawerContent={(props) => (
-          <CustomDrawer
-            initialParams={{
-              setIsLoggedIn: changeLoginState,
-            }}
-            {...props}
-          />
-        )}
-      >
-        <Drawer.Screen
-          options={{
-            unmountOnBlur: true,
-          }}
-          name="Home"
-          component={HomeScreen}
-        />
-        <Drawer.Screen
-          options={{
-            unmountOnBlur: true,
-          }}
-          name="Pickup"
-          component={PickupScreen}
-        />
-        <Drawer.Screen
-          options={{
-            unmountOnBlur: true,
-          }}
-          name="Delivery"
-          component={DeliveryScreen}
-        />
-        <Drawer.Screen
-          options={{
-            unmountOnBlur: true,
-          }}
-          name="Return"
-          component={ReturnScreen}
-        />
-        <Drawer.Screen
-          options={{
-            unmountOnBlur: true,
-          }}
-          name="Supplier Return"
-          component={SupplierReturnScreen}
-        />
-      </Drawer.Navigator>
-    );
-  };
-
   return (
     <NavigationContainer>
       {loading ? (
@@ -117,15 +65,50 @@ const Routes = (props) => {
       ) : isLoggedIn ? (
         <Stack.Navigator>
           <Stack.Screen
-            component={DrawerStack}
+            name="Home"
             options={{
               headerShown: false,
             }}
-            name="Home"
+            component={HomeScreen}
+          />
+          <Stack.Screen
+            name="Pickup"
+            options={{
+              headerShown: false,
+            }}
+            component={PickupScreen}
+          />
+          <Stack.Screen
+            name="Delivery"
+            options={{
+              headerShown: false,
+            }}
+            component={DeliveryScreen}
+          />
+          <Stack.Screen
+            name="Return"
+            options={{
+              headerShown: false,
+            }}
+            component={ReturnScreen}
+          />
+          <Stack.Screen
+            name="Supplier Return"
+            options={{
+              headerShown: false,
+            }}
+            component={SupplierReturnScreen}
           />
           <Stack.Screen
             name="Address"
             component={AddressScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Pickup-Tasks"
+            component={PickupTasksScreen}
             options={{
               headerShown: false,
             }}
@@ -143,6 +126,21 @@ const Routes = (props) => {
             options={{
               headerShown: false,
             }}
+          />
+          <Stack.Screen
+            name="FileViewer"
+            component={FileViewerScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Profile"
+            initialParams={{
+              setIsLoggedIn: changeLoginState,
+            }}
+            component={ProfileScreen}
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
       ) : (

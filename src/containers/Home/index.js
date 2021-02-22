@@ -1,4 +1,4 @@
-import { Container, Card, Icon, Title, CardItem, Footer } from "native-base";
+import { Container, Icon, Title } from "native-base";
 import React, { useEffect, useState } from "react";
 import {
   Image,
@@ -15,22 +15,27 @@ import moment from "moment";
 import { connect } from "react-redux";
 import HomeActions from "../../redux/actions/home";
 import { Map } from "immutable";
-import ProfileModal from "../../components/Modals/ProfileModal";
 
 const max = new Date();
 const min = new Date(moment(new Date()).subtract(1, "month").toString());
 
 const TITLES = new Map({
-  pickupDetails: "Pick Up Details",
+  pickupDetails: "Pickup Done",
   deliveryDetails: "Delivery Details",
-  returnDetails: "Returns",
-  supplierReturnDetails: "Supplier Return",
+  returnDetails: "Return Details",
+  supplierReturnDetails: "Supplier Return Details",
+});
+
+const CAPTIONS = new Map({
+  pickupDetails: "Collect Products from Suppliers Location",
+  deliveryDetails: "Deliver Products from Customers Location",
+  returnDetails: "Collect Return Products",
+  supplierReturnDetails: "Return Products to Supplier",
 });
 
 const SUB_TITLES = new Map({
   suppliers: "Suppliers",
-  customers: "Customers",
-  items: "Items",
+  customers: "Customer",
 });
 
 const ROUTES = new Map({
@@ -46,7 +51,6 @@ const HomeScreen = (props) => {
   );
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
-  const [profileModal, setProfileModal] = useState(false);
 
   useEffect(() => {
     updateHomePage();
@@ -62,89 +66,141 @@ const HomeScreen = (props) => {
     }
   };
 
-  const openDrawer = () => {
-    props.navigation.openDrawer();
-  };
-
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
+    setShow(Platform.OS === "ios");
     if (moment(moment(date)).diff(moment(currentDate))) {
       setDate(currentDate);
     }
-    setShow(Platform.OS === "ios");
   };
 
   const getTitle = (key) => {
     return TITLES.find((_, k) => k == key);
   };
 
-  const getSubTitle = (key) => {
-    return SUB_TITLES.find((_, k) => k == key);
+  const getCaption = (key) => {
+    return CAPTIONS.find((_, k) => k == key);
+  };
+
+  const getSubTitle = (item, forKey) => {
+    console.log(item);
+    const titleKey = item.findKey((_, k) =>
+      ["suppliers", "customers"].includes(k)
+    );
+    if (forKey) {
+      return titleKey;
+    }
+    return SUB_TITLES.find((_, k) => k == titleKey);
   };
 
   const getRoute = (key) => {
     return ROUTES.find((_, k) => k == key);
   };
 
-  const toggleModal = () => {
-    setProfileModal(!profileModal);
-  };
-
   return (
-    <Container style={{ backgroundColor: "#F2F2F2", flex: 1 }}>
+    <Container style={{ backgroundColor: "#fff", flex: 1 }}>
       <Header
-        headertext={"Moglix Runner"}
-        leftComponent={() => (
-          <TouchableOpacity onPress={openDrawer}>
-            <Image
-              style={{ width: 20, height: 20 }}
-              source={require("../../assets/menu.png")}
+        key={1}
+        noShadow={true}
+        rightComponent={() => (
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate("Profile")}
+            style={{
+              alignItems: "center",
+            }}
+          >
+            <Icon
+              name={"account-circle"}
+              type={"MaterialCommunityIcons"}
+              style={{ color: "#000" }}
             />
+            {props.home.getIn(["profile", "data", "name"]) ? (
+              <Text
+                style={{
+                  fontSize: 10,
+                }}
+              >
+                {props.home.getIn(["profile", "data", "name"])}
+              </Text>
+            ) : null}
+          </TouchableOpacity>
+        )}
+        leftComponent={() => (
+          <TouchableOpacity
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              style={{ width: 60, height: 20 }}
+              source={require("../../assets/moglix-logo.jpg")}
+            />
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: "bold",
+              }}
+            >
+              Runner
+            </Text>
           </TouchableOpacity>
         )}
       />
-      <ScrollView
-        style={{
-          padding: 20,
-        }}
-      >
-        <Card>
+      <Header
+        key={2}
+        rightComponent={() => (
+          <View>
+            <TouchableOpacity
+              onPress={() => setShow(true)}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Title style={{ color: "#000", fontSize: 16, marginRight: 12 }}>
+                {moment(date).format("ddd, MMM DD")}
+              </Title>
+              <Icon
+                name={"calendar-month"}
+                type={"MaterialCommunityIcons"}
+                style={{ color: "#000", fontSize: 24 }}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
+        leftComponent={() => (
           <TouchableOpacity
             onPress={() => setShow(true)}
             style={{
               flexDirection: "row",
               alignItems: "center",
-              width: "100%",
-              justifyContent: "space-between",
             }}
           >
-            <CardItem
+            <Icon
+              name={"chevron-left"}
+              type={"MaterialCommunityIcons"}
+              style={{ fontSize: 22, width: 36 }}
+            />
+            <Title
               style={{
-                width: "15%",
+                color: "#D9232D",
+                fontSize: 16,
+                marginRight: 12,
+                lineHeight: 30,
               }}
             >
-              <Icon type={"MaterialCommunityIcons"} name={"chevron-left"} />
-            </CardItem>
-            <CardItem
-              style={{
-                width: "70%",
-              }}
-            >
-              <Title
-                style={{ color: "#000", fontSize: 16, textAlign: "center" }}
-              >
-                Select Date : {moment(date).format("Do MMM YYYY")}
-              </Title>
-            </CardItem>
-            <CardItem
-              style={{
-                width: "15%",
-              }}
-            >
-              <Icon type={"MaterialCommunityIcons"} name={"chevron-right"} />
-            </CardItem>
+              Today
+            </Title>
+            <Icon
+              name={"chevron-right"}
+              type={"MaterialCommunityIcons"}
+              style={{ fontSize: 22, width: 36 }}
+            />
           </TouchableOpacity>
-        </Card>
+        )}
+      />
+      <ScrollView contentContainerStyle={{ padding: 20 }}>
         {show && (
           <DateTimePicker
             maximumDate={max}
@@ -165,124 +221,97 @@ const HomeScreen = (props) => {
             color={"#D9232D"}
           />
         ) : (
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-            }}
-          >
+          <View>
             {(
               props.home.getIn([moment(date).format("DD-MM-YYYY"), "data"]) ||
               new Map({})
             )
               .map((item, index) => (
-                <Card key={index} style={{ marginTop: 20, width: "48%" }}>
-                  <CardItem style={{ paddingLeft: 12, paddingRight: 12 }}>
-                    <TouchableOpacity
-                      onPress={() => props.navigation.navigate(getRoute(index))}
+                <View
+                  key={index}
+                  style={{
+                    marginBottom: 20,
+                    width: "100%",
+                    padding: 12,
+                    borderRadius: 8,
+                    backgroundColor: "#F7F7FA",
+                    borderWidth: 0.8,
+                    borderColor: "#C4C4C4",
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => props.navigation.navigate(getRoute(index))}
+                    style={{
+                      width: "100%",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <View
                       style={{
-                        width: "100%",
-                        padding: 8,
-                        borderRadius: 4,
-                        backgroundColor: "#D9232D",
                         flexDirection: "row",
-                        justifyContent: "space-between",
                         alignItems: "center",
                       }}
                     >
                       <Text
                         style={{
+                          fontSize: 16,
                           fontWeight: "bold",
-                          color: "#fff",
+                          color: "#D9232D",
                         }}
                       >
                         {getTitle(index)}
                       </Text>
-                      <Icon
-                        type={"MaterialCommunityIcons"}
-                        name={"chevron-right"}
-                        style={{
-                          right: -12,
-                          color: "#fff",
-                        }}
-                      />
-                    </TouchableOpacity>
-                  </CardItem>
-                  {item
-                    .map((subItem, subItemKey) => (
-                      <CardItem
-                        style={{
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          flexDirection: "row",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Text style={{ fontWeight: "bold", color: "#000" }}>
-                          {getSubTitle(subItemKey)}
-                        </Text>
-                        <Text
-                          style={{
-                            fontWeight: "bold",
-                            fontSize: 18,
-                            color: "#000",
-                          }}
-                        >
-                          {subItem}
-                        </Text>
-                      </CardItem>
-                    ))
-                    .toList()}
-                </Card>
+                    </View>
+                    <Icon
+                      type={"MaterialCommunityIcons"}
+                      name={"chevron-right"}
+                      style={{
+                        right: -12,
+                        color: "#D9232D",
+                      }}
+                    />
+                  </TouchableOpacity>
+                  <Text
+                    style={{
+                      marginTop: 8,
+                      color: "#979797",
+                    }}
+                  >
+                    {getCaption(index)}
+                  </Text>
+                  <View
+                    style={{
+                      marginTop: 30,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 16,
+                      }}
+                    >
+                      Total Items:{" "}
+                      <Text style={{ fontWeight: "bold" }}>
+                        {item.get("items")}
+                      </Text>
+                      {"     "}| {"    "}
+                      {getSubTitle(item)} Location:{" "}
+                      <Text style={{ fontWeight: "bold" }}>
+                        {item.get(getSubTitle(item, true)) || 0}
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
               ))
               .toList()
               .toArray()}
           </View>
         )}
       </ScrollView>
-      <ProfileModal
-        isModalVisible={profileModal}
-        toggleModal={toggleModal}
-        data={props.home.getIn(["profile", "data"])}
-        loading={props.home.getIn(["profile", "loading"])}
-      />
-      <Footer
-        style={{
-          backgroundColor: "#fff",
-        }}
-      >
-        <TouchableOpacity
-          onPress={toggleModal}
-          activeOpacity={0.6}
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <View style={{ width: "30%" }} />
-          <View>
-            <Image
-              style={{ width: 60, height: 60, top: -20, alignSelf: "center" }}
-              resizeMode={"contain"}
-              source={require("../../assets/runner.png")}
-            />
-          </View>
-          <View
-            style={{ width: "30%", alignItems: "flex-end", paddingRight: 20 }}
-          >
-            <Icon
-              name={"chevron-up"}
-              type={"MaterialCommunityIcons"}
-              style={{ fontSize: 32 }}
-            />
-          </View>
-        </TouchableOpacity>
-      </Footer>
     </Container>
   );
 };

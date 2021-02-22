@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardItem, Button, Icon } from "native-base";
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { Map } from "immutable";
 
 const ITEM_COUNT = new Map({
@@ -12,50 +12,54 @@ const ITEM_COUNT = new Map({
 
 export default CompanyCard = (props) => {
   return (
-    <Card style={{ marginTop: 20 }}>
-      <CardItem
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={() =>
+        props.navigation.navigate(
+          props.type == "Pickup" ? "Pickup-Tasks" : "Address",
+          {
+            company: props.item.contactName,
+            type: props.type,
+            data: props.item,
+          }
+        )
+      }
+      style={{
+        marginBottom: 20,
+        backgroundColor: "#fff",
+        padding: 12,
+        borderRadius: 8,
+      }}
+    >
+      <View
         style={{
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
           borderBottomColor: "#E0E0E0",
+          paddingBottom: 8,
           borderBottomWidth: 1,
         }}
       >
-        <Text>{props.item.contactName}</Text>
-        <TouchableOpacity
-          onPress={() =>
-            props.navigation.navigate("Address", {
-              company: props.item.contactName,
-              data: props.item,
-            })
-          }
-        >
-          <Text
-            style={{
-              color: "#2680EB",
-            }}
-          >
-            Address
-          </Text>
-        </TouchableOpacity>
-      </CardItem>
-      <CardItem>
-        <TouchableOpacity
+        <Text style={{ fontWeight: "bold" }}>{props.item.contactName}</Text>
+      </View>
+      <View>
+        <View
           style={{
             width: "100%",
             flexDirection: "row",
             alignItems: "center",
+            paddingVertical: 20,
             justifyContent: "space-between",
           }}
-          onPress={() =>
-            props.navigation.navigate("ItemDetails", {
-              company: props.item.contactName,
-              type: props.type,
-            })
-          }
         >
-          <Text>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "bold",
+              color: "#333333",
+            }}
+          >
             Items :
             <Text
               style={{
@@ -67,33 +71,22 @@ export default CompanyCard = (props) => {
               {props.item[ITEM_COUNT.find((val, key) => key == props.type)]}
             </Text>
           </Text>
-          <Icon type={"MaterialCommunityIcons"} name={"chevron-right"} />
-        </TouchableOpacity>
-      </CardItem>
-      <CardItem>
+        </View>
+      </View>
+      <View>
         <Button
-          iconLeft
-          iconRight
           block
           style={{
             width: "100%",
-            borderRadius: 4,
-            backgroundColor: "#4DA116",
+            borderRadius: 8,
+            backgroundColor: "#D9232D",
           }}
         >
-          <Icon
-            style={{ color: "#fff" }}
-            type={"MaterialCommunityIcons"}
-            name={"chevron-double-right"}
-          />
-          <Text style={{ fontSize: 20, color: "#fff" }}>START</Text>
-          <Icon
-            style={{ color: "#fff" }}
-            type={"MaterialCommunityIcons"}
-            name={"chevron-double-right"}
-          />
+          <Text style={{ fontSize: 16, fontWeight: "bold", color: "#fff" }}>
+            START NOW
+          </Text>
         </Button>
-      </CardItem>
-    </Card>
+      </View>
+    </TouchableOpacity>
   );
 };

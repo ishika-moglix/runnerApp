@@ -16,6 +16,11 @@ const TYPE_KEYS = new Map({
   pickup: "pickupTasks",
   return: "returnTasks",
   supplierReturn: "supplierReturnTasks",
+  pickUpTasks: new Map({
+    loading: false,
+    error: false,
+    data: new List([]),
+  }),
 });
 
 export const fetchTaskData = (state, { taskType, date, page }) => {
@@ -62,6 +67,26 @@ export const fetchFailedTaskData = (state, { taskType, date, page, error }) => {
     .setIn([taskType, moment(date).format("DD-MM-YYYY"), "loading"], false)
     .setIn([taskType, moment(date).format("DD-MM-YYYY"), "error"], true);
 };
+
+export const fetchPickupTask = (state, { taskId, poId }) => {
+  return state
+    .setIn(["pickUpTasks", "loading"], true)
+    .setIn(["pickUpTasks", "error"], false);
+};
+
+export const fetchedPickupTask = (state, { taskId, poId, data }) => {
+  return state
+    .setIn(["pickUpTasks", "loading"], false)
+    .setIn(["pickUpTasks", "error"], false)
+    .setIn(["pickUpTasks", "data"], data.pickupTaskItemPoIdRes);
+};
+
+export const fetchFailedPickupTask = (state, { taskId, poId }) => {
+  return state
+    .setIn(["pickUpTasks", "loading"], false)
+    .setIn(["pickUpTasks", "error"], true);
+};
+
 /**
  * @see https://github.com/infinitered/reduxsauce#createreducer
  */
@@ -69,6 +94,10 @@ export const reducer = createReducer(INITIAL_STATE, {
   [TaskTypes.FETCH_TASK_DATA]: fetchTaskData,
   [TaskTypes.FETCHED_TASK_DATA]: fetchedTaskData,
   [TaskTypes.FETCH_FAILED_TASK_DATA]: fetchFailedTaskData,
+
+  [TaskTypes.FETCH_PICKUP_TASK]: fetchPickupTask,
+  [TaskTypes.FETCHED_PICKUP_TASK]: fetchedPickupTask,
+  [TaskTypes.FETCH_FAILED_PICKUP_TASK]: fetchFailedPickupTask,
   //   [AddressTypes.FETCH_ADDRESS_SUCCESS]: fetchAddressSuccess,
   //   [AddressTypes.FETCH_ADDRESS_FAILURE]: fetchAddressFailure,
 });
