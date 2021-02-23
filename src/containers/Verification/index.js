@@ -6,6 +6,7 @@ import {
   Text,
   ActivityIndicator,
   AsyncStorage,
+  TouchableOpacity
 } from "react-native";
 import {
   Container,
@@ -19,6 +20,7 @@ import {
 } from "native-base";
 import { login, sendOtp } from "../../services/auth";
 import DeviceInfo from "react-native-device-info";
+import styles from "./style";
 
 export default VerificationScreen = (props) => {
   const [otp, setOtp] = useState("");
@@ -122,7 +124,7 @@ export default VerificationScreen = (props) => {
 
   return (
     <Container>
-      <Header
+      {/* <Header
         androidStatusBarColor={"#D9232D"}
         style={{
           backgroundColor: "#D9232D",
@@ -139,80 +141,78 @@ export default VerificationScreen = (props) => {
         >
           <Title style={{ textAlign: "center" }}>Verification</Title>
         </View>
-      </Header>
+      </Header> */}
       <View style={{ flex: 1 }}>
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+      <View
+          style={styles.logoWrap}
         >
           <Image
             resizeMode={"contain"}
-            source={require("../../assets/moglix-logo.jpg")}
-            style={{
-              width: Dimensions.get("window").width * 0.4,
-              height: Dimensions.get("window").width * 0.3,
-            }}
+            source={require("../../assets/RunnerLogo.png")}
+            style={styles.logoImage}
           />
         </View>
         <View
-          style={{
-            flex: 1,
-            padding: Dimensions.get("window").width * 0.1,
-          }}
+          style={styles.IllustrationWrap}
         >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "flex-end",
-              justifyContent: "space-between",
-            }}
-          >
-            <Label style={{ marginBottom: 12 }}>
-              Enter OTP sent to {"\n"}
-              +91 {props.route.params.phone}
-            </Label>
-            <Button transparent onPress={() => props.navigation.goBack()}>
-              <Text style={{ color: "#097EFF" }}>Edit Number</Text>
-            </Button>
+          <Image
+            resizeMode={"contain"}
+            source={require("../../assets/LoginIllustration.png")}
+            style={styles.IllustrationImg}
+          />
+        </View>
+        <View style={styles.signInWrap} >
+          <Text style={styles.headingText}>Sign In</Text>
+          <View style={styles.row}>
+            <Text style={styles.numbertext}>+91 {props.route.params.phone}</Text>
+            <TouchableOpacity transparent onPress={() => props.navigation.goBack()}>
+              <Text style={styles.changetext}>CHANGE</Text>
+            </TouchableOpacity>
           </View>
-          <Item regular>
-            <Input
-              keyboardType={"numeric"}
-              maxLength={6}
-              value={otp}
-              onChangeText={(text) => setOtp(text)}
-              style={{ textAlign: "center" }}
-              placeholder="-      -      -      -      -      -"
-            />
-          </Item>
-          <Button
-            onPress={onVerify}
-            block
-            disabled={loader || otp.length !== 6}
-            style={{
-              backgroundColor:
-                !loader && otp.length === 6 ? "#2680EB" : "#C3C3C3",
-              marginTop: 20,
-            }}
-          >
-            <Text style={{ color: "#fff" }}>VERIFY</Text>
-            {loader ? (
-              <ActivityIndicator color={"#fff"} style={{ marginLeft: 20 }} />
-            ) : null}
-          </Button>
-          <Button
-            style={{ marginTop: 20, alignSelf: "center" }}
+
+          <View style={styles.inputErrorWrap}>
+            <View style={styles.ItemWrap}>
+              <Item floatingLabel style={styles.ItemCss} >
+                <Label style={styles.LabelCss}>Enter Otp</Label>
+                <Input
+                  keyboardType={"numeric"}
+                  maxLength={6}
+                  value={otp}
+                  onChangeText={(text) => setOtp(text)}
+                  placeholder="-      -      -      - "
+                  style={styles.inputCss}
+                  autoFocus = {true}
+                />
+              </Item>
+            </View>
+            <TouchableOpacity
+            style={styles.resendOtpBTn}
             transparent
             onPress={onResendOtp}
             disabled={!resendOtp}
           >
-            <Text style={{ color: resendOtp ? "#097EFF" : "#C3C3C3" }}>
+            {/* <Text style={{ color: resendOtp ? "#097EFF" : "#C3C3C3" }}>
+              Resend OTP
+            </Text> */}
+            <Text style={styles.changetext}>
               Resend OTP
             </Text>
+          </TouchableOpacity>
+          </View>
+          
+          <Button
+            onPress={onVerify}
+            block
+            disabled={loader || otp.length !== 6}
+            style={!loader && otp.length === 6 ? styles.btnStyle :styles.disabledBtn}
+          >
+            <Text style={styles.btnText}>CONTINUE</Text>
+            {loader ? (
+              <ActivityIndicator color={"#fff"} style={{ marginLeft: 20 }} />
+            ) : null}
           </Button>
-          <Text
+          
+          {/* <Text
             style={{
               lineHeight: 20,
               alignSelf: "center",
@@ -224,7 +224,7 @@ export default VerificationScreen = (props) => {
             By continuing, you agree to our {"\n"}
             <Text style={{ color: "#097EFF" }}>Privacy Policy</Text> and{" "}
             <Text style={{ color: "#097EFF" }}>Terms and Condition</Text>
-          </Text>
+          </Text> */}
         </View>
       </View>
     </Container>

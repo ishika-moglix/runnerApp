@@ -11,6 +11,7 @@ import {
   Button,
 } from "native-base";
 import { sendOtp } from "../../services/auth";
+import styles from "./style";
 
 export default LoginScreen = (props) => {
   const [phone, setPhone] = useState("9711572214");
@@ -62,8 +63,9 @@ export default LoginScreen = (props) => {
   };
 
   return (
-    <Container>
-      <Header
+
+    <Container style={styles.ContainerCss}>
+      {/* <Header
         androidStatusBarColor={"#D9232D"}
         style={{
           backgroundColor: "#D9232D",
@@ -80,45 +82,50 @@ export default LoginScreen = (props) => {
         >
           <Title style={{ textAlign: "center" }}>Login</Title>
         </View>
-      </Header>
+      </Header> */}
       <View style={{ flex: 1 }}>
         <View
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+          style={styles.logoWrap}
         >
           <Image
             resizeMode={"contain"}
-            source={require("../../assets/moglix-logo.jpg")}
-            style={{
-              width: Dimensions.get("window").width * 0.4,
-              height: Dimensions.get("window").width * 0.3,
-            }}
+            source={require("../../assets/RunnerLogo.png")}
+            style={styles.logoImage}
           />
         </View>
         <View
-          style={{
-            padding: Dimensions.get("window").width * 0.1,
-          }}
+          style={styles.IllustrationWrap}
         >
-          <Label style={{ marginBottom: 12 }}>Enter your mobile number</Label>
-          <Item regular>
-            <Text style={{ marginLeft: 12 }}>+91</Text>
-            <Input
-              value={phone}
-              onChangeText={(text) => setPhone(text)}
-              keyboardType={"numeric"}
-              maxLength={10}
-            />
-          </Item>
-          <Button
+          <Image
+            resizeMode={"contain"}
+            source={require("../../assets/LoginIllustration.png")}
+            style={styles.IllustrationImg}
+          />
+        </View>
+        <View style={styles.signInWrap} >
+          <Text style={styles.headingText}>Sign In</Text>
+
+          <View style={styles.inputErrorWrap}>
+            <View style={styles.ItemWrap}>
+              <Item floatingLabel style={styles.ItemCss} >
+                <Label style={styles.LabelCss}>Enter your mobile number</Label>
+                <Input
+                  value={phone}
+                  onChangeText={(text) => setPhone(text)}
+                  keyboardType={"numeric"}
+                  maxLength={10}
+                  style={styles.inputCss}
+                />
+              </Item>
+            </View>
+          </View>
+           <Button
             onPress={onNext}
             block
             disabled={loader}
-            style={{ backgroundColor: "#2680EB", marginTop: 20 }}
+            style={styles.btnStyle}
           >
-            <Text style={{ color: "#fff" }}>NEXT</Text>
+            <Text style={styles.btnText}>Continue</Text>
             {loader ? (
               <ActivityIndicator color={"#fff"} style={{ marginLeft: 20 }} />
             ) : null}
