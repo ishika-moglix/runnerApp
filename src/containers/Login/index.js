@@ -51,7 +51,6 @@ export default LoginScreen = (props) => {
         }
       } catch (e) {
         setLoader(false);
-        console.log(e);
         Toast.show({
           text: "Something went wrong!",
           buttonText: "Okay",

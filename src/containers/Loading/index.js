@@ -6,7 +6,6 @@ export default LoadingScreen = (props) => {
   useEffect(() => {
     AsyncStorage.getItem("token")
       .then((res) => {
-        console.log(res);
         if (res) {
           props.route.params.setIsLoggedIn();
           props.route.params.setLoading();

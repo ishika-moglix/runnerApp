@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
-import { Right, Left, Header as Head, Icon, Title, Body } from "native-base";
+import { View } from "react-native";
+import { Header as Head } from "native-base";
 
 export default Header = (props) => {
   return (
@@ -8,15 +8,18 @@ export default Header = (props) => {
       noShadow={props.noShadow}
       androidStatusBarColor={"grey"}
       style={{
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
         backgroundColor: "#fff",
       }}
     >
-      <Left style={{ width: "50%" }}>
+      <View style={{ width: "50%" }}>
         {props.leftComponent ? <props.leftComponent /> : null}
-      </Left>
-      <Right style={{ width: "50%" }}>
+      </View>
+      <View style={{ width: "50%", alignItems: "flex-end" }}>
         {props.rightComponent ? <props.rightComponent /> : null}
-      </Right>
+      </View>
     </Head>
   );
 };

@@ -35,7 +35,6 @@ const ProfileScreen = (props) => {
   };
 
   const onLogout = () => {
-    console.log(props);
     AsyncStorage.removeItem("token");
     props.route.params.setIsLoggedIn();
   };
