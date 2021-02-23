@@ -43,7 +43,7 @@ export default LoginScreen = (props) => {
           });
         } else {
           Toast.show({
-            text: "Something went wrong!",
+            text: data.message || "Something went wrong!",
             buttonText: "Okay",
             duration: 1500,
             style: { margin: 20 },
@@ -62,7 +62,6 @@ export default LoginScreen = (props) => {
   };
 
   return (
-
     <Container style={styles.ContainerCss}>
       {/* <Header
         androidStatusBarColor={"#D9232D"}
@@ -83,30 +82,26 @@ export default LoginScreen = (props) => {
         </View>
       </Header> */}
       <View style={{ flex: 1 }}>
-        <View
-          style={styles.logoWrap}
-        >
+        <View style={styles.logoWrap}>
           <Image
             resizeMode={"contain"}
             source={require("../../assets/RunnerLogo.png")}
             style={styles.logoImage}
           />
         </View>
-        <View
-          style={styles.IllustrationWrap}
-        >
+        <View style={styles.IllustrationWrap}>
           <Image
             resizeMode={"contain"}
             source={require("../../assets/LoginIllustration.png")}
             style={styles.IllustrationImg}
           />
         </View>
-        <View style={styles.signInWrap} >
+        <View style={styles.signInWrap}>
           <Text style={styles.headingText}>Sign In</Text>
 
           <View style={styles.inputErrorWrap}>
             <View style={styles.ItemWrap}>
-              <Item floatingLabel style={styles.ItemCss} >
+              <Item floatingLabel style={styles.ItemCss}>
                 <Label style={styles.LabelCss}>Enter your mobile number</Label>
                 <Input
                   value={phone}
@@ -118,7 +113,7 @@ export default LoginScreen = (props) => {
               </Item>
             </View>
           </View>
-           <Button
+          <Button
             onPress={onNext}
             block
             disabled={loader}

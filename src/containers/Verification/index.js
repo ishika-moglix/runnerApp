@@ -6,7 +6,7 @@ import {
   Text,
   ActivityIndicator,
   AsyncStorage,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import {
   Container,
@@ -21,6 +21,7 @@ import {
 import { login, sendOtp } from "../../services/auth";
 import DeviceInfo from "react-native-device-info";
 import styles from "./style";
+import Colors from "../../Theme/Colors";
 
 export default VerificationScreen = (props) => {
   const [otp, setOtp] = useState("");
@@ -80,9 +81,9 @@ export default VerificationScreen = (props) => {
         setLoader(true);
         const { data } = await login({
           id: props.route.params.id,
-          imei: ['a9245b9bc9af6670'],
-          // device_id: DeviceInfo.getUniqueId(),
-          device_id: 'a9245b9bc9af6670',
+          imei: [DeviceInfo.getUniqueId()],
+          device_id: DeviceInfo.getUniqueId(),
+          // device_id: 'a9245b9bc9af6670',
           otp,
         });
         AsyncStorage.setItem("token", data.data.token);
@@ -143,36 +144,42 @@ export default VerificationScreen = (props) => {
         </View>
       </Header> */}
       <View style={{ flex: 1 }}>
-      <View
-          style={styles.logoWrap}
-        >
+        <View style={styles.logoWrap}>
           <Image
             resizeMode={"contain"}
             source={require("../../assets/RunnerLogo.png")}
             style={styles.logoImage}
           />
         </View>
-        <View
-          style={styles.IllustrationWrap}
-        >
+        <View style={styles.IllustrationWrap}>
           <Image
             resizeMode={"contain"}
             source={require("../../assets/LoginIllustration.png")}
             style={styles.IllustrationImg}
           />
         </View>
-        <View style={styles.signInWrap} >
+        <View style={styles.signInWrap}>
           <Text style={styles.headingText}>Sign In</Text>
           <View style={styles.row}>
-            <Text style={styles.numbertext}>+91 {props.route.params.phone}</Text>
-            <TouchableOpacity transparent onPress={() => props.navigation.goBack()}>
+            <Text style={styles.numbertext}>
+              +91 {props.route.params.phone}
+            </Text>
+            <TouchableOpacity
+              transparent
+              onPress={() => props.navigation.goBack()}
+            >
               <Text style={styles.changetext}>CHANGE</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.inputErrorWrap}>
-            <View style={[styles.ItemWrap,styles.SuccessItemWrap]}>
-              <Item floatingLabel style={styles.ItemCss} >
+            <View
+              style={[
+                styles.ItemWrap,
+                otp.length === 6 ? styles.SuccessItemWrap : null,
+              ]}
+            >
+              <Item floatingLabel style={styles.ItemCss}>
                 <Label style={styles.LabelCss}>Enter Otp</Label>
                 <Input
                   keyboardType={"numeric"}
@@ -181,49 +188,55 @@ export default VerificationScreen = (props) => {
                   onChangeText={(text) => setOtp(text)}
                   placeholder="-      -      -      - "
                   style={styles.inputCss}
-                  autoFocus = {true}
+                  autoFocus={true}
                 />
               </Item>
               {/* <TouchableOpacity style={styles.Timerbtn}>
                 <Text style={styles.TimerBtnText}>00.25</Text>
               </TouchableOpacity> */}
 
-              <TouchableOpacity style={styles.SuccessBtn}>
-              <Image
-                resizeMode={"contain"}
-                source={require("../../assets/Check.png")}
-                style={styles.SuccessImg}
-              />
-              </TouchableOpacity>
-
+              {otp.length === 6 ? (
+                <TouchableOpacity style={styles.SuccessBtn}>
+                  <Image
+                    resizeMode={"contain"}
+                    source={require("../../assets/Check.png")}
+                    style={styles.SuccessImg}
+                  />
+                </TouchableOpacity>
+              ) : null}
             </View>
             <TouchableOpacity
-            style={styles.resendOtpBTn}
-            transparent
-            onPress={onResendOtp}
-            disabled={!resendOtp}
-          >
-            {/* <Text style={{ color: resendOtp ? "#097EFF" : "#C3C3C3" }}>
-              Resend OTP
-            </Text> */}
-            <Text style={styles.changetext}>
-              Resend OTP
-            </Text>
-          </TouchableOpacity>
+              style={styles.resendOtpBTn}
+              transparent
+              onPress={onResendOtp}
+              disabled={!resendOtp}
+            >
+              <Text
+                style={[
+                  styles.changetext,
+                  { color: resendOtp ? Colors.RedThemeColor : "#C3C3C3" },
+                ]}
+              >
+                Resend OTP
+              </Text>
+              {/* <Text style={styles.changetext}>Resend OTP</Text> */}
+            </TouchableOpacity>
           </View>
-          
+
           <Button
             onPress={onVerify}
             block
             disabled={loader || otp.length !== 6}
-            style={!loader && otp.length === 6 ? styles.btnStyle :styles.disabledBtn}
+            style={
+              !loader && otp.length === 6 ? styles.btnStyle : styles.disabledBtn
+            }
           >
             <Text style={styles.btnText}>CONTINUE</Text>
             {loader ? (
               <ActivityIndicator color={"#fff"} style={{ marginLeft: 20 }} />
             ) : null}
           </Button>
-          
+
           {/* <Text
             style={{
               lineHeight: 20,
