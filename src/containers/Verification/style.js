@@ -39,7 +39,7 @@ export default StyleSheet.create({
     elevation: 10,
   },
   headingText: { fontSize: Dimension.font16, fontFamily: Dimension.CustomSemiBoldFont, marginBottom: Dimension.margin20 },
-  
+
   row:{
     flexDirection: "row",
     justifyContent: "space-between",
@@ -55,7 +55,22 @@ export default StyleSheet.create({
     backgroundColor: '#fff',
     position: 'relative'
   },
-  errorCss: { borderColor: Colors.RedThemeColor },
+  SuccessItemWrap:{
+    borderWidth: 1,
+    borderColor: Colors.GreenColor,
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    position: 'relative'
+  },
+  ErrorItemWrap:{
+    borderWidth: 1,
+    borderColor: Colors.orangeColor,
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    position: 'relative'
+  },
+
+  errorText: {fontSize:Dimension.font10,fontFamily:Dimension.CustomRegularFont,color:Colors.orangeColor},
   ItemCss: {
 
     paddingTop: 0,
@@ -73,5 +88,12 @@ export default StyleSheet.create({
   btnStyle: { backgroundColor: Colors.RedThemeColor, borderRadius: 8, height: Dimension.height40 },
   disabledBtn:{ backgroundColor:'#C4C4C4', borderRadius: 8, height: Dimension.height40},
   btnText: { fontSize: Dimension.font14, fontFamily: Dimension.CustomSemiBoldFont, color: "#fff", textTransform: 'uppercase' },
-  resendOtpBTn:{alignItems:'center', marginTop:Dimension.margin10}
+  resendOtpBTn:{alignItems:'center', marginTop:Dimension.margin10},
+
+  Timerbtn:{backgroundColor:Colors.LightRedThemeColor,position:"absolute",right:Dimension.padding6,top:Dimension.padding6,height:Dimension.height30,paddingHorizontal:Dimension.padding10,borderRadius:4,justifyContent:"center"},
+  TimerBtnText:{ fontSize: Dimension.font12, fontFamily: Dimension.CustomSemiBoldFont, color:Colors.RedThemeColor,},
+
+
+  SuccessBtn:{backgroundColor:Colors.lightGreen,position:"absolute",right:Dimension.padding6,top:Dimension.padding6,height:Dimension.height30,paddingHorizontal:Dimension.padding10,borderRadius:4,justifyContent:"center"},
+  SuccessImg:{height:24,width:24}
 });

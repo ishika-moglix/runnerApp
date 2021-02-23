@@ -80,8 +80,9 @@ export default VerificationScreen = (props) => {
         setLoader(true);
         const { data } = await login({
           id: props.route.params.id,
-          imei: [DeviceInfo.getUniqueId()],
-          device_id: DeviceInfo.getUniqueId(),
+          imei: ['a9245b9bc9af6670'],
+          // device_id: DeviceInfo.getUniqueId(),
+          device_id: 'a9245b9bc9af6670',
           otp,
         });
         AsyncStorage.setItem("token", data.data.token);
@@ -170,7 +171,7 @@ export default VerificationScreen = (props) => {
           </View>
 
           <View style={styles.inputErrorWrap}>
-            <View style={styles.ItemWrap}>
+            <View style={[styles.ItemWrap,styles.SuccessItemWrap]}>
               <Item floatingLabel style={styles.ItemCss} >
                 <Label style={styles.LabelCss}>Enter Otp</Label>
                 <Input
@@ -183,6 +184,18 @@ export default VerificationScreen = (props) => {
                   autoFocus = {true}
                 />
               </Item>
+              {/* <TouchableOpacity style={styles.Timerbtn}>
+                <Text style={styles.TimerBtnText}>00.25</Text>
+              </TouchableOpacity> */}
+
+              <TouchableOpacity style={styles.SuccessBtn}>
+              <Image
+                resizeMode={"contain"}
+                source={require("../../assets/Check.png")}
+                style={styles.SuccessImg}
+              />
+              </TouchableOpacity>
+
             </View>
             <TouchableOpacity
             style={styles.resendOtpBTn}
