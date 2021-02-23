@@ -24,7 +24,6 @@ const TYPE_KEYS = new Map({
 });
 
 export const fetchTaskData = (state, { taskType, date, page }) => {
-  console.log(taskType, date, page);
   if (page == 1) {
     return state
       .setIn([taskType, moment(date).format("DD-MM-YYYY"), "loading"], true)

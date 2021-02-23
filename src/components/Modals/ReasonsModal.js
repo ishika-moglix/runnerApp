@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-native-modal";
 import { View, TouchableOpacity, Text, Dimensions } from "react-native";
-import { Button, Icon } from "native-base";
+import { Icon } from "native-base";
 
 export default ReasonModal = (props) => {
   const [selected, setSelected] = useState("");
@@ -12,44 +12,69 @@ export default ReasonModal = (props) => {
       onBackButtonPress={toggleModal}
       onBackdropPress={toggleModal}
       isVisible={isModalVisible}
+      style={{
+        margin: 0,
+      }}
     >
       <View
         style={{
-          width: Dimensions.get("window").width * 0.8,
+          width: Dimensions.get("window").width,
           alignSelf: "center",
-          borderRadius: 4,
+          borderTopLeftRadius: 18,
+          borderTopRightRadius: 18,
           padding: 20,
+          position: "absolute",
+          bottom: 0,
           backgroundColor: "#fff",
         }}
       >
-        <Text style={{ fontSize: 16, marginBottom: 20 }}>{title}</Text>
-        {options.map((option, optionKey) => (
-          <TouchableOpacity
-            key={optionKey}
-            onPress={() => setSelected(option.value)}
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginTop: 20,
-            }}
-          >
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Text style={{ fontSize: 16 }}>{title}</Text>
+          <TouchableOpacity onPress={toggleModal}>
             <Icon
-              style={{ color: "#0D80FF" }}
-              name={
-                selected == option.value
-                  ? "circle-slice-8"
-                  : "checkbox-blank-circle-outline"
-              }
+              name={"close-circle"}
+              style={{ color: "#3C3C3C", fontSize: 22 }}
               type={"MaterialCommunityIcons"}
             />
-            <Text style={{ marginLeft: 12, fontSize: 16, width: "90%" }}>
-              {option.label}
-            </Text>
           </TouchableOpacity>
-        ))}
-        <Button block style={{ backgroundColor: "#0D80FF", marginTop: 40 }}>
+        </View>
+        <View style={{ marginVertical: 32 }}>
+          {options.map((option, optionKey) => (
+            <TouchableOpacity
+              key={optionKey}
+              onPress={() => setSelected(option.value)}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                paddingVertical: 16,
+                borderBottomColor: "#e7e7e7",
+                borderBottomWidth: 0.8,
+              }}
+            >
+              <Icon
+                style={{ color: "#D9232D" }}
+                name={
+                  selected == option.value
+                    ? "circle-slice-8"
+                    : "checkbox-blank-circle-outline"
+                }
+                type={"MaterialCommunityIcons"}
+              />
+              <Text style={{ marginLeft: 12, fontSize: 16, width: "90%" }}>
+                {option.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+        {/* <Button block style={{ backgroundColor: "#0D80FF", marginTop: 40 }}>
           <Text style={{ color: "#fff" }}>SUBMIT</Text>
-        </Button>
+        </Button> */}
       </View>
     </Modal>
   );

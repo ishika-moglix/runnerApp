@@ -83,7 +83,6 @@ const HomeScreen = (props) => {
   };
 
   const getSubTitle = (item, forKey) => {
-    console.log(item);
     const titleKey = item.findKey((_, k) =>
       ["suppliers", "customers"].includes(k)
     );

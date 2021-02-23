@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  Container,
-  Icon,
-  Card,
-  CardItem,
-  Footer,
-  FooterTab,
-  Button,
-} from "native-base";
+import { Container, Icon, Card, CardItem, Button } from "native-base";
 import Header from "../../components/Header";
 import { TouchableOpacity, Text, ScrollView } from "react-native";
 import PickupCarditem from "../../components/Cards/PickupCarditem";
@@ -70,104 +62,108 @@ export default ItemDetailsScreen = (props) => {
     switch (props.route.params.type) {
       case "Pickup":
         return (
-          <Footer
+          <View
             style={{
+              position: "absolute",
+              bottom: 0,
               backgroundColor: "#fff",
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
             }}
           >
-            <FooterTab>
-              <Button
-                onPress={() =>
-                  props.navigation.navigate("ItemsImages", {
-                    company: props.route.params.company,
-                  })
-                }
-                block
-                style={{
-                  backgroundColor: "#2680EB",
-                }}
-              >
-                <Text style={{ fontSize: 18, color: "#fff" }}>PICKUP DONE</Text>
-              </Button>
-            </FooterTab>
-          </Footer>
+            <Button
+              onPress={() =>
+                props.navigation.navigate("ItemsImages", {
+                  company: props.route.params.company,
+                })
+              }
+              block
+              style={{
+                backgroundColor: "#2680EB",
+              }}
+            >
+              <Text style={{ fontSize: 18, color: "#fff" }}>PICKUP DONE</Text>
+            </Button>
+          </View>
         );
       case "Delivery":
         return (
-          <Footer
+          <View
             style={{
+              position: "absolute",
+              bottom: 0,
               backgroundColor: "#fff",
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
             }}
           >
-            <FooterTab>
-              <Button
-                onPress={toggleModal}
-                block
-                style={{
-                  backgroundColor: "#525252",
-                }}
-              >
-                <Text style={{ fontSize: 18, color: "#fff" }}>ATTEMPTED</Text>
-              </Button>
-              <Button
-                onPress={() =>
-                  props.navigation.navigate("ItemsImages", {
-                    company: props.route.params.company,
-                  })
-                }
-                block
-                style={{
-                  backgroundColor: "#2680EB",
-                }}
-              >
-                <Text style={{ fontSize: 18, color: "#fff" }}>DELIVERED</Text>
-              </Button>
-            </FooterTab>
-          </Footer>
+            <Button
+              onPress={toggleModal}
+              block
+              style={{
+                width: "48%",
+                backgroundColor: "#525252",
+              }}
+            >
+              <Text style={{ fontSize: 18, color: "#fff" }}>ATTEMPTED</Text>
+            </Button>
+            <Button
+              onPress={() =>
+                props.navigation.navigate("ItemsImages", {
+                  company: props.route.params.company,
+                })
+              }
+              block
+              style={{
+                width: "48%",
+                backgroundColor: "#2680EB",
+              }}
+            >
+              <Text style={{ fontSize: 18, color: "#fff" }}>DELIVERED</Text>
+            </Button>
+          </View>
         );
       default:
         return (
-          <Footer
+          <View
             style={{
+              position: "absolute",
+              bottom: 0,
               backgroundColor: "#fff",
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
             }}
           >
-            <FooterTab>
-              <Button
-                block
-                onPress={toggleModal}
-                style={{
-                  backgroundColor: "#525252",
-                }}
-              >
-                <Text style={{ fontSize: 18, color: "#fff" }}>
-                  PICKUP NOT DONE
-                </Text>
-              </Button>
-              <Button
-                onPress={() =>
-                  props.navigation.navigate("ItemsImages", {
-                    company: props.route.params.company,
-                  })
-                }
-                block
-                style={{
-                  backgroundColor: "#2680EB",
-                }}
-              >
-                <Text style={{ fontSize: 18, color: "#fff" }}>PICKUP DONE</Text>
-              </Button>
-            </FooterTab>
-          </Footer>
+            <Button
+              block
+              onPress={toggleModal}
+              style={{
+                width: "48%",
+                backgroundColor: "#525252",
+              }}
+            >
+              <Text style={{ fontSize: 18, color: "#fff" }}>
+                PICKUP NOT DONE
+              </Text>
+            </Button>
+            <Button
+              onPress={() =>
+                props.navigation.navigate("ItemsImages", {
+                  company: props.route.params.company,
+                })
+              }
+              block
+              style={{
+                width: "48%",
+                backgroundColor: "#2680EB",
+              }}
+            >
+              <Text style={{ fontSize: 18, color: "#fff" }}>PICKUP DONE</Text>
+            </Button>
+          </View>
         );
     }
   };

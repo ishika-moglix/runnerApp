@@ -2,7 +2,6 @@ import { connect } from "react-redux";
 import { Container, Icon } from "native-base";
 import React, { useEffect } from "react";
 import {
-  Image,
   TouchableOpacity,
   View,
   FlatList,
@@ -33,10 +32,6 @@ const DeliveryScreen = (props) => {
       />
     );
   };
-
-  useEffect(() => {
-    console.log(props.task, "checkk");
-  });
 
   return (
     <Container style={{ backgroundColor: "#F7F7FA" }}>

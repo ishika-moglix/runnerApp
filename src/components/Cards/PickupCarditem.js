@@ -1,20 +1,15 @@
 import React from "react";
-import { Icon, CardItem, Input } from "native-base";
+import { Icon, Input } from "native-base";
 import { TouchableOpacity, View, Text, Picker } from "react-native";
 
 export default PickupCarditem = (props) => {
   const { item } = props;
   return (
-    <CardItem
+    <View
       style={{
         flexDirection: "row",
         alignItems: "flex-start",
-        paddingTop: 20,
-        paddingBottom: 20,
-        marginLeft: 20,
-        marginRight: 20,
-        paddingLeft: 0,
-        paddingRight: 0,
+        paddingVertical: 20,
         borderBottomColor: "#E0E0E0",
         borderBottomWidth: 0.5,
       }}
@@ -114,6 +109,6 @@ export default PickupCarditem = (props) => {
           </Picker>
         </View>
       </View>
-    </CardItem>
+    </View>
   );
 };

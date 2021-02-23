@@ -83,7 +83,6 @@ export default VerificationScreen = (props) => {
           otp,
         });
         AsyncStorage.setItem("token", data.data.token);
-        console.log(data);
         setLoader(false);
         if (data && data.success) {
           props.route.params.setIsLoggedIn(true);
