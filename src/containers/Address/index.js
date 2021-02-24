@@ -57,13 +57,15 @@ const AddressScreen = (props) => {
         name: "Safety hand glove",
         quantity: "240",
         checked: false,
-        inputQuantity: "",
+        inputQuantity: "240",
+        reason: "",
       },
       {
         name: "Generic AMP 70-80 Bar Inner- 138x115x162",
         quantity: "190",
         checked: false,
-        inputQuantity: "",
+        inputQuantity: "190",
+        reason: "",
       },
     ]).toOrderedMap()
   );
@@ -75,6 +77,29 @@ const AddressScreen = (props) => {
   const onCheck = (key) => {
     let newData = data;
     newData = newData.setIn([key, "checked"], !newData.getIn([key, "checked"]));
+    setData(newData);
+  };
+
+  const onQtyChange = (key, val) => {
+    let newData = data;
+    if (val <= newData.getIn([key, "quantity"])) {
+      newData = newData.setIn([key, "inputQuantity"], val);
+      setData(newData);
+    }
+  };
+
+  const onIncDec = (key, type) => {
+    let newData = data;
+    newData = newData.setIn(
+      [key, "inputQuantity"],
+      Number(newData.getIn([key, "inputQuantity"])) + (type === "inc" ? 1 : -1)
+    );
+    setData(newData);
+  };
+
+  const onChangeReason = (key, val) => {
+    let newData = data;
+    newData = newData.setIn([key, "reason"], val);
     setData(newData);
   };
 
@@ -102,6 +127,7 @@ const AddressScreen = (props) => {
               }
               block
               style={{
+                width: "100%",
                 backgroundColor: "#D9232D",
                 borderRadius: 4,
               }}
@@ -206,7 +232,16 @@ const AddressScreen = (props) => {
   const renderCard = (item, index) => {
     switch (props.route.params.type) {
       case "Pickup":
-        return <PickupCarditem id={index} onCheck={onCheck} item={item} />;
+        return (
+          <PickupCarditem
+            onIncDec={onIncDec}
+            onChangeReason={onChangeReason}
+            id={index}
+            onCheck={onCheck}
+            onQtyChange={onQtyChange}
+            item={item}
+          />
+        );
       default:
         return <CommonCardItem id={index} onCheck={onCheck} item={item} />;
     }

@@ -15,14 +15,11 @@ export default CompanyCard = (props) => {
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={() =>
-        props.navigation.navigate(
-          props.type == "Pickup" ? "Pickup-Tasks" : "Address",
-          {
-            company: props.item.contactName,
-            type: props.type,
-            data: props.item,
-          }
-        )
+        props.navigation.navigate("Address", {
+          company: props.item.contactName,
+          type: props.type,
+          data: props.item,
+        })
       }
       style={{
         marginBottom: 20,
@@ -76,6 +73,15 @@ export default CompanyCard = (props) => {
       <View>
         <Button
           block
+          onPress={() =>
+            props.type == "Pickup"
+              ? props.navigation.navigate("Pickup-Tasks", {
+                  company: props.item.contactName,
+                  type: props.type,
+                  data: props.item,
+                })
+              : null
+          }
           style={{
             width: "100%",
             borderRadius: 8,
