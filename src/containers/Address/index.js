@@ -120,14 +120,24 @@ const AddressScreen = (props) => {
             }}
           >
             <Button
-              onPress={() =>
-                props.navigation.navigate("ItemsImages", {
-                  company: props.route.params.company,
-                })
-              }
               block
               style={{
-                width: "100%",
+                width: "48%",
+                backgroundColor: "#fff",
+                borderRadius: 4,
+              }}
+            >
+              <Text
+                style={{ fontWeight: "bold", fontSize: 16, color: "#D9232D" }}
+              >
+                ATTEMPT FAIL
+              </Text>
+            </Button>
+            <Button
+              onPress={setIsUploaderVisible}
+              block
+              style={{
+                width: "48%",
                 backgroundColor: "#D9232D",
                 borderRadius: 4,
               }}
