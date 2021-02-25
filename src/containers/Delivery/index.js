@@ -6,14 +6,14 @@ import {
   View,
   FlatList,
   Text,
-  ActivityIndicator,
+  ActivityIndicator,Image
 } from "react-native";
 import moment from "moment";
 import CompanyCard from "../../components/Cards/CompayCard";
 import Header from "../../components/Header";
 import { Map, List } from "immutable";
 import TaskActions from "../../redux/actions/tasks";
-
+import styles from "./style";
 const DeliveryScreen = (props) => {
   useEffect(() => {
     props.fetchTask("delivery", props.currentdate, 1);
@@ -70,12 +70,11 @@ const DeliveryScreen = (props) => {
               alignItems: "center",
             }}
           >
-            <Icon
-              name={"account-circle"}
-              type={"MaterialCommunityIcons"}
-              style={{ color: "#000" }}
+           <Image
+              style={styles.rightArrowIcon}
+              source={require("../../assets/account-circle-fill.png")}
             />
-            {props.home.getIn(["profile", "data", "name"]) ? (
+            {/* {props.home.getIn(["profile", "data", "name"]) ? (
               <Text
                 style={{
                   fontSize: 10,
@@ -83,7 +82,7 @@ const DeliveryScreen = (props) => {
               >
                 {props.home.getIn(["profile", "data", "name"])}
               </Text>
-            ) : null}
+            ) : null} */}
           </TouchableOpacity>
         )}
       />

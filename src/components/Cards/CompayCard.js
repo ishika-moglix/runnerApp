@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardItem, Button, Icon } from "native-base";
 import { Text, TouchableOpacity, View } from "react-native";
 import { Map } from "immutable";
-
+import styles from "./style";
 const ITEM_COUNT = new Map({
   Return: "returnTaskItemCount",
   SupplierReturn: "supplierReturnTaskItemCount",
@@ -21,74 +21,30 @@ export default CompanyCard = (props) => {
           data: props.item,
         })
       }
-      style={{
-        marginBottom: 20,
-        backgroundColor: "#fff",
-        padding: 12,
-        borderRadius: 8,
-      }}
+      style={styles.CompanyCardWrap}
     >
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottomColor: "#E0E0E0",
-          paddingBottom: 8,
-          borderBottomWidth: 1,
-        }}
-      >
-        <Text style={{ fontWeight: "bold" }}>{props.item.contactName}</Text>
-      </View>
-      <View>
-        <View
-          style={{
-            width: "100%",
-            flexDirection: "row",
-            alignItems: "center",
-            paddingVertical: 20,
-            justifyContent: "space-between",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "bold",
-              color: "#333333",
-            }}
-          >
-            Items :
-            <Text
-              style={{
-                fontWeight: "bold",
-                fontSize: 18,
-              }}
-            >
-              {" "}
-              {props.item[ITEM_COUNT.find((val, key) => key == props.type)]}
-            </Text>
-          </Text>
-        </View>
-      </View>
+      <Text style={styles.CompanyNameBold}>{props.item.contactName}</Text>
+      <Text style={styles.ItemTextBold}> Items :{" "}
+        {props.item[ITEM_COUNT.find((val, key) => key == props.type)]}
+      </Text>
+
+
+
       <View>
         <Button
           block
           onPress={() =>
             props.type == "Pickup"
               ? props.navigation.navigate("Pickup-Tasks", {
-                  company: props.item.contactName,
-                  type: props.type,
-                  data: props.item,
-                })
+                company: props.utem.contactName,
+                type: props.type,
+                data: props.item,
+              })
               : null
           }
-          style={{
-            width: "100%",
-            borderRadius: 8,
-            backgroundColor: "#D9232D",
-          }}
+          style={styles.startNowBtn}
         >
-          <Text style={{ fontSize: 16, fontWeight: "bold", color: "#fff" }}>
+          <Text style={styles.startNowText}>
             START NOW
           </Text>
         </Button>

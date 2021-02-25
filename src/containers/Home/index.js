@@ -15,6 +15,7 @@ import moment from "moment";
 import { connect } from "react-redux";
 import HomeActions from "../../redux/actions/home";
 import { Map } from "immutable";
+import styles from "./style";
 
 const max = new Date();
 const min = new Date(moment(new Date()).subtract(1, "month").toString());
@@ -108,12 +109,11 @@ const HomeScreen = (props) => {
               alignItems: "center",
             }}
           >
-            <Icon
-              name={"account-circle"}
-              type={"MaterialCommunityIcons"}
-              style={{ color: "#000" }}
+            <Image
+              style={styles.rightArrowIcon}
+              source={require("../../assets/account-circle-fill.png")}
             />
-            {props.home.getIn(["profile", "data", "name"]) ? (
+            {/* {props.home.getIn(["profile", "data", "name"]) ? (
               <Text
                 style={{
                   fontSize: 10,
@@ -121,7 +121,7 @@ const HomeScreen = (props) => {
               >
                 {props.home.getIn(["profile", "data", "name"])}
               </Text>
-            ) : null}
+            ) : null} */}
           </TouchableOpacity>
         )}
         leftComponent={() => (
@@ -132,22 +132,16 @@ const HomeScreen = (props) => {
             }}
           >
             <Image
-              style={{ width: 60, height: 20 }}
-              source={require("../../assets/moglix-logo.jpg")}
+              style={{ width: 120, height: 20 }}
+              source={require("../../assets/RunnerLogo.png")}
             />
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: "bold",
-              }}
-            >
-              Runner
-            </Text>
+           
           </TouchableOpacity>
         )}
       />
       <Header
         key={2}
+        noShadow={true}
         rightComponent={() => (
           <View>
             <TouchableOpacity
@@ -157,12 +151,10 @@ const HomeScreen = (props) => {
                 alignItems: "center",
               }}
             >
-              <Title style={{ color: "#000", fontSize: 16, marginRight: 12 }}>
-                {moment(date).format("ddd, MMM DD")}
-              </Title>
+            
               <Icon
-                name={"calendar-month"}
-                type={"MaterialCommunityIcons"}
+                name={"dots-three-vertical"}
+                type={"Entypo"}
                 style={{ color: "#000", fontSize: 24 }}
               />
             </TouchableOpacity>
@@ -177,29 +169,27 @@ const HomeScreen = (props) => {
             }}
           >
             <Icon
-              name={"chevron-left"}
-              type={"MaterialCommunityIcons"}
-              style={{ fontSize: 22, width: 36 }}
+                name={"calendar-month"}
+                type={"MaterialCommunityIcons"}
+                style={{ color: "#000", fontSize: 24 }}
+              />
+              
+              <Image
+              style={styles.rightArrowIcon}
+              source={require("../../assets/arrowLeft.png")}
             />
-            <Title
-              style={{
-                color: "#D9232D",
-                fontSize: 16,
-                marginRight: 12,
-                lineHeight: 30,
-              }}
-            >
-              Today
+            
+            <Title style={styles.dateText}>
+              {moment(date).format("DD/MMM/YY")}
             </Title>
-            <Icon
-              name={"chevron-right"}
-              type={"MaterialCommunityIcons"}
-              style={{ fontSize: 22, width: 36 }}
+            <Image
+              style={styles.rightArrowIcon}
+              source={require("../../assets/rightBlackArrow.png")}
             />
           </TouchableOpacity>
         )}
       />
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
+      <ScrollView contentContainerStyle={{ padding: 20 }} style={styles.ContainerCss}>
         {show && (
           <DateTimePicker
             maximumDate={max}
@@ -228,82 +218,43 @@ const HomeScreen = (props) => {
               .map((item, index) => (
                 <View
                   key={index}
-                  style={{
-                    marginBottom: 20,
-                    width: "100%",
-                    padding: 12,
-                    borderRadius: 8,
-                    backgroundColor: "#F7F7FA",
-                    borderWidth: 0.8,
-                    borderColor: "#C4C4C4",
-                  }}
+                  style={styles.cardWrap}
                 >
-                  <TouchableOpacity
-                    onPress={() => props.navigation.navigate(getRoute(index))}
-                    style={{
-                      width: "100%",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          fontWeight: "bold",
-                          color: "#D9232D",
-                        }}
-                      >
-                        {getTitle(index)}
-                      </Text>
-                    </View>
-                    <Icon
-                      type={"MaterialCommunityIcons"}
-                      name={"chevron-right"}
-                      style={{
-                        right: -12,
-                        color: "#D9232D",
-                      }}
-                    />
-                  </TouchableOpacity>
-                  <Text
-                    style={{
-                      marginTop: 8,
-                      color: "#979797",
-                    }}
-                  >
-                    {getCaption(index)}
+                  <Text style={styles.cardTitle}>
+                    {getTitle(index)}
                   </Text>
-                  <View
-                    style={{
-                      marginTop: 30,
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 16,
-                      }}
-                    >
+                  <View style={styles.rowWrap}>
+                    <Text style={styles.normalText}>
                       Total Items:{" "}
-                      <Text style={{ fontWeight: "bold" }}>
+                      <Text style={styles.BoldText}>
                         {item.get("items")}
                       </Text>
-                      {"     "}| {"    "}
+                      {"     "}|{"    "}
                       {getSubTitle(item)} Location:{" "}
-                      <Text style={{ fontWeight: "bold" }}>
+                      <Text style={styles.BoldText}>
                         {item.get(getSubTitle(item, true)) || 0}
                       </Text>
                     </Text>
                   </View>
+                  <Text style={styles.lightGarytext}>
+                    {getCaption(index)}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => props.navigation.navigate(getRoute(index))}
+                    style={styles.viewListBtn}
+                  >
+                  <Text style={styles.RedBoldText}>
+                     View List
+                  </Text>
+                  <Image
+                    style={styles.rightArrowIcon}
+                    source={require("../../assets/arrow-right.png")}
+                  />
+                  
+                   
+                  </TouchableOpacity>
+                  
+                  
                 </View>
               ))
               .toList()
