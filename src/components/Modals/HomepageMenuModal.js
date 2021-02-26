@@ -41,7 +41,10 @@ export default HomePageMenuModal = (props) => {
         {data.map((option, optionKey) => (
           <TouchableOpacity
             key={optionKey}
-            onPress={() => navigation.navigate(option.route)}
+            onPress={() => {
+              toggleModal();
+              navigation.navigate(option.route);
+            }}
             style={{
               flexDirection: "row",
               alignItems: "center",

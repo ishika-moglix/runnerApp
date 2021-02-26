@@ -20,6 +20,7 @@ import SupplierReturnScreen from "../containers/SupplierReturn";
 import PickupTasksScreen from "../containers/PickupTasks";
 import FileViewerScreen from "../containers/FileViewer";
 import ProfileScreen from "../containers/Profile";
+import FuturePOScreen from "../containers/FuturePo";
 
 const Stack = createStackNavigator();
 
@@ -140,6 +141,11 @@ const Routes = (props) => {
               setIsLoggedIn: changeLoginState,
             }}
             component={ProfileScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="FuturePO"
+            component={FuturePOScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
