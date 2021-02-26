@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Modal from "react-native-modal";
 import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { Icon } from "native-base";
+import styles from './style'
 
 export default ReasonModal = (props) => {
   const [selected, setSelected] = useState("");
@@ -17,29 +18,16 @@ export default ReasonModal = (props) => {
       }}
     >
       <View
-        style={{
-          width: Dimensions.get("window").width,
-          alignSelf: "center",
-          borderTopLeftRadius: 18,
-          borderTopRightRadius: 18,
-          padding: 20,
-          position: "absolute",
-          bottom: 0,
-          backgroundColor: "#fff",
-        }}
+       style={styles.modalWrap}
       >
         <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
+            style={styles.modalTopWrap}
         >
-          <Text style={{ fontSize: 16 }}>{title}</Text>
+          <Text style={styles.headingText}>{title}</Text>
           <TouchableOpacity onPress={toggleModal}>
             <Icon
               name={"close-circle"}
-              style={{ color: "#3C3C3C", fontSize: 22 }}
+              style={styles.closeIcon}
               type={"MaterialCommunityIcons"}
             />
           </TouchableOpacity>

@@ -84,5 +84,58 @@ export default StyleSheet.create({
     width:Dimension.width24,
     height:Dimension.width24
   },
+
+  // address card Css
+  addressCardWrap:{
+    paddingLeft:0,paddingRight:0,
+    paddingTop:Dimension.padding12,paddingBottom:Dimension.padding12,
+  },
+  addressCardItem:{
+    paddingLeft:0,paddingRight:0,
+    marginBottom:0,marginTop:0,paddingTop:Dimension.padding5,paddingBottom:Dimension.padding5
+  },
+  addresstext:{
+    fontSize:Dimension.font14,
+    fontFamily:Dimension.CustomRegularFont,
+    color:Colors.PrimaryTextColor
+  },
+  colontext:{
+    fontSize:Dimension.font16,
+    fontFamily:Dimension.CustomMediumFont,
+    color:Colors.PrimaryTextColor
+  },
+  leftWidth:{
+    flex:3
+  },
+  centerWidth:{flex:1},
+  rightWidth:{flex:7},
+
+ // Common card Css
+ itemText:{
+   fontSize:Dimension.font14,
+   fontFamily:Dimension.CustomRegularFont,
+   color:Colors.Black,
+   flex:7
+ },
+ quantityText:{
+  fontSize:Dimension.font14,
+  fontFamily:Dimension.CustomSemiBoldFont,
+  color:Colors.PrimaryTextColor,
+  flex:2.2,
+  textAlign:'right',
  
+ },
+ checkboxWrap:{
+   flex:1
+  },
+  activeCheckBox:{
+    color:Colors.RedThemeColor,
+    fontSize:Dimension.font24
+  },
+  inActiveCheckBox:{
+    color:Colors.PrimaryTextColor,
+    fontSize:Dimension.font24
+  },
+  deliveryItemsWrap:{flexDirection:'row',paddingVertical:Dimension.padding15,borderBottomColor:Colors.BorderColor,borderBottomWidth:1},
+
   });

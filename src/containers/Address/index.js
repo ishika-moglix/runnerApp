@@ -16,6 +16,7 @@ import CommonCardItem from "../../components/Cards/CommonCardItem";
 import ReasonsModal from "../../components/Modals/ReasonsModal";
 import ImageUploaderModal from "../../components/Modals/ImageUploaderModal";
 import { List } from "immutable";
+import styles from './style'
 
 let deliveryOptions = [
   {
@@ -107,28 +108,15 @@ const AddressScreen = (props) => {
     switch (props.route.params.type) {
       case "Pickup":
         return (
-          <View
-            style={{
-              position: "absolute",
-              bottom: 0,
-              padding: 8,
-              width: "100%",
-              backgroundColor: "#EFEFF4",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
+          <View style={styles.footerWrap}
+           
           >
             <Button
               block
-              style={{
-                width: "48%",
-                backgroundColor: "#fff",
-                borderRadius: 4,
-              }}
+              style={styles.EnabledAttemptedBtn}
             >
               <Text
-                style={{ fontWeight: "bold", fontSize: 16, color: "#D9232D" }}
+                style={styles.EnabledAttemptedBtntext}
               >
                 ATTEMPT FAIL
               </Text>
@@ -136,13 +124,9 @@ const AddressScreen = (props) => {
             <Button
               onPress={setIsUploaderVisible}
               block
-              style={{
-                width: "48%",
-                backgroundColor: "#D9232D",
-                borderRadius: 4,
-              }}
+              style={styles.EnabledDeliverdBtn}
             >
-              <Text style={{ fontWeight: "bold", fontSize: 16, color: "#fff" }}>
+              <Text style={styles.EnabledDeliverdBtnText}>
                 PICKUP DONE
               </Text>
             </Button>
@@ -150,43 +134,22 @@ const AddressScreen = (props) => {
         );
       case "Delivery":
         return (
-          <View
-            style={{
-              position: "absolute",
-              bottom: 0,
-              padding: 8,
-              width: "100%",
-              backgroundColor: "#EFEFF4",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
+          <View style={styles.footerWrap} >
             <Button
               onPress={toggleModal}
               block
-              style={{
-                width: "48%",
-                backgroundColor: "#fff",
-                borderRadius: 4,
-              }}
+              style={styles.EnabledAttemptedBtn}
             >
-              <Text
-                style={{ fontWeight: "bold", fontSize: 16, color: "#D9232D" }}
-              >
+              <Text style={styles.EnabledAttemptedBtntext}>
                 ATTEMPTED
               </Text>
             </Button>
             <Button
               onPress={setIsUploaderVisible}
               block
-              style={{
-                width: "48%",
-                backgroundColor: "#D9232D",
-                borderRadius: 4,
-              }}
+              style={styles.EnabledDeliverdBtn}
             >
-              <Text style={{ fontWeight: "bold", fontSize: 16, color: "#fff" }}>
+              <Text style={styles.EnabledDeliverdBtnText}>
                 DELIVERED
               </Text>
             </Button>
@@ -266,9 +229,7 @@ const AddressScreen = (props) => {
       <>
         <ScrollView>
           <View
-            style={{
-              margin: 20,
-            }}
+            style={styles.DeliveryItemWrap}
           >
             {data
               .map((item, index) => renderCard(item, index))
@@ -306,41 +267,16 @@ const AddressScreen = (props) => {
 
   const renderAddress = () => {
     return (
-      <View
-        style={{
-          borderTopLeftRadius: 18,
-          borderTopRightRadius: 18,
-          backgroundColor: "#fff",
-          flex: 1,
-        }}
-      >
-        <View
-          style={{
-            marginHorizontal: 20,
-            paddingVertical: 20,
-            flexDirection: "row",
-            alignItems: "center",
-            borderBottomColor: "#e7e7e7",
-            borderBottomWidth: 0.6,
-            justifyContent: "space-between",
-          }}
+      <View style={styles.addressWrap}>
+        <View style={styles.addressTopWrap}
         >
-          <Text
-            style={{
-              fontWeight: "bold",
-              color: "#303030",
-              fontSize: 16,
-            }}
-          >
-            Address
+          <Text style={styles.addressTopText}>
+            Your Address
           </Text>
           <Icon
             name={"directions"}
             type="FontAwesome5"
-            style={{
-              fontSize: 22,
-              color: "#D9232D",
-            }}
+            style={styles.diectionIcon}
           />
         </View>
         <FlatList
@@ -372,26 +308,21 @@ const AddressScreen = (props) => {
   };
 
   return (
-    <Container
-      style={{
-        backgroundColor: "#F7F7FA",
-      }}
+    <Container style={styles.ContainerCss}
     >
       <Header
         noShadow={true}
         rightComponent={() => (
           <TouchableOpacity
             onPress={() => props.navigation.navigate("Profile")}
-            style={{
-              alignItems: "center",
-            }}
+            style={styles.profileiconWrap}
           >
             <Icon
               name={"account-circle"}
               type={"MaterialCommunityIcons"}
-              style={{ color: "#000" }}
+              style={styles.ProfileIcon}
             />
-            {props.home.getIn(["profile", "data", "name"]) ? (
+            {/* {props.home.getIn(["profile", "data", "name"]) ? (
               <Text
                 style={{
                   fontSize: 10,
@@ -399,31 +330,25 @@ const AddressScreen = (props) => {
               >
                 {props.home.getIn(["profile", "data", "name"])}
               </Text>
-            ) : null}
+            ) : null} */}
           </TouchableOpacity>
         )}
         leftComponent={() => (
+          <View style={{flexDirection:"row",}}>
           <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
+            style={styles.backIconWrap}
             onPress={goBack}
           >
-            <Icon name={"arrow-left"} type={"MaterialCommunityIcons"} />
-            <Image
-              style={{ width: 60, height: 20, marginLeft: 12 }}
-              source={require("../../assets/moglix-logo.jpg")}
-            />
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: "bold",
-              }}
-            >
-              Runner
-            </Text>
+            <Icon name={"arrow-left"} type={"MaterialCommunityIcons"} style={styles.backIcon}/>
+           
           </TouchableOpacity>
+          <Text
+          style={styles.headerTitle}
+        >
+          Comapny Name
+          
+        </Text>
+        </View>
         )}
       />
       <Tabs
@@ -434,24 +359,12 @@ const AddressScreen = (props) => {
           backgroundColor: "#D9232D",
           height: 2,
         }}
+        tabContainerStyle={{ elevation: 0,}}
       >
         {TABS.map((tab, index) => (
           <Tab
-            style={{ backgroundColor: "#fff" }}
-            heading={
-              <TabHeading style={{ backgroundColor: "#fff" }}>
-                <Text
-                  style={{
-                    fontWeight: activeTab !== index ? "normal" : "bold",
-                    color: activeTab === index ? "#D9232D" : "#000",
-                    fontSize: 16,
-                  }}
-                >
-                  {tab.heading}
-                </Text>
-              </TabHeading>
-            }
-          >
+          style={styles.tabName} tabStyle={styles.tabStyle} activeTabStyle={styles.activetab} activeTextStyle={styles.activetext} textStyle={styles.tabtext}
+            heading={tab.heading}>
             {tab.render()}
           </Tab>
         ))}

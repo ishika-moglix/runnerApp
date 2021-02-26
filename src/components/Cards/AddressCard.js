@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardItem, Button, Icon } from "native-base";
 import { Text, TouchableOpacity } from "react-native";
-
+import styles from './style'
 let data = [
   { title: "Company", key: "contactName" },
   { title: "Address", key: "contactAddress" },
@@ -15,7 +15,7 @@ let data = [
 
 export default AddressCard = (props) => {
   return (
-    <Card style={{ marginBottom: 20, marginTop: 0 }} transparent>
+    <Card style={styles.addressCardWrap} transparent>
       {/* <CardItem
         style={{
           backgroundColor: '#F8FAFF',
@@ -24,29 +24,15 @@ export default AddressCard = (props) => {
       </CardItem> */}
       {data.map((item, index) =>
         props.item[item.key] ? (
-          <CardItem key={index}>
-            <Text
-              style={{
-                width: "30%",
-                fontWeight: "normal",
-              }}
-            >
+          <CardItem key={index} style={styles.addressCardItem}>
+            <Text style={[styles.addresstext,styles.leftWidth]} >
               {item.title}
             </Text>
-            <Text
-              style={{
-                width: "10%",
-                textAlign: "center",
-                fontWeight: "normal",
-              }}
-            >
+            <Text style={[styles.colontext,styles.centerWidth]}>
               :
             </Text>
             <Text
-              style={{
-                width: "60%",
-                fontWeight: "normal",
-              }}
+              style={[styles.addresstext,styles.rightWidth]}
             >
               {props.item[item.key]}
             </Text>

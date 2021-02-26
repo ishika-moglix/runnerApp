@@ -15,7 +15,7 @@ export default {
   SubmitButton: '#f17b39',
 
   PrimaryTextColor:'#3C3C3C',
-  SecondaryTextColor:'rgba(43,43,43,.5)',
+  SecondaryTextColor:'#707070',
   lightGrayText:'#979797',
   ExtralightGrayText:'#C4C4C4',
   RedThemeColor:'rgba(217, 35, 45, 1)',
@@ -25,7 +25,7 @@ export default {
   BorderColor:'#EFEFF4',
   white:'#fff',
   Black:'#000',
-  grayShadeforBG:'rgba(60, 60, 60, .10)',
+  grayShadeforBG:'#F7F7FA',
   blueShade:'#008AFF',
   yellowShade:'#FDB92C',
   orangeColor:'#F5681E',

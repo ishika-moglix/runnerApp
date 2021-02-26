@@ -34,31 +34,25 @@ const DeliveryScreen = (props) => {
   };
 
   return (
-    <Container style={{ backgroundColor: "#F7F7FA" }}>
+    <Container style={styles.ContainerCss}>
       <Header
         headertext={"Delivery"}
         leftComponent={() => (
           <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
+            style={styles.backIconWrap}
           >
             <Icon
               onPress={goBack}
               name={"arrow-left"}
               type={"MaterialCommunityIcons"}
+              style={styles.backIcon}
             />
             <Text
-              style={{
-                width: "100%",
-                marginLeft: 12,
-                fontSize: 16,
-              }}
+              style={styles.headerTitle}
             >
-              Delivery
+              Delivery{" "}
               {props.task.get("data")
-                ? `(${props.task.get("data").size})`
+                ? `( ${props.task.get("data").size} )`
                 : null}
             </Text>
           </View>
@@ -66,13 +60,12 @@ const DeliveryScreen = (props) => {
         rightComponent={() => (
           <TouchableOpacity
             onPress={() => props.navigation.navigate("Profile")}
-            style={{
-              alignItems: "center",
-            }}
+            style={styles.profileiconWrap}
           >
-           <Image
-              style={styles.rightArrowIcon}
-              source={require("../../assets/account-circle-fill.png")}
+           <Icon
+              name={"account-circle"}
+              type={"MaterialCommunityIcons"}
+              style={styles.ProfileIcon}
             />
             {/* {props.home.getIn(["profile", "data", "name"]) ? (
               <Text

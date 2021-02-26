@@ -17,6 +17,21 @@ import Colors from '../../Theme/Colors';
 
 export default StyleSheet.create({
   ContainerCss: { backgroundColor: "#F7F7FA", position: 'relative' },
+  headerTitle:{
+    fontSize:Dimension.font14,
+    fontFamily:Dimension.CustomMediumFont,
+    color:Colors.PrimaryTextColor,
+    marginLeft:Dimension.margin12,
+    textAlignVertical:"center"
+  },
+  backIconWrap:{
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  backIcon:{color:Colors.PrimaryTextColor,fontSize:Dimension.font24},
+  profileiconWrap:{ alignItems: "center",},
+  ProfileIcon:{color:Colors.PrimaryTextColor,fontSize:Dimension.font24},
+
   cardWrap:{
     marginBottom: Dimension.margin15,
     width: "100%",
