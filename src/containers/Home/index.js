@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import Header from "../../components/Header";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import HomePageMenuModal from "../../components/Modals/HomepageMenuModal";
 import moment from "moment";
 import { connect } from "react-redux";
 import HomeActions from "../../redux/actions/home";
@@ -52,6 +53,7 @@ const HomeScreen = (props) => {
   );
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     updateHomePage();
@@ -62,7 +64,10 @@ const HomeScreen = (props) => {
 
   const updateHomePage = () => {
     props.setDate(date);
-    if (!props.home.get(moment(date).format("DD-MM-YYYY"))) {
+    if (
+      !props.home.get(moment(date).format("DD-MM-YYYY")) ||
+      !props.home.getIn([moment(date).format("DD-MM-YYYY"), "data"])
+    ) {
       props.fetchHome(date);
     }
   };
@@ -135,7 +140,6 @@ const HomeScreen = (props) => {
               style={{ width: 120, height: 20 }}
               source={require("../../assets/RunnerLogo.png")}
             />
-           
           </TouchableOpacity>
         )}
       />
@@ -145,13 +149,12 @@ const HomeScreen = (props) => {
         rightComponent={() => (
           <View>
             <TouchableOpacity
-              onPress={() => setShow(true)}
+              onPress={() => setShowModal(true)}
               style={{
                 flexDirection: "row",
                 alignItems: "center",
               }}
             >
-            
               <Icon
                 name={"dots-three-vertical"}
                 type={"Entypo"}
@@ -169,16 +172,16 @@ const HomeScreen = (props) => {
             }}
           >
             <Icon
-                name={"calendar-month"}
-                type={"MaterialCommunityIcons"}
-                style={{ color: "#000", fontSize: 24 }}
-              />
-              
-              <Image
+              name={"calendar-month"}
+              type={"MaterialCommunityIcons"}
+              style={{ color: "#000", fontSize: 24 }}
+            />
+
+            <Image
               style={styles.rightArrowIcon}
               source={require("../../assets/arrowLeft.png")}
             />
-            
+
             <Title style={styles.dateText}>
               {moment(date).format("DD/MMM/YY")}
             </Title>
@@ -189,7 +192,10 @@ const HomeScreen = (props) => {
           </TouchableOpacity>
         )}
       />
-      <ScrollView contentContainerStyle={{ padding: 20 }} style={styles.ContainerCss}>
+      <ScrollView
+        contentContainerStyle={{ padding: 20 }}
+        style={styles.ContainerCss}
+      >
         {show && (
           <DateTimePicker
             maximumDate={max}
@@ -216,19 +222,12 @@ const HomeScreen = (props) => {
               new Map({})
             )
               .map((item, index) => (
-                <View
-                  key={index}
-                  style={styles.cardWrap}
-                >
-                  <Text style={styles.cardTitle}>
-                    {getTitle(index)}
-                  </Text>
+                <View key={index} style={styles.cardWrap}>
+                  <Text style={styles.cardTitle}>{getTitle(index)}</Text>
                   <View style={styles.rowWrap}>
                     <Text style={styles.normalText}>
                       Total Items:{" "}
-                      <Text style={styles.BoldText}>
-                        {item.get("items")}
-                      </Text>
+                      <Text style={styles.BoldText}>{item.get("items")}</Text>
                       {"     "}|{"    "}
                       {getSubTitle(item)} Location:{" "}
                       <Text style={styles.BoldText}>
@@ -236,25 +235,17 @@ const HomeScreen = (props) => {
                       </Text>
                     </Text>
                   </View>
-                  <Text style={styles.lightGarytext}>
-                    {getCaption(index)}
-                  </Text>
+                  <Text style={styles.lightGarytext}>{getCaption(index)}</Text>
                   <TouchableOpacity
                     onPress={() => props.navigation.navigate(getRoute(index))}
                     style={styles.viewListBtn}
                   >
-                  <Text style={styles.RedBoldText}>
-                     View List
-                  </Text>
-                  <Image
-                    style={styles.rightArrowIcon}
-                    source={require("../../assets/arrow-right.png")}
-                  />
-                  
-                   
+                    <Text style={styles.RedBoldText}>View List</Text>
+                    <Image
+                      style={styles.rightArrowIcon}
+                      source={require("../../assets/arrow-right.png")}
+                    />
                   </TouchableOpacity>
-                  
-                  
                 </View>
               ))
               .toList()
@@ -262,6 +253,13 @@ const HomeScreen = (props) => {
           </View>
         )}
       </ScrollView>
+      {showModal && (
+        <HomePageMenuModal
+          isVisible={showModal}
+          navigation={props.navigation}
+          toggleModal={() => setShowModal(false)}
+        />
+      )}
     </Container>
   );
 };
