@@ -2,6 +2,7 @@ import React from "react";
 import { Dimensions, View, Text, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
 import { Icon } from "native-base";
+import styles from './style'
 
 const data = [
   {
@@ -26,18 +27,11 @@ export default HomePageMenuModal = (props) => {
         margin: 0,
       }}
     >
+      
       <View
-        style={{
-          width: Dimensions.get("window").width,
-          alignSelf: "center",
-          borderTopLeftRadius: 18,
-          borderTopRightRadius: 18,
-          padding: 20,
-          position: "absolute",
-          bottom: 0,
-          backgroundColor: "#fff",
-        }}
+        style={styles.modalWrap}
       >
+        <View style={styles.radioWrap}>
         {data.map((option, optionKey) => (
           <TouchableOpacity
             key={optionKey}
@@ -45,16 +39,10 @@ export default HomePageMenuModal = (props) => {
               toggleModal();
               navigation.navigate(option.route);
             }}
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              paddingVertical: 16,
-              borderBottomColor: "#e7e7e7",
-              borderBottomWidth: 0.8,
-            }}
+            style={styles.radioBtnWrap}
           >
             <Icon
-              style={{ color: "#D9232D" }}
+             style={styles.radioBtn}
               name={
                 //   selected == option.value
                 //     ?
@@ -64,11 +52,13 @@ export default HomePageMenuModal = (props) => {
               }
               type={"MaterialCommunityIcons"}
             />
-            <Text style={{ marginLeft: 12, fontSize: 16, width: "90%" }}>
+            <Text style={styles.radioText}>
               {option.label}
             </Text>
           </TouchableOpacity>
+          
         ))}
+        </View>
       </View>
     </Modal>
   );

@@ -1,23 +1,16 @@
 import React from "react";
 import { Icon, Input } from "native-base";
 import { TouchableOpacity, View, Text, Picker } from "react-native";
+import styles from './style'
 
 export default PickupCarditem = (props) => {
   const { item, onIncDec, onQtyChange, onChangeReason } = props;
   return (
     <View
-      style={{
-        flexDirection: "row",
-        alignItems: "flex-start",
-        paddingVertical: 20,
-        borderBottomColor: "#E0E0E0",
-        borderBottomWidth: 0.5,
-      }}
+      style={styles.pickupCard}
     >
       <TouchableOpacity
-        style={{
-          width: "10%",
-        }}
+        style={styles.checkBoxWrap}
         onPress={() => props.onCheck(props.id)}
       >
         <Icon
@@ -25,16 +18,11 @@ export default PickupCarditem = (props) => {
           name={
             props.item.checked ? "checkbox-marked" : "checkbox-blank-outline"
           }
-          style={{ color: "#D9232D", fontSize: 26 }}
+          style={styles.checkboxIcon}
         />
       </TouchableOpacity>
       <View
-        style={{
-          flexDirection: "row",
-          width: "90%",
-          flexWrap: "wrap",
-          justifyContent: "space-between",
-        }}
+        style={styles.pickUpRightPart}
       >
         <View
           style={{
@@ -42,18 +30,12 @@ export default PickupCarditem = (props) => {
           }}
         >
           <Text
-            style={{
-              fontSize: 16,
-            }}
+            style={styles.PickupitemText}
           >
             {item.name}
           </Text>
           <Text
-            style={{
-              marginTop: 8,
-              fontWeight: "bold",
-              color: "#3C3C3C",
-            }}
+            style={styles.PickupquantityText}
           >
             Qty: {item.quantity}
           </Text>
@@ -68,66 +50,26 @@ export default PickupCarditem = (props) => {
           <TouchableOpacity
             disabled={item.inputQuantity == 0}
             onPress={() => onIncDec(props.id, "dec")}
-            style={{
-              width: 34,
-              height: 34,
-              alignItems: "center",
-              borderColor: item.inputQuantity == 0 ? "#EFEFF4" : "#278BED",
-              borderWidth: 0.8,
-              justifyContent: "center",
-              backgroundColor:
-                item.inputQuantity == 0 ? "#0000001A" : "#CBE4FF",
-              borderRadius: 4,
-            }}
+            style={item.inputQuantity == 0 ? styles.MinusdisabledQtyWrap :styles.MinusenableQtyWrap }
           >
             <Text
-              style={{
-                alignSelf: "center",
-                textAlign: "center",
-                fontWeight: "bold",
-                fontSize: 18,
-              }}
+              style={styles.minusQtyText}
             >
               -
             </Text>
           </TouchableOpacity>
           <Input
             onChangeText={(text) => onQtyChange(props.id, text)}
-            style={{
-              textAlign: "center",
-              borderColor: "#278BED",
-              borderWidth: 0.8,
-              marginHorizontal: 4,
-              borderRadius: 4,
-              width: 68,
-              height: 34,
-              padding: 0,
-            }}
+            style={styles.qtyInputBox}
             value={String(item.inputQuantity)}
           />
           <TouchableOpacity
             disabled={item.inputQuantity == item.quantity}
             onPress={() => onIncDec(props.id, "inc")}
-            style={{
-              width: 34,
-              height: 34,
-              alignItems: "center",
-              borderColor:
-                item.inputQuantity == item.quantity ? "#EFEFF4" : "#278BED",
-              borderWidth: 0.8,
-              justifyContent: "center",
-              backgroundColor:
-                item.inputQuantity == item.quantity ? "#0000001A" : "#CBE4FF",
-              borderRadius: 4,
-            }}
+            style={item.inputQuantity == item.quantity ? styles.MinusdisabledQtyWrap :styles.MinusenableQtyWrap}
           >
             <Text
-              style={{
-                alignSelf: "center",
-                textAlign: "center",
-                fontWeight: "bold",
-                fontSize: 16,
-              }}
+              style={styles.minusQtyText}
             >
               +
             </Text>

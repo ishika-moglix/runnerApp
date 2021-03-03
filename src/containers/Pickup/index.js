@@ -15,7 +15,7 @@ import Header from "../../components/Header";
 import { Map, List } from "immutable";
 import TaskActions from "../../redux/actions/tasks";
 import moment from "moment";
-
+import styles from "./style";
 const PickupScreen = (props) => {
   useEffect(() => {
     props.fetchTask("pickup", props.currentdate, 1);
@@ -37,22 +37,16 @@ const PickupScreen = (props) => {
         headertext={"Pick Up"}
         leftComponent={() => (
           <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
+          style={styles.backIconWrap}
           >
             <Icon
               onPress={goBack}
               name={"arrow-left"}
               type={"MaterialCommunityIcons"}
+              style={styles.backIcon}
             />
             <Text
-              style={{
-                width: "100%",
-                marginLeft: 12,
-                fontSize: 16,
-              }}
+               style={styles.headerTitle}
             >
               Pick Up{" "}
               {props.task.get("data")
@@ -64,16 +58,14 @@ const PickupScreen = (props) => {
         rightComponent={() => (
           <TouchableOpacity
             onPress={() => props.navigation.navigate("Profile")}
-            style={{
-              alignItems: "center",
-            }}
+            style={styles.profileiconWrap}
           >
             <Icon
               name={"account-circle"}
               type={"MaterialCommunityIcons"}
-              style={{ color: "#000" }}
+              style={styles.ProfileIcon}
             />
-            {props.home.getIn(["profile", "data", "name"]) ? (
+            {/* {props.home.getIn(["profile", "data", "name"]) ? (
               <Text
                 style={{
                   fontSize: 10,
@@ -81,7 +73,7 @@ const PickupScreen = (props) => {
               >
                 {props.home.getIn(["profile", "data", "name"])}
               </Text>
-            ) : null}
+            ) : null} */}
           </TouchableOpacity>
         )}
       />
