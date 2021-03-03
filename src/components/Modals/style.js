@@ -142,4 +142,28 @@ export default StyleSheet.create({
     fontFamily:Dimension.CustomSemiBoldFont,
     color:Colors.white
   },
+
+  //reason Model 
+  radioWrap:{
+    paddingHorizontal:Dimension.padding15,
+    paddingVertical:Dimension.padding20
+  },
+  radioBtnWrap:{
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: Dimension.padding15,
+    borderBottomColor: Colors.BorderColor,
+    borderBottomWidth: 1,
+  },
+  radioText:{
+    fontSize:Dimension.font14,
+    fontFamily:Dimension.CustomRegularFont,
+    color:Colors.PrimaryTextColor,
+    marginLeft:Dimension.margin10,
+
+  },
+  radioBtn:{
+    fontSize:Dimension.font22,
+    color:Colors.RedThemeColor
+  }
   });

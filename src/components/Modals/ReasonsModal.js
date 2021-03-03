@@ -32,21 +32,15 @@ export default ReasonModal = (props) => {
             />
           </TouchableOpacity>
         </View>
-        <View style={{ marginVertical: 32 }}>
+        <View style={styles.radioWrap}>
           {options.map((option, optionKey) => (
             <TouchableOpacity
               key={optionKey}
               onPress={() => setSelected(option.value)}
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                paddingVertical: 16,
-                borderBottomColor: "#e7e7e7",
-                borderBottomWidth: 0.8,
-              }}
+              style={styles.radioBtnWrap}
             >
               <Icon
-                style={{ color: "#D9232D" }}
+                style={styles.radioBtn}
                 name={
                   selected == option.value
                     ? "circle-slice-8"
@@ -54,7 +48,7 @@ export default ReasonModal = (props) => {
                 }
                 type={"MaterialCommunityIcons"}
               />
-              <Text style={{ marginLeft: 12, fontSize: 16, width: "90%" }}>
+              <Text style={styles.radioText}>
                 {option.label}
               </Text>
             </TouchableOpacity>
