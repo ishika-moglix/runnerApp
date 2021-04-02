@@ -76,14 +76,16 @@ export default VerificationScreen = (props) => {
   };
 
   const onVerify = async () => {
+    let device_id = DeviceInfo.getUniqueId();
+    console.log(device_id);
     if (otp.length === 6) {
       try {
         setLoader(true);
         const { data } = await login({
           id: props.route.params.id,
-          imei: ['a9245b9bc9af6670'],
+          imei: ['e95629fe83b36071'],
           // device_id: DeviceInfo.getUniqueId(),
-           device_id: 'a9245b9bc9af6670',
+           device_id: 'e95629fe83b36071',
           otp,
         });
         AsyncStorage.setItem("token", data.data.token);
@@ -126,6 +128,7 @@ export default VerificationScreen = (props) => {
   return (
     <Container>
       {/* <Header
+      e95629fe83b36071
         androidStatusBarColor={"#D9232D"}
         style={{
           backgroundColor: "#D9232D",
@@ -222,13 +225,13 @@ export default VerificationScreen = (props) => {
               {/* <Text style={styles.changetext}>Resend OTP</Text> */}
             </TouchableOpacity>
           </View>
-
+          
           <Button
             onPress={onVerify}
             block
             disabled={loader || otp.length !== 6}
             style={
-              !loader && otp.length === 6 ? styles.btnStyle : styles.disabledBtn
+              !loader && otp.length === 6 ? styles.btnStyle :styles.disabledBtn
             }
           >
             <Text style={styles.btnText}>CONTINUE</Text>
@@ -237,6 +240,10 @@ export default VerificationScreen = (props) => {
             ) : null}
           </Button>
 
+
+        {/*   */}
+
+          {/*  */}
           {/* <Text
             style={{
               lineHeight: 20,

@@ -19,7 +19,7 @@ import { Map } from "immutable";
 import styles from "./style";
 
 const max = new Date();
-const min = new Date(moment(new Date()).subtract(1, "month").toString());
+const min = new Date(moment(new Date()).subtract(2, "month").toString());
 
 const TITLES = new Map({
   pickupDetails: "Pickup Done",

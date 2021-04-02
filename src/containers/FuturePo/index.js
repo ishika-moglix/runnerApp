@@ -100,7 +100,7 @@ const FuturePO = (props) => {
           onPress={() =>
             props.type == "Pickup"
               ? props.navigation.navigate("Pickup-Tasks", {
-                  company: props.utem.contactName,
+                  company: props.item.contactName,
                   type: props.type,
                   data: props.item,
                 })

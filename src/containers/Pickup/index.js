@@ -16,18 +16,25 @@ import { Map, List } from "immutable";
 import TaskActions from "../../redux/actions/tasks";
 import moment from "moment";
 import styles from "./style";
+import { fetchTask } from "../../redux/sagas/tasksSaga";
 const PickupScreen = (props) => {
   useEffect(() => {
-    props.fetchTask("pickup", props.currentdate, 1);
+    if (!props.task.get("loading") && !props.task.get("data")) {
+      fetchTask();
+    }
   }, []);
 
   const goBack = () => {
     props.navigation.goBack();
   };
 
+  const fetchTask = () => {
+    props.fetchTask("pickup", props.currentdate, 1);
+  };
+
   const renderCards = ({ item, index }) => {
     return (
-      <CompanyCard type={"Pickup"} navigation={props.navigation} item={item} />
+      <CompanyCard type={"Pickup"} navigation={props.navigation} item={item} fetchTask={fetchTask} />
     );
   };
 
@@ -36,18 +43,14 @@ const PickupScreen = (props) => {
       <Header
         headertext={"Pick Up"}
         leftComponent={() => (
-          <View
-          style={styles.backIconWrap}
-          >
+          <View style={styles.backIconWrap}>
             <Icon
               onPress={goBack}
               name={"arrow-left"}
               type={"MaterialCommunityIcons"}
               style={styles.backIcon}
             />
-            <Text
-               style={styles.headerTitle}
-            >
+            <Text style={styles.headerTitle}>
               Pick Up{" "}
               {props.task.get("data")
                 ? `(${props.task.get("data").size})`

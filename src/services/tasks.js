@@ -69,10 +69,18 @@ const getPdfByPoId = async (poId) =>
     },
   });
 
+const pickupStart = async (data) =>
+  axiosInstance.post(`tasks/pickup/taskStatuses`, data, {
+    headers: {
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  });
+
 export {
   getTask,
   getPickupTask,
   getPickupTaskByPoId,
   getPickupTaskById,
   getPdfByPoId,
+  pickupStart,
 };

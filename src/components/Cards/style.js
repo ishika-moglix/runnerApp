@@ -61,6 +61,13 @@ export default StyleSheet.create({
     height: Dimension.height40,
     elevation: 0
   },
+  disabledstartNowBtn: {
+    width: "100%",
+    borderRadius: 8,
+    backgroundColor:'#C4C4C4',
+    height: Dimension.height40,
+    elevation: 0
+  },
   startNowText: {
     fontSize: Dimension.font14,
     color: Colors.white,

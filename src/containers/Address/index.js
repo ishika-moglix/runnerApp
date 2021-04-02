@@ -345,7 +345,7 @@ const AddressScreen = (props) => {
           <Text
           style={styles.headerTitle}
         >
-          Comapny Name
+          Company Name
           
         </Text>
         </View>
