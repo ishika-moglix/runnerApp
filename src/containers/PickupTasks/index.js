@@ -25,7 +25,7 @@ import { getPdfByPoId } from "../../services/tasks";
 
 const PickupTasksScreen = (props) => {
   const [search, setSearch] = useState("");
-
+  console.log(props);
   useEffect(() => {
     searchValidator(search);
   }, []);
@@ -34,7 +34,15 @@ const PickupTasksScreen = (props) => {
     if (text) {
       onSearch(text);
     } else {
-      props.fetchPickupTask(props.route.params.data.id, text);
+      props.fetchPickupTask(
+        props.route.params.type == "Pickup"
+          ? "pickUpTasks"
+          : props.route.params.type == "Delivery"
+          ? "deliveryTasks"
+          : "",
+        props.route.params.data.id || props.route.params.data.deliveryTaskId,
+        text
+      );
     }
   };
 
@@ -44,7 +52,15 @@ const PickupTasksScreen = (props) => {
 
   const onSearch = useCallback(
     debounce((searchText) => {
-      props.fetchPickupTask(props.route.params.data.id, searchText);
+      props.fetchPickupTask(
+        props.route.params.type == "Pickup"
+          ? "pickUpTasks"
+          : props.route.params.type == "Delivery"
+          ? "deliveryTasks"
+          : "",
+        props.route.params.data.id || props.route.params.data.deliveryTaskId,
+        searchText
+      );
     }, 1000),
     []
   );
@@ -80,6 +96,12 @@ const PickupTasksScreen = (props) => {
   };
 
   const renderItems = ({ item, index }) => {
+    let type =
+      props.route.params.type == "Pickup"
+        ? "pickUpTasks"
+        : props.route.params.type == "Delivery"
+        ? "deliveryTasks"
+        : "";
     return (
       <View
         style={{
@@ -99,8 +121,17 @@ const PickupTasksScreen = (props) => {
             justifyContent: "space-between",
           }}
         >
-          <Text>Po Id : {item.poId}</Text>
-          <TouchableOpacity onPress={() => onOpenFile(item.poId)}>
+          <Text>
+            {type == "pickUpTasks"
+              ? "Po"
+              : type == "deliveryTasks"
+              ? "Packet"
+              : ""}{" "}
+            Id : {item.poId || item.emsPacketId}
+          </Text>
+          <TouchableOpacity
+            onPress={() => onOpenFile(item.poId || item.emsPacketId)}
+          >
             <Icon
               name={"file"}
               type={"MaterialCommunityIcons"}
@@ -109,7 +140,16 @@ const PickupTasksScreen = (props) => {
           </TouchableOpacity>
         </View>
         <View>
+          {type == "deliveryTasks" ? (
+            <Text>Invoice Id : {item.invoiceId}</Text>
+          ) : null}
           <TouchableOpacity
+            onPress={() => {
+              props.navigation.navigate("PickupItems", {
+                ...props.route.params,
+                ...item,
+              });
+            }}
             style={{
               flexDirection: "row",
               width: "100%",
@@ -120,7 +160,9 @@ const PickupTasksScreen = (props) => {
           >
             <Text style={{ fontSize: 16 }}>
               Items :{" "}
-              <Text style={{ fontWeight: "bold" }}>{item.itemCount}</Text>
+              <Text style={{ fontWeight: "bold" }}>
+                {item.itemCount || item.itemsCount}
+              </Text>
             </Text>
             <Icon
               name={"menu-right"}
@@ -208,7 +250,14 @@ const PickupTasksScreen = (props) => {
           />
         </Item>
       </View>
-      {props.pickupTask.get("loading") ? (
+      {props.pickupTask.getIn([
+        props.route.params.type == "Pickup"
+          ? "pickUpTasks"
+          : props.route.params.type == "Delivery"
+          ? "deliveryTasks"
+          : "",
+        "loading",
+      ]) ? (
         <ActivityIndicator
           color={"#D9232D"}
           style={{
@@ -233,7 +282,14 @@ const PickupTasksScreen = (props) => {
               </Text>
             )}
             keyExtractor={(item, index) => `${index}-item`}
-            data={props.pickupTask.get("data")}
+            data={props.pickupTask.getIn([
+              props.route.params.type == "Pickup"
+                ? "pickUpTasks"
+                : props.route.params.type == "Delivery"
+                ? "deliveryTasks"
+                : "",
+              "data",
+            ])}
             renderItem={renderItems}
           />
         </>
@@ -243,13 +299,13 @@ const PickupTasksScreen = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  pickupTask: state.tasks.getIn(["pickUpTasks"]) || new Map({}),
+  pickupTask: state.tasks,
   home: state.home,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchPickupTask: (pickupTaskId, poId) =>
-    dispatch(TaskActions.fetchPickupTask(pickupTaskId, poId)),
+  fetchPickupTask: (type, pickupTaskId, poId) =>
+    dispatch(TaskActions.fetchPickupTask(type, pickupTaskId, poId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PickupTasksScreen);

@@ -21,6 +21,7 @@ import PickupTasksScreen from "../containers/PickupTasks";
 import FileViewerScreen from "../containers/FileViewer";
 import ProfileScreen from "../containers/Profile";
 import FuturePOScreen from "../containers/FuturePo";
+import PickupItemsScreen from "../containers/PickupItems";
 
 const Stack = createStackNavigator();
 
@@ -78,6 +79,11 @@ const Routes = (props) => {
               headerShown: false,
             }}
             component={PickupScreen}
+          />
+          <Stack.Screen
+            name="PickupItems"
+            options={{ headerShown: false }}
+            component={PickupItemsScreen}
           />
           <Stack.Screen
             name="Delivery"

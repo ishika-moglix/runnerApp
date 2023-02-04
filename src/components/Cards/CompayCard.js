@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardItem, Button, Icon } from "native-base";
 import { Text, TouchableOpacity, View, ActivityIndicator } from "react-native";
-import { pickupStart } from "../../services/tasks";
+import { pickupStart, deliveryStart } from "../../services/tasks";
 import { Map } from "immutable";
 import styles from "./style";
 const ITEM_COUNT = new Map({
@@ -14,34 +14,69 @@ const ITEM_COUNT = new Map({
 export default CompanyCard = (props) => {
   const [loader, setLoader] = useState(false);
 
-  const onStart = async () => {
-    try {
-      setLoader(true);
-      const { data } = await pickupStart({
-        pickuptaskId: props.item.id,
-        status: "STARTED",
-        taskItemsStatuses: [
-          {
-            lbh: {
+  const onPickup = async () => {
+    setLoader(true);
+    const { data } = await pickupStart({
+      pickuptaskId: props.item.id,
+      status: "STARTED",
+      taskItemsStatuses: [
+        {
+          lbh: [
+            {
               boxCount: 0,
               breadth: 0,
               height: 0,
               length: 0,
               weight: 0,
             },
-            quantity: 0,
-            reasonId: 0,
-            typetaskItemId: 0,
-          },
-        ],
-      });
+          ],
+          quantity: 0,
+          reasonId: 0,
+          typetaskItemId: 0,
+        },
+      ],
+    });
+    setLoader(false);
+    if (data) {
+      console.log("****************", data);
+      props.fetchTask();
+    } else {
       setLoader(false);
-      if (data) {
-        console.log("****************", data);
-        props.fetchTask();
-      } else {
-        setLoader(false);
-        console.log("response nhi aaya", data);
+      console.log("response nhi aaya", data);
+    }
+  };
+
+  const onDelivery = async () => {
+    setLoader(true);
+    const { data } = await deliveryStart({
+      deliveryTaskId: props.item.deliveryTaskId,
+      // "reasonId": 0,
+      status: "STARTED",
+    });
+    setLoader(false);
+    if (data) {
+      console.log("****************", data);
+      props.fetchTask();
+    } else {
+      setLoader(false);
+      console.log("response nhi aaya", data);
+    }
+  };
+
+  const onStart = async () => {
+    console.log(props);
+    try {
+      switch (props.type) {
+        case "Delivery":
+          await onDelivery();
+          return;
+        case "Pickup":
+          await onPickup();
+          return;
+        case "Return":
+          return;
+        default:
+          return;
       }
     } catch (e) {
       setLoader(false);
@@ -50,33 +85,45 @@ export default CompanyCard = (props) => {
   };
 
   const navigate = () => {
-    if (props.type == "Pickup") {
-      props.navigation.navigate("Pickup-Tasks", {
-        company: props.item.contactName,
-        type: props.type,
-        data: props.item,
-      });
-    }
+    // if (props.type == "Pickup") {
+    props.navigation.navigate("Pickup-Tasks", {
+      company: props.item.contactName,
+      type: props.type,
+      data: props.item,
+    });
+    // }
   };
   return (
     <TouchableOpacity
       activeOpacity={0.8}
-      onPress={() =>
-        props.navigation.navigate("Address", {
-          company: props.item.contactName,
-          type: props.type,
-          data: props.item,
-        })
-      }
+      onPress={navigate}
       style={styles.CompanyCardWrap}
     >
-      <Text style={styles.CompanyNameBold}>{props.item.contactName}</Text>
+      <View style={styles.CompanyCardTopWrap}>
+        <Text style={styles.CompanyNameBold}>{props.item.contactName}</Text>
+        <TouchableOpacity>
+          <Text
+            style={styles.AddressText}
+            onPress={() =>
+              props.navigation.navigate("Address", {
+                company: props.item.contactName,
+                type: props.type,
+                data: props.item,
+              })
+            }
+          >
+            Address
+          </Text>
+        </TouchableOpacity>
+      </View>
       <Text style={styles.ItemTextBold}>
         {" "}
         Items : {props.item[ITEM_COUNT.find((val, key) => key == props.type)]}
       </Text>
       <View>
-        {props.item.status == "READY_FOR_PICKUP" ? (
+        {["READY_FOR_PICKUP", "READY_FOR_DELIVERY"].includes(
+          props.item.status || props.item.deliveryTaskStatus
+        ) ? (
           <Button
             block
             onPress={onStart}
@@ -92,7 +139,10 @@ export default CompanyCard = (props) => {
 
         {props.item.status == "STARTED" ||
         props.item.status == "ARRIVED" ||
-        props.item.status == "TRANSACTING" ? (
+        props.item.status == "TRANSACTING" ||
+        props.item.deliveryTaskStatus == "STARTED" ||
+        props.item.deliveryTaskStatus == "ARRIVED" ||
+        props.item.deliveryTaskStatus == "TRANSACTING" ? (
           <Button block onPress={navigate} style={styles.startNowBtn}>
             <Text style={styles.startNowText}>ONGOING</Text>
           </Button>

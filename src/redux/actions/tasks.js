@@ -23,9 +23,9 @@ const { Types, Creators } = createActions({
   fetchedTaskData: ["taskType", "date", "page", "data"],
   fetchFailedTaskData: ["taskType", "date", "page", "error"],
 
-  fetchPickupTask: ["taskId", "poId"],
-  fetchedPickupTask: ["taskId", "poId", "data"],
-  fetchFailedPickupTask: ["taskId", "poId", "error"],
+  fetchPickupTask: ["taskType", "taskId", "poId"],
+  fetchedPickupTask: ["taskType", "taskId", "poId", "data"],
+  fetchFailedPickupTask: ["taskType", "taskId", "poId", "error"],
 });
 
 export const TaskTypes = Types;

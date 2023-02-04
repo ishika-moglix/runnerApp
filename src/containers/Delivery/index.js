@@ -6,7 +6,8 @@ import {
   View,
   FlatList,
   Text,
-  ActivityIndicator,Image
+  ActivityIndicator,
+  Image,
 } from "react-native";
 import moment from "moment";
 import CompanyCard from "../../components/Cards/CompayCard";
@@ -16,11 +17,20 @@ import TaskActions from "../../redux/actions/tasks";
 import styles from "./style";
 const DeliveryScreen = (props) => {
   useEffect(() => {
-    props.fetchTask("delivery", props.currentdate, 1);
-  }, []);
+    const unsubscribe = props.navigation.addListener("focus", () => {
+      if (!props.task.get("loading")) {
+        fetchTask();
+      }
+    });
+    return unsubscribe;
+  }, [props.navigation]);
 
   const goBack = () => {
     props.navigation.goBack();
+  };
+
+  const fetchTask = () => {
+    props.fetchTask("delivery", props.currentdate, 1);
   };
 
   const renderCards = ({ item, index }) => {
@@ -29,6 +39,7 @@ const DeliveryScreen = (props) => {
         type={"Delivery"}
         navigation={props.navigation}
         item={item}
+        fetchTask={fetchTask}
       />
     );
   };
@@ -38,18 +49,14 @@ const DeliveryScreen = (props) => {
       <Header
         headertext={"Delivery"}
         leftComponent={() => (
-          <View
-            style={styles.backIconWrap}
-          >
+          <View style={styles.backIconWrap}>
             <Icon
               onPress={goBack}
               name={"arrow-left"}
               type={"MaterialCommunityIcons"}
               style={styles.backIcon}
             />
-            <Text
-              style={styles.headerTitle}
-            >
+            <Text style={styles.headerTitle}>
               Delivery{" "}
               {props.task.get("data")
                 ? `( ${props.task.get("data").size} )`
@@ -62,7 +69,7 @@ const DeliveryScreen = (props) => {
             onPress={() => props.navigation.navigate("Profile")}
             style={styles.profileiconWrap}
           >
-           <Icon
+            <Icon
               name={"account-circle"}
               type={"MaterialCommunityIcons"}
               style={styles.ProfileIcon}

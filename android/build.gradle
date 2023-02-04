@@ -4,12 +4,16 @@ buildscript {
     ext {
         buildToolsVersion = "29.0.2"
         minSdkVersion = 21
-        compileSdkVersion = 29
-        targetSdkVersion = 29
+        compileSdkVersion = 31
+        targetSdkVersion = 31
+        ndkVersion = "21.4.7075529"
+        kotlinVersion = "1.6.21"
+        googlePlayServicesAuthVersion = "18.0.0"
     }
     repositories {
         google()
-        jcenter()
+        mavenCentral()
+        gradlePluginPortal()
     }
     dependencies {
         classpath("com.android.tools.build:gradle:3.5.3")
@@ -17,9 +21,18 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
+def REACT_NATIVE_VERSION = new File(['node', '--print',"JSON.parse(require('fs').readFileSync(require.resolve('react-native/package.json'), 'utf-8')).version"].execute(null, rootDir).text.trim())
+
 
 allprojects {
     repositories {
+        configurations.all {
+        resolutionStrategy {
+            force 'com.facebook.android:facebook-android-sdk:4.28.0'
+            force 'androidx.browser:browser:1.3.0'
+            force "com.facebook.react:react-native:" + REACT_NATIVE_VERSION
+        }
+    }
         mavenLocal()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm

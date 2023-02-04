@@ -19,10 +19,13 @@ import styles from "./style";
 import { fetchTask } from "../../redux/sagas/tasksSaga";
 const PickupScreen = (props) => {
   useEffect(() => {
-    if (!props.task.get("loading") && !props.task.get("data")) {
-      fetchTask();
-    }
-  }, []);
+    const unsubscribe = props.navigation.addListener("focus", () => {
+      if (!props.task.get("loading")) {
+        fetchTask();
+      }
+    });
+    return unsubscribe;
+  }, [props.navigation]);
 
   const goBack = () => {
     props.navigation.goBack();
@@ -34,9 +37,16 @@ const PickupScreen = (props) => {
 
   const renderCards = ({ item, index }) => {
     return (
-      <CompanyCard type={"Pickup"} navigation={props.navigation} item={item} fetchTask={fetchTask} />
+      <CompanyCard
+        type={"Pickup"}
+        navigation={props.navigation}
+        item={item}
+        fetchTask={fetchTask}
+      />
     );
   };
+
+  console.log(props.task.get("data"), "wejnwcnwuicnw");
 
   return (
     <Container style={{ backgroundColor: "#F7F7FA" }}>

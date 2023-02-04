@@ -21,6 +21,16 @@ const TYPE_KEYS = new Map({
     error: false,
     data: new List([]),
   }),
+  deliveryTasks: new Map({
+    loading: false,
+    error: false,
+    data: new List([]),
+  }),
+  returnTasks: new Map({
+    loading: false,
+    error: false,
+    data: new List([]),
+  }),
 });
 
 export const fetchTaskData = (state, { taskType, date, page }) => {
@@ -67,23 +77,26 @@ export const fetchFailedTaskData = (state, { taskType, date, page, error }) => {
     .setIn([taskType, moment(date).format("DD-MM-YYYY"), "error"], true);
 };
 
-export const fetchPickupTask = (state, { taskId, poId }) => {
-  return state
-    .setIn(["pickUpTasks", "loading"], true)
-    .setIn(["pickUpTasks", "error"], false);
+export const fetchPickupTask = (state, { taskType, taskId, poId }) => {
+  return state.setIn([taskType, "loading"], true).setIn([, "error"], false);
 };
 
-export const fetchedPickupTask = (state, { taskId, poId, data }) => {
+export const fetchedPickupTask = (state, { taskType, taskId, poId, data }) => {
   return state
-    .setIn(["pickUpTasks", "loading"], false)
-    .setIn(["pickUpTasks", "error"], false)
-    .setIn(["pickUpTasks", "data"], data.pickupTaskItemPoIdRes);
+    .setIn([taskType, "loading"], false)
+    .setIn([taskType, "error"], false)
+    .setIn(
+      [taskType, "data"],
+      taskType == "pickUpTasks"
+        ? data.pickupTaskItemPoIdRes
+        : taskType == "deliveryTasks"
+        ? data.deliveryTaskItemsList
+        : new List([])
+    );
 };
 
-export const fetchFailedPickupTask = (state, { taskId, poId }) => {
-  return state
-    .setIn(["pickUpTasks", "loading"], false)
-    .setIn(["pickUpTasks", "error"], true);
+export const fetchFailedPickupTask = (state, { taskType, taskId, poId }) => {
+  return state.setIn([taskType, "loading"], false).setIn([, "error"], true);
 };
 
 /**

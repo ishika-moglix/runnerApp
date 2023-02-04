@@ -1,14 +1,12 @@
 import React from "react";
 import { Icon, Input } from "native-base";
 import { TouchableOpacity, View, Text, Picker } from "react-native";
-import styles from './style'
+import styles from "./style";
 
 export default PickupCarditem = (props) => {
-  const { item, onIncDec, onQtyChange, onChangeReason } = props;
+  const { item, onIncDec, onQtyChange, onChangeReason, reasons } = props;
   return (
-    <View
-      style={styles.pickupCard}
-    >
+    <View style={styles.pickupCard}>
       <TouchableOpacity
         style={styles.checkBoxWrap}
         onPress={() => props.onCheck(props.id)}
@@ -21,23 +19,15 @@ export default PickupCarditem = (props) => {
           style={styles.checkboxIcon}
         />
       </TouchableOpacity>
-      <View
-        style={styles.pickUpRightPart}
-      >
+      <View style={styles.pickUpRightPart}>
         <View
           style={{
             width: "50%",
           }}
         >
-          <Text
-            style={styles.PickupitemText}
-          >
-            {item.name}
-          </Text>
-          <Text
-            style={styles.PickupquantityText}
-          >
-            Qty: {item.quantity}
+          <Text style={styles.PickupitemText}>{item.name}</Text>
+          <Text style={styles.PickupquantityText}>
+            Qty: {item.remainingQuantity}
           </Text>
         </View>
         <View
@@ -50,13 +40,13 @@ export default PickupCarditem = (props) => {
           <TouchableOpacity
             disabled={item.inputQuantity == 0}
             onPress={() => onIncDec(props.id, "dec")}
-            style={item.inputQuantity == 0 ? styles.MinusdisabledQtyWrap :styles.MinusenableQtyWrap }
+            style={
+              item.inputQuantity == 0
+                ? styles.MinusdisabledQtyWrap
+                : styles.MinusenableQtyWrap
+            }
           >
-            <Text
-              style={styles.minusQtyText}
-            >
-              -
-            </Text>
+            <Text style={styles.minusQtyText}>-</Text>
           </TouchableOpacity>
           <Input
             onChangeText={(text) => onQtyChange(props.id, text)}
@@ -64,18 +54,18 @@ export default PickupCarditem = (props) => {
             value={String(item.inputQuantity)}
           />
           <TouchableOpacity
-            disabled={item.inputQuantity == item.quantity}
+            disabled={item.inputQuantity == item.remainingQuantity}
             onPress={() => onIncDec(props.id, "inc")}
-            style={item.inputQuantity == item.quantity ? styles.MinusdisabledQtyWrap :styles.MinusenableQtyWrap}
+            style={
+              item.inputQuantity == item.remainingQuantity
+                ? styles.MinusdisabledQtyWrap
+                : styles.MinusenableQtyWrap
+            }
           >
-            <Text
-              style={styles.minusQtyText}
-            >
-              +
-            </Text>
+            <Text style={styles.minusQtyText}>+</Text>
           </TouchableOpacity>
         </View>
-        {item.inputQuantity < item.quantity ? (
+        {item.inputQuantity < item.remainingQuantity ? (
           <View
             style={{
               width: "100%",
@@ -91,14 +81,9 @@ export default PickupCarditem = (props) => {
               selectedValue={item.reason}
             >
               <Picker.Item label="Select Reason For Less Qty" value="" />
-              <Picker.Item
-                label="Material Not Ready"
-                value="Material Not Ready"
-              />
-              <Picker.Item label="Payment Issue" value="Payment Issue" />
-              <Picker.Item label="MOQ Issue" value="MOQ Issue" />
-              <Picker.Item label="Rate Issue" value="Rate Issue" />
-              <Picker.Item label="Location Closed" value="Location Closed" />
+              {reasons.map((reason) => (
+                <Picker.Item label={reason.text} value={reason.id} />
+              ))}
             </Picker>
           </View>
         ) : null}

@@ -38,7 +38,7 @@ const getPickupTask = async (type, date, page) =>
     },
   });
 
-const getPickupTaskByPoId = async (pickupTaskId, poId) =>
+const getPickupTaskByPoId = async (type, pickupTaskId, poId) =>
   axiosInstance.get(`tasks/pickups/pickupTaskItems/search`, {
     params: {
       pickupTaskId,
@@ -49,9 +49,46 @@ const getPickupTaskByPoId = async (pickupTaskId, poId) =>
     },
   });
 
-const getPickupTaskById = async (pickupTaskId) =>
-  axiosInstance.get(`tasks/pickups/pickupTaskItems`, {
+const getDeliveryTaskByInvoice = async (type, deliveryTaskId, invoiceNumber) =>
+  axiosInstance.get(`tasks/deliveries/deliveryTaskItems/search`, {
     params: {
+      deliveryTaskId,
+      invoiceNumber,
+    },
+    headers: {
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  });
+
+const getPickupTaskById = async (type, pickupTaskId) =>
+  axiosInstance.get(
+    `tasks/${
+      type == "pickUpTasks"
+        ? "pickups/pickupTaskItems"
+        : type == "deliveryTasks"
+        ? "deliveries/deliveryTaskItems"
+        : ""
+    }`,
+    {
+      params: {
+        [`${
+          type == "pickUpTasks"
+            ? "pickupTaskId"
+            : type == "deliveryTasks"
+            ? "deliveryTaskId"
+            : ""
+        }`]: pickupTaskId,
+      },
+      headers: {
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    }
+  );
+
+const getPickupTaskItemsByPoId = async (poId, pickupTaskId) =>
+  axiosInstance.get(`tasks/pickups/pickupTaskItemsByPoId`, {
+    params: {
+      poId,
       pickupTaskId,
     },
     headers: {
@@ -69,8 +106,22 @@ const getPdfByPoId = async (poId) =>
     },
   });
 
+const getReasonList = async (type) =>
+  axiosInstance.get(`tasks/reasons?type=${type}`, {
+    headers: {
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  });
+
 const pickupStart = async (data) =>
   axiosInstance.post(`tasks/pickup/taskStatuses`, data, {
+    headers: {
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  });
+
+const deliveryStart = async (data) =>
+  axiosInstance.post(`tasks/delivery/taskStatuses`, data, {
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
     },
@@ -83,4 +134,8 @@ export {
   getPickupTaskById,
   getPdfByPoId,
   pickupStart,
+  getPickupTaskItemsByPoId,
+  getReasonList,
+  deliveryStart,
+  getDeliveryTaskByInvoice,
 };

@@ -6,6 +6,7 @@ import {
   getPickupTask,
   getPickupTaskByPoId,
   getPickupTaskById,
+  getDeliveryTaskByInvoice,
 } from "../../services/tasks";
 import TaskActions, { TaskTypes } from "../actions/tasks";
 // constants
@@ -51,18 +52,28 @@ export function* fetchTask({ taskType, date, page }) {
   }
 }
 
-export function* fetchPickupTasks({ taskId, poId }) {
+export function* fetchPickupTasks({ taskType, taskId, poId }) {
   try {
     let { data, error } = yield call(
-      poId ? getPickupTaskByPoId : getPickupTaskById,
+      taskType == "pickUpTasks"
+        ? poId
+          ? getPickupTaskByPoId
+          : getPickupTaskById
+        : taskType == "deliveryTasks"
+        ? poId
+          ? getDeliveryTaskByInvoice
+          : getPickupTaskById
+        : "",
+      taskType,
       taskId,
       poId
     );
     if (data) {
-      yield put(TaskActions.fetchedPickupTask(taskId, poId, data));
+      yield put(TaskActions.fetchedPickupTask(taskType, taskId, poId, data));
     } else {
       yield put(
         TaskActions.fetchFailedPickupTask(
+          taskType,
           taskId,
           poId,
           "There was an error while fetching homepage data."
@@ -70,8 +81,10 @@ export function* fetchPickupTasks({ taskId, poId }) {
       );
     }
   } catch (e) {
+    console.log(e, "cwbcuwbecwbuc");
     yield put(
       TaskActions.fetchFailedPickupTask(
+        taskType,
         taskId,
         poId,
         "There was an error while fetching homepage data."
