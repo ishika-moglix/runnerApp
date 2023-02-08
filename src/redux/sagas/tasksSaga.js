@@ -7,6 +7,7 @@ import {
   getPickupTaskByPoId,
   getPickupTaskById,
   getDeliveryTaskByInvoice,
+  getSupplierPickupTaskById,
 } from "../../services/tasks";
 import TaskActions, { TaskTypes } from "../actions/tasks";
 // constants
@@ -63,6 +64,10 @@ export function* fetchPickupTasks({ taskType, taskId, poId }) {
         ? poId
           ? getDeliveryTaskByInvoice
           : getPickupTaskById
+        : taskType == "returnTasks"
+        ? getPickupTaskById
+        : taskType == "supplierReturnTasks"
+        ? getSupplierPickupTaskById
         : "",
       taskType,
       taskId,

@@ -18,8 +18,17 @@ import moment from "moment";
 
 const SupplierReturnScreen = (props) => {
   useEffect(() => {
+    const unsubscribe = props.navigation.addListener("focus", () => {
+      if (!props.task.get("loading")) {
+        fetchTask();
+      }
+    });
+    return unsubscribe;
+  }, [props.navigation]);
+
+  const fetchTask = () => {
     props.fetchTask("return_delivery", props.currentdate, 1);
-  }, []);
+  };
 
   const goBack = () => {
     props.navigation.goBack();
@@ -30,6 +39,7 @@ const SupplierReturnScreen = (props) => {
       <CompanyCard
         type={"SupplierReturn"}
         navigation={props.navigation}
+        fetchTask={fetchTask}
         item={item}
       />
     );

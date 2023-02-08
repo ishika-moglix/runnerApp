@@ -39,8 +39,13 @@ const PickupTasksScreen = (props) => {
           ? "pickUpTasks"
           : props.route.params.type == "Delivery"
           ? "deliveryTasks"
-          : "",
-        props.route.params.data.id || props.route.params.data.deliveryTaskId,
+          : props.route.params.type == "Return"
+          ? "returnTasks"
+          : "supplierReturnTasks",
+        props.route.params.data.id ||
+          props.route.params.data.deliveryTaskId ||
+          props.route.params.data.returnTaskId ||
+          props.route.params.data.deliveryTaskId,
         text
       );
     }
@@ -57,8 +62,12 @@ const PickupTasksScreen = (props) => {
           ? "pickUpTasks"
           : props.route.params.type == "Delivery"
           ? "deliveryTasks"
-          : "",
-        props.route.params.data.id || props.route.params.data.deliveryTaskId,
+          : props.route.params.type == "Return"
+          ? "returnTasks"
+          : "supplierReturnTasks",
+        props.route.params.data.id ||
+          props.route.params.data.deliveryTaskId ||
+          props.route.params.data.returnTaskId,
         searchText
       );
     }, 1000),
@@ -101,7 +110,9 @@ const PickupTasksScreen = (props) => {
         ? "pickUpTasks"
         : props.route.params.type == "Delivery"
         ? "deliveryTasks"
-        : "";
+        : props.route.params.type == "Return"
+        ? "returnTasks"
+        : "supplierReturnTasks";
     return (
       <View
         style={{
@@ -126,29 +137,38 @@ const PickupTasksScreen = (props) => {
               ? "Po"
               : type == "deliveryTasks"
               ? "Packet"
+              : type == "returnTasks"
+              ? "Return"
               : ""}{" "}
-            Id : {item.poId || item.emsPacketId}
+            Id :{" "}
+            {item.poId || item.emsReturnId || item.emsPacketId || item.taskId}
           </Text>
-          <TouchableOpacity
-            onPress={() => onOpenFile(item.poId || item.emsPacketId)}
-          >
-            <Icon
-              name={"file"}
-              type={"MaterialCommunityIcons"}
-              style={{ color: "#2680EB" }}
-            />
-          </TouchableOpacity>
+          {props.route.params.type == "Pickup" ? (
+            <TouchableOpacity
+              onPress={() => onOpenFile(item.poId || item.emsPacketId)}
+            >
+              <Icon
+                name={"file"}
+                type={"MaterialCommunityIcons"}
+                style={{ color: "#2680EB" }}
+              />
+            </TouchableOpacity>
+          ) : null}
         </View>
         <View>
-          {type == "deliveryTasks" ? (
-            <Text>Invoice Id : {item.invoiceId}</Text>
+          {type == "deliveryTasks" ||
+          type == "returnTasks" ||
+          type == "supplierReturnTasks" ? (
+            <Text>Invoice Id : {item.invoiceId || item.invoiceId}</Text>
           ) : null}
           <TouchableOpacity
             onPress={() => {
-              props.navigation.navigate("PickupItems", {
-                ...props.route.params,
-                ...item,
-              });
+              item.status == "STARTED" || item.poId
+                ? props.navigation.navigate("PickupItems", {
+                    ...props.route.params,
+                    ...item,
+                  })
+                : null;
             }}
             style={{
               flexDirection: "row",
@@ -164,11 +184,13 @@ const PickupTasksScreen = (props) => {
                 {item.itemCount || item.itemsCount}
               </Text>
             </Text>
-            <Icon
-              name={"menu-right"}
-              style={{ color: "#000" }}
-              type={"MaterialCommunityIcons"}
-            />
+            {item.status == "STARTED" || item.poId ? (
+              <Icon
+                name={"menu-right"}
+                syle={{ color: "#000" }}
+                type={"MaterialCommunityIcons"}
+              />
+            ) : null}
           </TouchableOpacity>
         </View>
       </View>
@@ -230,32 +252,37 @@ const PickupTasksScreen = (props) => {
           </TouchableOpacity>
         )}
       />
-      <View
-        style={{
-          padding: 20,
-        }}
-      >
-        <Item style={{ backgroundColor: "#fff", borderRadius: 8 }} regular>
-          <Icon
-            name={"magnify"}
-            type={"MaterialCommunityIcons"}
-            style={{
-              color: "#C3C3C3",
-            }}
-          />
-          <Input
-            placeholder={"Search PO"}
-            value={search}
-            onChangeText={(text) => startSearch(text)}
-          />
-        </Item>
-      </View>
+      {props.route.params.type == "Return" ||
+      props.route.params.type == "SupplierReturn" ? null : (
+        <View
+          style={{
+            padding: 20,
+          }}
+        >
+          <Item style={{ backgroundColor: "#fff", borderRadius: 8 }} regular>
+            <Icon
+              name={"magnify"}
+              type={"MaterialCommunityIcons"}
+              style={{
+                color: "#C3C3C3",
+              }}
+            />
+            <Input
+              placeholder={"Search PO"}
+              value={search}
+              onChangeText={(text) => startSearch(text)}
+            />
+          </Item>
+        </View>
+      )}
       {props.pickupTask.getIn([
         props.route.params.type == "Pickup"
           ? "pickUpTasks"
           : props.route.params.type == "Delivery"
           ? "deliveryTasks"
-          : "",
+          : props.route.params.type == "Return"
+          ? "returnTasks"
+          : "supplierReturnTasks",
         "loading",
       ]) ? (
         <ActivityIndicator
@@ -287,7 +314,9 @@ const PickupTasksScreen = (props) => {
                 ? "pickUpTasks"
                 : props.route.params.type == "Delivery"
                 ? "deliveryTasks"
-                : "",
+                : props.route.params.type == "Return"
+                ? "returnTasks"
+                : "supplierReturnTasks",
               "data",
             ])}
             renderItem={renderItems}

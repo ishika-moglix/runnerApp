@@ -67,6 +67,8 @@ const getPickupTaskById = async (type, pickupTaskId) =>
         ? "pickups/pickupTaskItems"
         : type == "deliveryTasks"
         ? "deliveries/deliveryTaskItems"
+        : type == "returnTasks"
+        ? "returnPickup/returnPickupTaskItems"
         : ""
     }`,
     {
@@ -76,6 +78,8 @@ const getPickupTaskById = async (type, pickupTaskId) =>
             ? "pickupTaskId"
             : type == "deliveryTasks"
             ? "deliveryTaskId"
+            : type == "returnTasks"
+            ? "returnTaskId"
             : ""
         }`]: pickupTaskId,
       },
@@ -85,11 +89,41 @@ const getPickupTaskById = async (type, pickupTaskId) =>
     }
   );
 
+const getSupplierPickupTaskById = async (type, pickupTaskId) =>
+  axiosInstance.get(`v2/tasks/runner/delivery/items`, {
+    params: {
+      runnerTaskId: pickupTaskId,
+    },
+    headers: {
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  });
+
 const getPickupTaskItemsByPoId = async (poId, pickupTaskId) =>
   axiosInstance.get(`tasks/pickups/pickupTaskItemsByPoId`, {
     params: {
       poId,
       pickupTaskId,
+    },
+    headers: {
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  });
+
+const getDeliveryTaskItemsByTaskItemId = async (deliveryTaskItemId) =>
+  axiosInstance.get(`tasks/deliveries/deliveryTaskLineItems`, {
+    params: {
+      deliveryTaskItemId,
+    },
+    headers: {
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  });
+
+const getReturnTaskItemsByTaskItemId = async (returnTaskItemId) =>
+  axiosInstance.get(`tasks/returnPickup/returnPickupTaskLineItems`, {
+    params: {
+      returnTaskItemId,
     },
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
@@ -127,6 +161,55 @@ const deliveryStart = async (data) =>
     },
   });
 
+const returnStart = async (data) =>
+  axiosInstance.post(`tasks/returnPickup/taskStatuses`, data, {
+    headers: {
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  });
+
+const returnPicked = async (data) =>
+  axiosInstance.post(`tasks/returnPickup/picked`, data, {
+    headers: {
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  });
+
+const markAttempted = async (data) =>
+  axiosInstance.post(`tasks/delivery/markAttempted`, data, {
+    headers: {
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  });
+
+const markAttemptedReturn = async (data) =>
+  axiosInstance.post(`tasks/return/pickupPending`, data, {
+    headers: {
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  });
+
+const uploadImages = async (data) =>
+  axiosInstance.post(`tasks/delivery/deliveredPod`, data, {
+    headers: {
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  });
+
+const markDelivered = async (data) =>
+  axiosInstance.post(`tasks/delivery/delivered`, data, {
+    headers: {
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  });
+
+const returnRejected = async (data) =>
+  axiosInstance.post(`v2/tasks/delivery/rejected`, data, {
+    headers: {
+      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+    },
+  });
+
 export {
   getTask,
   getPickupTask,
@@ -138,4 +221,14 @@ export {
   getReasonList,
   deliveryStart,
   getDeliveryTaskByInvoice,
+  getDeliveryTaskItemsByTaskItemId,
+  markAttempted,
+  returnStart,
+  uploadImages,
+  getReturnTaskItemsByTaskItemId,
+  markAttemptedReturn,
+  markDelivered,
+  returnPicked,
+  getSupplierPickupTaskById,
+  returnRejected,
 };

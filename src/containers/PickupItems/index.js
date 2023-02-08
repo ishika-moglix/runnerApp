@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Container, Icon, Tab, TabHeading, Tabs, Button } from "native-base";
+import {
+  Container,
+  Icon,
+  Tab,
+  TabHeading,
+  Tabs,
+  Button,
+  Toast,
+} from "native-base";
 import Header from "../../components/Header";
 import {
   TouchableOpacity,
@@ -21,7 +29,13 @@ import styles from "./style";
 import {
   getPickupTaskItemsByPoId,
   getReasonList,
+  getDeliveryTaskItemsByTaskItemId,
+  getReturnTaskItemsByTaskItemId,
   pickupStart,
+  markAttemptedReturn,
+  markAttempted,
+  returnPicked,
+  returnRejected,
 } from "../../services/tasks";
 import Colors from "../../Theme/Colors";
 import Dimension from "../../Theme/Dimension";
@@ -63,11 +77,44 @@ const PickupItemsScreen = (props) => {
   const [data, setData] = useState(new List([]).toOrderedMap());
   const [reasonsData, setReasonsData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [reasonLoading, setReasonLoading] = useState(false);
 
   useEffect(() => {
-    getPickupItemsList();
+    console.log(props);
+    if (props.route.params.type == "Pickup") {
+      getPickupItemsList();
+    } else if (
+      props.route.params.type == "Delivery" ||
+      props.route.params.type == "SupplierReturn"
+    ) {
+      getDeliveryItemList();
+    } else if (props.route.params.type == "Return") {
+      getReturnItemList();
+    }
     getReasons();
   }, []);
+
+  const getDeliveryItemList = async () => {
+    const { data } = await getDeliveryTaskItemsByTaskItemId(
+      props.route.params.deliveryTaskItemId
+    );
+    setData(
+      new List(data.deliveryTaskLineItemsList)
+        .map((_) => ({ ..._, inputQuantity: _.orderedQuantity }))
+        .toOrderedMap()
+    );
+  };
+
+  const getReturnItemList = async () => {
+    const { data } = await getReturnTaskItemsByTaskItemId(
+      props.route.params.returnTaskItemId
+    );
+    setData(
+      new List(data.returnTaskLineItemsList)
+        .map((_) => ({ ..._, inputQuantity: _.orderedQuantity }))
+        .toOrderedMap()
+    );
+  };
 
   const getPickupItemsList = async () => {
     const { data } = await getPickupTaskItemsByPoId(
@@ -75,16 +122,29 @@ const PickupItemsScreen = (props) => {
       props.route.params.data.id
     );
     // console.log(data, "dwedfewnfefbn");
-    setData(
-      new List(data.pickupTaskItemRes)
-        .map((_) => ({ ..._, inputQuantity: _.remainingQuantity }))
-        .toOrderedMap()
-    );
+    if (data.pickupTaskItemRes[0].status == "PICKUP") {
+      Toast.show({
+        text: "Already picked up!",
+        buttonText: "Okay",
+        duration: 1500,
+        style: { margin: 20 },
+      });
+      props.navigation.goBack();
+    } else {
+      setData(
+        new List(data.pickupTaskItemRes)
+          .map((_) => ({ ..._, inputQuantity: _.remainingQuantity }))
+          .toOrderedMap()
+      );
+    }
   };
 
   const getReasons = async () => {
     const { data } = await getReasonList(
-      (props.route.params.type || "").toUpperCase()
+      (props.route.params.type == "SupplierReturn"
+        ? "RETURN_DELIVERY"
+        : props.route.params.type || ""
+      ).toUpperCase()
     );
     setReasonsData(data.reasons);
   };
@@ -122,6 +182,55 @@ const PickupItemsScreen = (props) => {
     setData(newData);
   };
 
+  const onReasonSelect = async (reasonID, nextPickupDate) => {
+    try {
+      setReasonLoading(true);
+      let data = {
+        [`${
+          props.route.params.type == "Delivery" ||
+          props.route.params.type == "SupplierReturn"
+            ? "deliveryTaskItemId"
+            : "returnTaskItemId"
+        }`]:
+          props.route.params.deliveryTaskItemId ||
+          props.route.params.returnTaskItemId,
+        reasonID,
+        nextPickupDate,
+      };
+      const markResp =
+        props.route.params.type == "Return"
+          ? await markAttemptedReturn(data)
+          : props.route.params.type == "SupplierReturn"
+          ? await returnRejected(data)
+          : await markAttempted(data);
+      console.log(markResp);
+      if (markResp.data.success) {
+        setReasonLoading(false);
+        setModalVisible(false);
+        if (props.route.params.type == "Delivery") {
+          props.navigation.navigate("Delivery");
+        } else if (props.route.params.type == "Return") {
+          props.navigation.navigate("Return");
+        } else if (props.route.params.type == "SupplierReturn") {
+          props.navigation.navigate("SupplierReturn");
+        }
+      } else {
+        setModalVisible(false);
+        setReasonLoading(false);
+        Toast.show({
+          text: markResp.data.message || "Something went wrong!",
+          buttonText: "Okay",
+          duration: 1500,
+          style: { margin: 20 },
+        });
+      }
+    } catch (e) {
+      console.log(e);
+      setModalVisible(false);
+      setReasonLoading(false);
+    }
+  };
+
   const onPickup = async () => {
     setLoading(true);
     let obj = {
@@ -141,6 +250,18 @@ const PickupItemsScreen = (props) => {
     setLoading(false);
     if (resp.data.success) {
       props.navigation.navigate("Pickup");
+    }
+  };
+
+  const onReturn = async () => {
+    setLoading(true);
+    let obj = {
+      returnTaskItemId: props.route.params.returnTaskItemId,
+    };
+    const resp = await returnPicked(obj);
+    setLoading(false);
+    if (resp.data.success) {
+      props.navigation.navigate("Return");
     }
   };
 
@@ -222,6 +343,46 @@ const PickupItemsScreen = (props) => {
             </Button>
           </View>
         );
+      case "SupplierReturn":
+        return (
+          <View style={styles.footerWrap}>
+            <Button
+              onPress={toggleModal}
+              disabled={!isChecked || loading}
+              block
+              style={styles.EnabledAttemptedBtn}
+            >
+              <Text style={styles.EnabledAttemptedBtntext}>REJECTED</Text>
+            </Button>
+            <Button
+              onPress={setIsUploaderVisible}
+              disabled={!isChecked || loading}
+              block
+              style={
+                !isChecked
+                  ? styles.EnabledAttemptedBtn
+                  : styles.EnabledDeliverdBtn
+              }
+            >
+              {loading && (
+                <ActivityIndicator
+                  size={"small"}
+                  color={Colors.white}
+                  style={{ marginRight: Dimension.margin10 }}
+                />
+              )}
+              <Text
+                style={
+                  !isChecked
+                    ? styles.EnabledAttemptedBtntext
+                    : styles.EnabledDeliverdBtnText
+                }
+              >
+                DELIVERED
+              </Text>
+            </Button>
+          </View>
+        );
       default:
         return (
           <View
@@ -239,28 +400,35 @@ const PickupItemsScreen = (props) => {
             <Button
               block
               onPress={toggleModal}
-              style={{
-                width: "48%",
-                backgroundColor: "#fff",
-                borderRadius: 4,
-              }}
+              disabled={!isChecked || loading}
+              style={styles.EnabledAttemptedBtn}
             >
-              <Text
-                style={{ fontWeight: "bold", fontSize: 16, color: "#D9232D" }}
-              >
-                ATTEMPT FAIL
-              </Text>
+              <Text style={styles.EnabledAttemptedBtntext}>ATTEMPT FAIL</Text>
             </Button>
             <Button
-              onPress={setIsUploaderVisible}
+              onPress={onReturn}
               block
-              style={{
-                width: "48%",
-                backgroundColor: "#D9232D",
-                borderRadius: 4,
-              }}
+              disabled={!isChecked || loading}
+              style={
+                !isChecked
+                  ? styles.EnabledAttemptedBtn
+                  : styles.EnabledDeliverdBtn
+              }
             >
-              <Text style={{ fontWeight: "bold", fontSize: 16, color: "#fff" }}>
+              {loading && (
+                <ActivityIndicator
+                  size={"small"}
+                  color={Colors.white}
+                  style={{ marginRight: Dimension.margin10 }}
+                />
+              )}
+              <Text
+                style={
+                  !isChecked
+                    ? styles.EnabledAttemptedBtntext
+                    : styles.EnabledDeliverdBtnText
+                }
+              >
                 RETURN DONE
               </Text>
             </Button>
@@ -311,12 +479,13 @@ const PickupItemsScreen = (props) => {
         {isModalVisible && (
           <ReasonsModal
             options={
-              props.route.params.type == "Delivery"
-                ? deliveryOptions
-                : returnOptions
+              props.route.params.type == "Delivery" ? reasonsData : reasonsData
             }
             isModalVisible={isModalVisible}
             toggleModal={toggleModal}
+            type={props.route.params.type}
+            reasonLoading={reasonLoading}
+            onReasonSelect={onReasonSelect}
             title={
               props.route.params.type == "Delivery"
                 ? "Reason for incomplete delivery"
@@ -327,13 +496,17 @@ const PickupItemsScreen = (props) => {
         {isUploaderVisible && (
           <ImageUploaderModal
             navigation={props.navigation}
+            type={props.route.params.type}
             toggleModal={toggleUploaderModal}
+            deliveryTaskItemId={props.route.params.deliveryTaskItemId}
             isModalVisible={isUploaderVisible}
           />
         )}
       </>
     );
   };
+
+  console.log(props, "cecerfcv");
 
   const TABS = [
     {

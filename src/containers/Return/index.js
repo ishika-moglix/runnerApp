@@ -18,8 +18,17 @@ import TaskActions from "../../redux/actions/tasks";
 
 const ReturnScreen = (props) => {
   useEffect(() => {
+    const unsubscribe = props.navigation.addListener("focus", () => {
+      if (!props.task.get("loading")) {
+        fetchTask();
+      }
+    });
+    return unsubscribe;
+  }, [props.navigation]);
+
+  const fetchTask = () => {
     props.fetchTask("return", props.currentdate, 1);
-  }, []);
+  };
 
   const goBack = () => {
     props.navigation.goBack();
@@ -27,7 +36,12 @@ const ReturnScreen = (props) => {
 
   const renderCards = ({ item, index }) => {
     return (
-      <CompanyCard type={"Return"} navigation={props.navigation} item={item} />
+      <CompanyCard
+        fetchTask={fetchTask}
+        type={"Return"}
+        navigation={props.navigation}
+        item={item}
+      />
     );
   };
 

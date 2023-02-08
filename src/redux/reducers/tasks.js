@@ -15,7 +15,7 @@ const TYPE_KEYS = new Map({
   delivery: "deliveryTasks",
   pickup: "pickupTasks",
   return: "returnTasks",
-  supplierReturn: "supplierReturnTasks",
+  return_delivery: "supplierReturnTasks",
   pickUpTasks: new Map({
     loading: false,
     error: false,
@@ -27,6 +27,11 @@ const TYPE_KEYS = new Map({
     data: new List([]),
   }),
   returnTasks: new Map({
+    loading: false,
+    error: false,
+    data: new List([]),
+  }),
+  supplierReturnTasks: new Map({
     loading: false,
     error: false,
     data: new List([]),
@@ -90,6 +95,10 @@ export const fetchedPickupTask = (state, { taskType, taskId, poId, data }) => {
       taskType == "pickUpTasks"
         ? data.pickupTaskItemPoIdRes
         : taskType == "deliveryTasks"
+        ? data.deliveryTaskItemsList
+        : taskType == "returnTasks"
+        ? data.returnTaskItemsList
+        : taskType == "supplierReturnTasks"
         ? data.deliveryTaskItemsList
         : new List([])
     );

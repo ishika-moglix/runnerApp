@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardItem, Button, Icon } from "native-base";
 import { Text, TouchableOpacity, View, ActivityIndicator } from "react-native";
-import { pickupStart, deliveryStart } from "../../services/tasks";
+import { pickupStart, deliveryStart, returnStart } from "../../services/tasks";
 import { Map } from "immutable";
 import styles from "./style";
 const ITEM_COUNT = new Map({
   Return: "returnTaskItemCount",
-  SupplierReturn: "supplierReturnTaskItemCount",
+  SupplierReturn: "deliveryTaskItemCount",
   Delivery: "deliveryTaskItemCount",
   Pickup: "pickupTaskItemCount",
 });
@@ -18,7 +18,7 @@ export default CompanyCard = (props) => {
     setLoader(true);
     const { data } = await pickupStart({
       pickuptaskId: props.item.id,
-      status: "STARTED",
+      status: props.item.status == "PICKUP" ? "CLOSED" : "STARTED",
       taskItemsStatuses: [
         {
           lbh: [
@@ -63,6 +63,23 @@ export default CompanyCard = (props) => {
     }
   };
 
+  const onReturn = async () => {
+    setLoader(true);
+    const { data } = await returnStart({
+      returnPickupTaskId: props.item.returnTaskId,
+      status:
+        props.item.returnTaskStatus == "PICKUP_DONE" ? "CLOSED" : "STARTED",
+    });
+    setLoader(false);
+    if (data) {
+      console.log("****************", data);
+      props.fetchTask();
+    } else {
+      setLoader(false);
+      console.log("response nhi aaya", data);
+    }
+  };
+
   const onStart = async () => {
     console.log(props);
     try {
@@ -74,7 +91,9 @@ export default CompanyCard = (props) => {
           await onPickup();
           return;
         case "Return":
-          return;
+          return onReturn();
+        case "SupplierReturn":
+          return onDelivery();
         default:
           return;
       }
@@ -85,12 +104,20 @@ export default CompanyCard = (props) => {
   };
 
   const navigate = () => {
+    if (
+      !(
+        props.item.status == "CLOSED" ||
+        props.item.deliveryTaskStatus == "CLOSED" ||
+        props.item.returnTaskStatus == "CLOSED"
+      )
+    ) {
+      props.navigation.navigate("Pickup-Tasks", {
+        company: props.item.contactName,
+        type: props.type,
+        data: props.item,
+      });
+    }
     // if (props.type == "Pickup") {
-    props.navigation.navigate("Pickup-Tasks", {
-      company: props.item.contactName,
-      type: props.type,
-      data: props.item,
-    });
     // }
   };
   return (
@@ -121,8 +148,14 @@ export default CompanyCard = (props) => {
         Items : {props.item[ITEM_COUNT.find((val, key) => key == props.type)]}
       </Text>
       <View>
-        {["READY_FOR_PICKUP", "READY_FOR_DELIVERY"].includes(
-          props.item.status || props.item.deliveryTaskStatus
+        {[
+          "READY_FOR_PICKUP",
+          "READY_FOR_DELIVERY",
+          "RETURN_INITIATED",
+        ].includes(
+          props.item.status ||
+            props.item.deliveryTaskStatus ||
+            props.item.returnTaskStatus
         ) ? (
           <Button
             block
@@ -136,13 +169,53 @@ export default CompanyCard = (props) => {
             ) : null}
           </Button>
         ) : null}
-
+        {props.item.status == "PICKUP" ? (
+          <Button
+            block
+            onPress={onStart}
+            style={!loader ? styles.startNowBtn : styles.disabledstartNowBtn}
+            disabled={loader}
+          >
+            <Text style={styles.startNowText}>DELIVERED TO WH</Text>
+            {loader ? (
+              <ActivityIndicator color={"#fff"} style={{ marginLeft: 20 }} />
+            ) : null}
+          </Button>
+        ) : null}
+        {props.item.returnTaskStatus == "PICKUP_DONE" ? (
+          <Button
+            block
+            onPress={onReturn}
+            style={!loader ? styles.startNowBtn : styles.disabledstartNowBtn}
+            disabled={loader}
+          >
+            <Text style={styles.startNowText}>PICKUP</Text>
+            {loader ? (
+              <ActivityIndicator color={"#fff"} style={{ marginLeft: 20 }} />
+            ) : null}
+          </Button>
+        ) : null}
+        {props.item.status == "CLOSED" ||
+        props.item.deliveryTaskStatus == "CLOSED" ||
+        props.item.returnTaskStatus == "CLOSED" ? (
+          <Button
+            block
+            // onPress={onStart}
+            style={!loader ? styles.startNowBtn : styles.disabledstartNowBtn}
+            disabled={loader}
+          >
+            <Text style={styles.startNowText}>CLOSED</Text>
+          </Button>
+        ) : null}
         {props.item.status == "STARTED" ||
         props.item.status == "ARRIVED" ||
         props.item.status == "TRANSACTING" ||
         props.item.deliveryTaskStatus == "STARTED" ||
         props.item.deliveryTaskStatus == "ARRIVED" ||
-        props.item.deliveryTaskStatus == "TRANSACTING" ? (
+        props.item.deliveryTaskStatus == "TRANSACTING" ||
+        props.item.returnTaskStatus == "STARTED" ||
+        props.item.returnTaskStatus == "ARRIVED" ||
+        props.item.returnTaskStatus == "TRANSACTING" ? (
           <Button block onPress={navigate} style={styles.startNowBtn}>
             <Text style={styles.startNowText}>ONGOING</Text>
           </Button>

@@ -1,79 +1,84 @@
-import { StyleSheet, Dimensions, Platform } from 'react-native';
-
+import { StyleSheet, Dimensions, Platform } from "react-native";
 
 //import { FORMERR } from 'dns';
-const IS_IOS = Platform.OS === 'ios';
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
+const IS_IOS = Platform.OS === "ios";
+const { width: viewportWidth, height: viewportHeight } =
+  Dimensions.get("window");
 
 function wp(percentage) {
   const value = (percentage * viewportWidth) / 100;
   return Math.round(value);
 }
 
-
 /********New imports******/
-import Dimension from '../../Theme/Dimension';
-import Colors from '../../Theme/Colors';
+import Dimension from "../../Theme/Dimension";
+import Colors from "../../Theme/Colors";
 
 export default StyleSheet.create({
-  ContainerCss: { backgroundColor: "#F7F7FA", position: 'relative' },
-  cardWrap:{
+  ContainerCss: { backgroundColor: "#F7F7FA", position: "relative" },
+  dateText: {
+    color: Colors.PrimaryTextColor,
+    fontSize: Dimension.font16,
+    marginLeft: Dimension.margin20,
+    marginRight: Dimension.margin20,
+    fontFamily: Dimension.CustomMediumFont,
+  },
+  cardWrap: {
     marginBottom: Dimension.margin15,
     width: "100%",
-    padding:Dimension.padding15 ,
+    padding: Dimension.padding15,
     borderRadius: 8,
     backgroundColor: "#fff",
     borderWidth: 1,
     borderColor: "#C4C4C4",
   },
-  cardTitle:{
+  cardTitle: {
     fontSize: Dimension.font16,
     color: Colors.PrimaryTextColor,
-    fontFamily:Dimension.CustomSemiBoldFont
+    fontFamily: Dimension.CustomSemiBoldFont,
   },
-  rowWrap:{
+  rowWrap: {
     marginTop: Dimension.margin10,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
-  normalText:{
+  normalText: {
     fontSize: Dimension.font14,
     color: Colors.PrimaryTextColor,
-    fontFamily:Dimension.CustomRegularFont
+    fontFamily: Dimension.CustomRegularFont,
   },
-  BoldText:{
+  BoldText: {
     fontSize: Dimension.font14,
     color: Colors.PrimaryTextColor,
-    fontFamily:Dimension.CustomSemiBoldFont
+    fontFamily: Dimension.CustomSemiBoldFont,
   },
-  lightGarytext:{
+  lightGarytext: {
     fontSize: Dimension.font12,
     color: Colors.lightGrayText,
-    fontFamily:Dimension.CustomRegularFont
+    fontFamily: Dimension.CustomRegularFont,
   },
-  viewListBtn:{
+  viewListBtn: {
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop:Dimension.margin15
+    marginTop: Dimension.margin15,
   },
-  RedBoldText:{
+  RedBoldText: {
     fontSize: Dimension.font14,
     color: Colors.RedThemeColor,
-    fontFamily:Dimension.CustomSemiBoldFont
+    fontFamily: Dimension.CustomSemiBoldFont,
   },
-  rightArrowIcon:{
-    width:Dimension.width24,
-    height:Dimension.width24
+  rightArrowIcon: {
+    width: Dimension.width24,
+    height: Dimension.width24,
   },
-  dateText:{
+  dateText: {
     color: Colors.PrimaryTextColor,
-    fontSize:Dimension.font16,
-    marginLeft:Dimension.margin20,
-    marginRight:Dimension.margin20,
-    fontFamily:Dimension.CustomMediumFont
- 
-  }
-  });
+    fontSize: Dimension.font16,
+    marginLeft: Dimension.margin20,
+    marginRight: Dimension.margin20,
+    fontFamily: Dimension.CustomMediumFont,
+  },
+});
