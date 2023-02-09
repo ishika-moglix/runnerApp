@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { View, Image, Dimensions, Text, ActivityIndicator } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Image,
+  Dimensions,
+  Text,
+  ActivityIndicator,
+  PermissionsAndroid,
+} from "react-native";
 import {
   Container,
   Header,
@@ -12,10 +19,17 @@ import {
 } from "native-base";
 import { sendOtp } from "../../services/auth";
 import styles from "./style";
+import Geolocation from "react-native-geolocation-service";
 
 export default LoginScreen = (props) => {
   const [phone, setPhone] = useState("9711572214");
   const [loader, setLoader] = useState(false);
+
+  useEffect(() => {
+    PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+    );
+  }, []);
 
   const onNext = async () => {
     if (phone.length == 10) {

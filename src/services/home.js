@@ -1,6 +1,14 @@
 import axios from "axios";
 import moment from "moment";
 import { AsyncStorage } from "react-native";
+import Geolocation from "react-native-geolocation-service";
+
+const getLocation = async (type) =>
+  new Promise(function (myResolve, myReject) {
+    Geolocation.getCurrentPosition((info) => {
+      myResolve(info.coords[type]);
+    });
+  });
 
 const axiosInstance = axios.create({
   baseURL: "https://runnerqa.moglilabs.com/api",
@@ -17,6 +25,8 @@ const getHome = async (date) =>
     {
       headers: {
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+        "x-lat": await getLocation("latitude"),
+        "x-lon": await getLocation("longitude"),
       },
     }
   );
@@ -25,6 +35,8 @@ const getProfile = async () =>
   axiosInstance.get(`runners/profile`, {
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 

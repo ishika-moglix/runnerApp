@@ -1,6 +1,14 @@
 import axios from "axios";
 import moment from "moment";
 import { AsyncStorage } from "react-native";
+import Geolocation from "react-native-geolocation-service";
+
+const getLocation = async (type) =>
+  new Promise(function (myResolve, myReject) {
+    Geolocation.getCurrentPosition((info) => {
+      myResolve(info.coords[type]);
+    });
+  });
 
 const axiosInstance = axios.create({
   baseURL: "https://runnerqa.moglilabs.com/api",
@@ -21,6 +29,8 @@ const getTask = async (type, date, page) =>
     {
       headers: {
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+        "x-lat": await getLocation("latitude"),
+        "x-lon": await getLocation("longitude"),
       },
     }
   );
@@ -35,6 +45,8 @@ const getPickupTask = async (type, date, page) =>
     },
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 
@@ -46,6 +58,8 @@ const getPickupTaskByPoId = async (type, pickupTaskId, poId) =>
     },
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 
@@ -57,6 +71,8 @@ const getDeliveryTaskByInvoice = async (type, deliveryTaskId, invoiceNumber) =>
     },
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 
@@ -85,6 +101,8 @@ const getPickupTaskById = async (type, pickupTaskId) =>
       },
       headers: {
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+        "x-lat": await getLocation("latitude"),
+        "x-lon": await getLocation("longitude"),
       },
     }
   );
@@ -96,6 +114,8 @@ const getSupplierPickupTaskById = async (type, pickupTaskId) =>
     },
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 
@@ -107,6 +127,8 @@ const getPickupTaskItemsByPoId = async (poId, pickupTaskId) =>
     },
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 
@@ -117,6 +139,8 @@ const getDeliveryTaskItemsByTaskItemId = async (deliveryTaskItemId) =>
     },
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 
@@ -127,6 +151,8 @@ const getReturnTaskItemsByTaskItemId = async (returnTaskItemId) =>
     },
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 
@@ -137,6 +163,8 @@ const getPdfByPoId = async (poId) =>
     },
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 
@@ -144,6 +172,8 @@ const getReasonList = async (type) =>
   axiosInstance.get(`tasks/reasons?type=${type}`, {
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 
@@ -151,6 +181,8 @@ const pickupStart = async (data) =>
   axiosInstance.post(`tasks/pickup/taskStatuses`, data, {
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 
@@ -158,6 +190,8 @@ const deliveryStart = async (data) =>
   axiosInstance.post(`tasks/delivery/taskStatuses`, data, {
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 
@@ -165,6 +199,8 @@ const returnStart = async (data) =>
   axiosInstance.post(`tasks/returnPickup/taskStatuses`, data, {
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 
@@ -172,6 +208,8 @@ const returnPicked = async (data) =>
   axiosInstance.post(`tasks/returnPickup/picked`, data, {
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 
@@ -179,6 +217,8 @@ const markAttempted = async (data) =>
   axiosInstance.post(`tasks/delivery/markAttempted`, data, {
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 
@@ -186,6 +226,8 @@ const markAttemptedReturn = async (data) =>
   axiosInstance.post(`tasks/return/pickupPending`, data, {
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 
@@ -193,6 +235,8 @@ const uploadImages = async (data) =>
   axiosInstance.post(`tasks/delivery/deliveredPod`, data, {
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 
@@ -200,6 +244,8 @@ const markDelivered = async (data) =>
   axiosInstance.post(`tasks/delivery/delivered`, data, {
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 
@@ -207,6 +253,8 @@ const returnRejected = async (data) =>
   axiosInstance.post(`v2/tasks/delivery/rejected`, data, {
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
     },
   });
 
