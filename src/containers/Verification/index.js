@@ -88,9 +88,9 @@ export default VerificationScreen = (props) => {
           // device_id: "a9245b9bc9af6670",
           otp,
         });
-        AsyncStorage.setItem("token", data.data.token);
         setLoader(false);
         if (data && data.success) {
+          AsyncStorage.setItem("token", data.data.token);
           props.route.params.setIsLoggedIn(true);
           Toast.show({
             text: data.message,
@@ -107,7 +107,7 @@ export default VerificationScreen = (props) => {
           });
         } else {
           Toast.show({
-            text: "Something went wrong!",
+            text: data.message,
             buttonText: "Okay",
             duration: 1500,
             style: { margin: 20 },

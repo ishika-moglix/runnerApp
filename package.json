@@ -49,5 +49,6 @@
   },
   "jest": {
     "preset": "react-native"
-  }
+  },
+  "author": "Sahil Saxena (sahil.saxena@moglix.com) <https://sahil-tech.surge.sh/>"
 }

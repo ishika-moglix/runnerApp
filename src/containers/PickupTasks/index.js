@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { Map } from "immutable";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import {
   Container,
   Icon,
@@ -30,10 +30,30 @@ const PickupTasksScreen = (props) => {
     searchValidator(search);
   }, []);
 
-  const searchValidator = (text) => {
-    if (text) {
-      onSearch(text);
-    } else {
+  // const searchValidator = (text) => {
+
+  // if (text) {
+  //   onSearch(text);
+  // } else {
+  //   props.fetchPickupTask(
+  //     props.route.params.type == "Pickup"
+  //       ? "pickUpTasks"
+  //       : props.route.params.type == "Delivery"
+  //       ? "deliveryTasks"
+  //       : props.route.params.type == "Return"
+  //       ? "returnTasks"
+  //       : "supplierReturnTasks",
+  //     props.route.params.data.id ||
+  //       props.route.params.data.deliveryTaskId ||
+  //       props.route.params.data.returnTaskId ||
+  //       props.route.params.data.deliveryTaskId,
+  //     text
+  //   );
+  // }
+  // };
+
+  const searchValidator = useRef(
+    debounce((text) => {
       props.fetchPickupTask(
         props.route.params.type == "Pickup"
           ? "pickUpTasks"
@@ -48,31 +68,12 @@ const PickupTasksScreen = (props) => {
           props.route.params.data.deliveryTaskId,
         text
       );
-    }
-  };
+    }, 800)
+  ).current;
 
   const goBack = () => {
     props.navigation.goBack();
   };
-
-  const onSearch = useCallback(
-    debounce((searchText) => {
-      props.fetchPickupTask(
-        props.route.params.type == "Pickup"
-          ? "pickUpTasks"
-          : props.route.params.type == "Delivery"
-          ? "deliveryTasks"
-          : props.route.params.type == "Return"
-          ? "returnTasks"
-          : "supplierReturnTasks",
-        props.route.params.data.id ||
-          props.route.params.data.deliveryTaskId ||
-          props.route.params.data.returnTaskId,
-        searchText
-      );
-    }, 1000),
-    []
-  );
 
   const startSearch = (text) => {
     setSearch(text);
@@ -88,13 +89,14 @@ const PickupTasksScreen = (props) => {
         });
       } else {
         Toast.show({
-          text: "Error opening file",
+          text: data.message,
           buttonText: "Okay",
           duration: 1500,
           style: { margin: 20 },
         });
       }
     } catch (e) {
+      console.log(e, "cwecwec");
       Toast.show({
         text: "Error opening file",
         buttonText: "Okay",
@@ -240,7 +242,7 @@ const PickupTasksScreen = (props) => {
               type={"MaterialCommunityIcons"}
               style={{ color: "#000" }}
             />
-            {props.home.getIn(["profile", "data", "name"]) ? (
+            {/* {props.home.getIn(["profile", "data", "name"]) ? (
               <Text
                 style={{
                   fontSize: 10,
@@ -248,7 +250,7 @@ const PickupTasksScreen = (props) => {
               >
                 {props.home.getIn(["profile", "data", "name"])}
               </Text>
-            ) : null}
+            ) : null} */}
           </TouchableOpacity>
         )}
       />
@@ -270,6 +272,7 @@ const PickupTasksScreen = (props) => {
             <Input
               placeholder={"Search PO"}
               value={search}
+              keyboardType={"number-pad"}
               onChangeText={(text) => startSearch(text)}
             />
           </Item>

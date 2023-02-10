@@ -37,4 +37,12 @@ const login = async (data) =>
     },
   });
 
-export { sendOtp, login };
+const uploadDeviceId = async (data) =>
+  axiosInstance.post("users/saveDeviceId", data, {
+    headers: {
+      "x-lat": await getLocation("latitude"),
+      "x-lon": await getLocation("longitude"),
+    },
+  });
+
+export { sendOtp, login, uploadDeviceId };

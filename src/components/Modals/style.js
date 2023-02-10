@@ -125,6 +125,7 @@ export default StyleSheet.create({
   footerTabCss: {
     backgroundColor: Colors.BorderColor,
     elevation: 0,
+    flexDirection: "row",
   },
   disabledBtn: {
     backgroundColor: Colors.ExtralightGrayText,
@@ -134,12 +135,14 @@ export default StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    marginHorizontal: Dimension.margin4,
   },
   EnabledBtn: {
     backgroundColor: Colors.RedThemeColor,
     borderRadius: 4,
     height: Dimension.height45,
     elevation: 0,
+    marginHorizontal: Dimension.margin4,
   },
   btntext: {
     fontSize: Dimension.font14,

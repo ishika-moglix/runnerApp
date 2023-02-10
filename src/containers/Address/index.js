@@ -266,11 +266,11 @@ const AddressScreen = (props) => {
       <View style={styles.addressWrap}>
         <View style={styles.addressTopWrap}>
           <Text style={styles.addressTopText}>Your Address</Text>
-          <Icon
+          {/* <Icon
             name={"directions"}
             type="FontAwesome5"
             style={styles.diectionIcon}
-          />
+          /> */}
         </View>
         <FlatList
           data={[props.route.params.data]}
@@ -334,7 +334,7 @@ const AddressScreen = (props) => {
                 style={styles.backIcon}
               />
             </TouchableOpacity>
-            <Text style={styles.headerTitle}>Company Name</Text>
+            <Text style={styles.headerTitle}>{props.route.params.company}</Text>
           </View>
         )}
       />

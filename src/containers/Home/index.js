@@ -146,23 +146,23 @@ const HomeScreen = (props) => {
       <Header
         key={2}
         noShadow={true}
-        rightComponent={() => (
-          <View>
-            <TouchableOpacity
-              onPress={() => setShowModal(true)}
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Icon
-                name={"dots-three-vertical"}
-                type={"Entypo"}
-                style={{ color: "#000", fontSize: 24 }}
-              />
-            </TouchableOpacity>
-          </View>
-        )}
+        // rightComponent={() => (
+        //   <View>
+        //     <TouchableOpacity
+        //       onPress={() => setShowModal(true)}
+        //       style={{
+        //         flexDirection: "row",
+        //         alignItems: "center",
+        //       }}
+        //     >
+        //       <Icon
+        //         name={"dots-three-vertical"}
+        //         type={"Entypo"}
+        //         style={{ color: "#000", fontSize: 24 }}
+        //       />
+        //     </TouchableOpacity>
+        //   </View>
+        // )}
         leftComponent={() => (
           <TouchableOpacity
             onPress={() => setShow(true)}

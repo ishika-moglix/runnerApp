@@ -100,7 +100,11 @@ export default StyleSheet.create({
     flex: 1,
     height: Dimension.height45,
   },
-  DisbaledAttemptedBtntext: {},
+  DisbaledAttemptedBtntext: {
+    fontSize: Dimension.font14,
+    fontFamily: Dimension.CustomSemiBoldFont,
+    color: Colors.ExtralightGrayText,
+  },
   EnabledAttemptedBtn: {
     backgroundColor: Colors.white,
     borderRadius: 4,
@@ -113,7 +117,7 @@ export default StyleSheet.create({
   EnabledAttemptedBtntext: {
     fontSize: Dimension.font14,
     fontFamily: Dimension.CustomSemiBoldFont,
-    color: Colors.ExtralightGrayText,
+    color: Colors.Black,
   },
 
   EnabledDeliverdBtn: {

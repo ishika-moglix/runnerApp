@@ -6,6 +6,7 @@ import {
   Text,
   ActivityIndicator,
   PermissionsAndroid,
+  Alert,
 } from "react-native";
 import {
   Container,
@@ -17,9 +18,9 @@ import {
   Toast,
   Button,
 } from "native-base";
-import { sendOtp } from "../../services/auth";
+import { sendOtp, uploadDeviceId } from "../../services/auth";
 import styles from "./style";
-import Geolocation from "react-native-geolocation-service";
+import DeviceInfo from "react-native-device-info";
 
 export default LoginScreen = (props) => {
   const [phone, setPhone] = useState("9711572214");
@@ -31,6 +32,25 @@ export default LoginScreen = (props) => {
     );
   }, []);
 
+  const onUploadDeviceId = async (id) => {
+    const { data } = await uploadDeviceId({
+      deviceId: DeviceInfo.getUniqueId(),
+      phoneNumber: phone,
+    });
+    if (data) {
+      Toast.show({
+        text: data.message,
+        buttonText: "Okay",
+        duration: 1500,
+        style: { margin: 20 },
+      });
+      props.navigation.navigate("Verification", {
+        phone,
+        id,
+      });
+    }
+  };
+
   const onNext = async () => {
     if (phone.length == 10) {
       try {
@@ -38,10 +58,26 @@ export default LoginScreen = (props) => {
         const { data, error } = await sendOtp(phone);
         setLoader(false);
         if (data && data.success) {
-          props.navigation.navigate("Verification", {
-            phone,
-            id: data.data.id,
-          });
+          console.log(data);
+          Alert.alert(
+            "Some Issue in Getting your details",
+            `Please upload code ${DeviceInfo.getUniqueId()} for Login`,
+            [
+              {
+                text: "Upload",
+                onPress: () => onUploadDeviceId(data.data.id),
+              },
+              {
+                text: "Already Uploaded, Login Now",
+                onPress: () =>
+                  props.navigation.navigate("Verification", {
+                    phone,
+                    id: data.data.id,
+                  }),
+                style: "cancel",
+              },
+            ]
+          );
           Toast.show({
             text: data.message,
             buttonText: "Okay",

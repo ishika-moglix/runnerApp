@@ -40,19 +40,25 @@ export default ImageUploaderModal = (props) => {
       case "Camera":
         launchCamera({ includeBase64: true }, (res) => {
           console.log(res, "ferfe");
-          setImages([...images, res]);
+          if (!res.didCancel) {
+            setImages([...images, res]);
+          }
         });
         return;
       case "Gallery":
         launchImageLibrary({ includeBase64: true }, (res) => {
           console.log(res, "ferfe");
-          setImages([...images, res]);
+          if (!res.didCancel) {
+            setImages([...images, res]);
+          }
         });
         return;
       default:
         launchCamera({ includeBase64: true }, (res) => {
           console.log(res, "ferfe");
-          setImages([...images, res]);
+          if (!res.didCancel) {
+            setImages([...images, res]);
+          }
         });
         return;
     }
@@ -116,6 +122,21 @@ export default ImageUploaderModal = (props) => {
     return (
       <Footer style={styles.footerCss}>
         <FooterTab style={styles.footerTabCss}>
+          <Button
+            onPress={() => navigation.navigate("Home")}
+            // disabled={!images.length || loading}
+            block
+            style={styles.EnabledBtn}
+          >
+            {loading && (
+              <ActivityIndicator
+                color={"#fff"}
+                size={"small"}
+                style={{ marginRight: 12 }}
+              />
+            )}
+            <Text style={styles.btntext}>UPLOAD LATER</Text>
+          </Button>
           <Button
             onPress={onUpload}
             disabled={!images.length || loading}

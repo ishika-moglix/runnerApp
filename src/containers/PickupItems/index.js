@@ -100,7 +100,7 @@ const PickupItemsScreen = (props) => {
     );
     setData(
       new List(data.deliveryTaskLineItemsList)
-        .map((_) => ({ ..._, inputQuantity: _.orderedQuantity }))
+        .map((_) => ({ ..._, inputQuantity: _.orderedQuantity, checked: true }))
         .toOrderedMap()
     );
   };
@@ -111,7 +111,7 @@ const PickupItemsScreen = (props) => {
     );
     setData(
       new List(data.returnTaskLineItemsList)
-        .map((_) => ({ ..._, inputQuantity: _.orderedQuantity }))
+        .map((_) => ({ ..._, inputQuantity: _.orderedQuantity, checked: true }))
         .toOrderedMap()
     );
   };
@@ -133,7 +133,11 @@ const PickupItemsScreen = (props) => {
     } else {
       setData(
         new List(data.pickupTaskItemRes)
-          .map((_) => ({ ..._, inputQuantity: _.remainingQuantity }))
+          .map((_) => ({
+            ..._,
+            inputQuantity: _.remainingQuantity,
+            checked: true,
+          }))
           .toOrderedMap()
       );
     }
@@ -205,6 +209,12 @@ const PickupItemsScreen = (props) => {
           : await markAttempted(data);
       console.log(markResp);
       if (markResp.data.success) {
+        Toast.show({
+          text: markResp.data.message || "",
+          buttonText: "Okay",
+          duration: 1500,
+          style: { margin: 20 },
+        });
         setReasonLoading(false);
         setModalVisible(false);
         if (props.route.params.type == "Delivery") {
@@ -267,19 +277,34 @@ const PickupItemsScreen = (props) => {
 
   const renderFooter = () => {
     let isChecked = data.toList().filter((_) => _.checked).size;
+    console.log(
+      data.toList().filter((_) => _.checked).size,
+      data.toList().toArray(),
+      data.toList().reduce((a, b) => a + b.inputQuantity, 0),
+      data.toList().reduce((a, b) => a + b.remainingQuantity, 0),
+      "cehbceubcuen"
+    );
+    let isReasonSelected =
+      props.route.params.type == "Pickup"
+        ? data.toList().reduce((a, b) => a + b.inputQuantity, 0) ==
+          data.toList().reduce((a, b) => a + b.remainingQuantity, 0)
+          ? true
+          : data.toList().filter((_) => _.checked).size ==
+            data.toList().filter((_) => _.reason).size
+        : null;
     switch (props.route.params.type) {
       case "Pickup":
         return (
           <View style={styles.footerWrap}>
             {/* <Button block style={styles.EnabledAttemptedBtn}>
-              <Text style={styles.EnabledAttemptedBtntext}>ATTEMPT FAIL</Text>
+              <Text style={!isChecked ? styles.DisbaledAttemptedBtntext : styles.EnabledAttemptedBtntext}>ATTEMPT FAIL</Text>
             </Button> */}
             <Button
               onPress={onPickup}
-              disabled={!isChecked || loading}
+              disabled={!isChecked || loading || !isReasonSelected}
               block
               style={
-                !isChecked
+                !isChecked || !isReasonSelected
                   ? styles.EnabledAttemptedBtn
                   : styles.EnabledDeliverdBtn
               }
@@ -293,8 +318,8 @@ const PickupItemsScreen = (props) => {
               )}
               <Text
                 style={
-                  !isChecked
-                    ? styles.EnabledAttemptedBtntext
+                  !isChecked || !isReasonSelected
+                    ? styles.DisbaledAttemptedBtntext
                     : styles.EnabledDeliverdBtnText
                 }
               >
@@ -312,7 +337,15 @@ const PickupItemsScreen = (props) => {
               block
               style={styles.EnabledAttemptedBtn}
             >
-              <Text style={styles.EnabledAttemptedBtntext}>ATTEMPTED</Text>
+              <Text
+                style={
+                  !isChecked
+                    ? styles.DisbaledAttemptedBtntext
+                    : styles.EnabledAttemptedBtntext
+                }
+              >
+                ATTEMPTED
+              </Text>
             </Button>
             <Button
               onPress={setIsUploaderVisible}
@@ -334,7 +367,7 @@ const PickupItemsScreen = (props) => {
               <Text
                 style={
                   !isChecked
-                    ? styles.EnabledAttemptedBtntext
+                    ? styles.DisbaledAttemptedBtntext
                     : styles.EnabledDeliverdBtnText
                 }
               >
@@ -352,7 +385,15 @@ const PickupItemsScreen = (props) => {
               block
               style={styles.EnabledAttemptedBtn}
             >
-              <Text style={styles.EnabledAttemptedBtntext}>REJECTED</Text>
+              <Text
+                style={
+                  !isChecked
+                    ? styles.DisbaledAttemptedBtntext
+                    : styles.EnabledAttemptedBtntext
+                }
+              >
+                REJECTED
+              </Text>
             </Button>
             <Button
               onPress={setIsUploaderVisible}
@@ -374,7 +415,7 @@ const PickupItemsScreen = (props) => {
               <Text
                 style={
                   !isChecked
-                    ? styles.EnabledAttemptedBtntext
+                    ? styles.DisbaledAttemptedBtntext
                     : styles.EnabledDeliverdBtnText
                 }
               >
@@ -403,7 +444,15 @@ const PickupItemsScreen = (props) => {
               disabled={!isChecked || loading}
               style={styles.EnabledAttemptedBtn}
             >
-              <Text style={styles.EnabledAttemptedBtntext}>ATTEMPT FAIL</Text>
+              <Text
+                style={
+                  !isChecked
+                    ? styles.DisbaledAttemptedBtntext
+                    : styles.EnabledAttemptedBtntext
+                }
+              >
+                ATTEMPT FAIL
+              </Text>
             </Button>
             <Button
               onPress={onReturn}
@@ -425,7 +474,7 @@ const PickupItemsScreen = (props) => {
               <Text
                 style={
                   !isChecked
-                    ? styles.EnabledAttemptedBtntext
+                    ? styles.DisbaledAttemptedBtntext
                     : styles.EnabledDeliverdBtnText
                 }
               >
