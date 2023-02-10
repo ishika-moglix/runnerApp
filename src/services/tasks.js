@@ -31,6 +31,7 @@ const getTask = async (type, date, page) =>
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
         "x-lat": await getLocation("latitude"),
         "x-lon": await getLocation("longitude"),
+        "x-acc": await getLocation("accuracy"),
       },
     }
   );
@@ -47,6 +48,7 @@ const getPickupTask = async (type, date, page) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
@@ -60,6 +62,7 @@ const getPickupTaskByPoId = async (type, pickupTaskId, poId) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
@@ -73,6 +76,7 @@ const getDeliveryTaskByInvoice = async (type, deliveryTaskId, invoiceNumber) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
@@ -103,6 +107,7 @@ const getPickupTaskById = async (type, pickupTaskId) =>
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
         "x-lat": await getLocation("latitude"),
         "x-lon": await getLocation("longitude"),
+        "x-acc": await getLocation("accuracy"),
       },
     }
   );
@@ -116,6 +121,7 @@ const getSupplierPickupTaskById = async (type, pickupTaskId) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
@@ -129,6 +135,7 @@ const getPickupTaskItemsByPoId = async (poId, pickupTaskId) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
@@ -141,6 +148,7 @@ const getDeliveryTaskItemsByTaskItemId = async (deliveryTaskItemId) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
@@ -153,6 +161,7 @@ const getReturnTaskItemsByTaskItemId = async (returnTaskItemId) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
@@ -165,6 +174,7 @@ const getPdfByPoId = async (poId) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
@@ -174,6 +184,7 @@ const getReasonList = async (type) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
@@ -183,6 +194,7 @@ const pickupStart = async (data) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
@@ -192,6 +204,7 @@ const deliveryStart = async (data) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
@@ -201,6 +214,7 @@ const returnStart = async (data) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
@@ -210,6 +224,7 @@ const returnPicked = async (data) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
@@ -219,6 +234,7 @@ const markAttempted = async (data) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
@@ -228,6 +244,7 @@ const markAttemptedReturn = async (data) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
@@ -237,6 +254,7 @@ const uploadImages = async (data) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
@@ -246,6 +264,7 @@ const markDelivered = async (data) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
@@ -255,6 +274,7 @@ const returnRejected = async (data) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 

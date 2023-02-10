@@ -25,6 +25,7 @@ const sendOtp = async (phoneNumber) =>
       headers: {
         "x-lat": await getLocation("latitude"),
         "x-lon": await getLocation("longitude"),
+        "x-acc": await getLocation("accuracy"),
       },
     }
   );
@@ -34,6 +35,7 @@ const login = async (data) =>
     headers: {
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
@@ -42,6 +44,7 @@ const uploadDeviceId = async (data) =>
     headers: {
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 

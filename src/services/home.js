@@ -27,6 +27,7 @@ const getHome = async (date) =>
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
         "x-lat": await getLocation("latitude"),
         "x-lon": await getLocation("longitude"),
+        "x-acc": await getLocation("accuracy"),
       },
     }
   );
@@ -37,6 +38,7 @@ const getProfile = async () =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       "x-lat": await getLocation("latitude"),
       "x-lon": await getLocation("longitude"),
+      "x-acc": await getLocation("accuracy"),
     },
   });
 
