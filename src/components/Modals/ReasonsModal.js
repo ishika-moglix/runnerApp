@@ -80,7 +80,9 @@ export default ReasonModal = (props) => {
           <TouchableOpacity onPress={() => setShow(true)}>
             <Title style={styles.dateText}>
               Next Pickup Date:{" "}
-              {moment(nextPickupDate || new Date()).format("DD/MMM/YY")}
+              {nextPickupDate
+                ? moment(nextPickupDate || new Date()).format("DD/MMM/YY")
+                : "Select Date"}
             </Title>
           </TouchableOpacity>
         ) : null}
