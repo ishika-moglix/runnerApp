@@ -87,7 +87,7 @@ const ReturnScreen = (props) => {
               type={"MaterialCommunityIcons"}
               style={{ color: "#000" }}
             />
-            {props.home.getIn(["profile", "data", "name"]) ? (
+            {/* {props.home.getIn(["profile", "data", "name"]) ? (
               <Text
                 style={{
                   fontSize: 10,
@@ -95,7 +95,7 @@ const ReturnScreen = (props) => {
               >
                 {props.home.getIn(["profile", "data", "name"])}
               </Text>
-            ) : null}
+            ) : null} */}
           </TouchableOpacity>
         )}
       />
