@@ -124,17 +124,10 @@ export default ImageUploaderModal = (props) => {
         <FooterTab style={styles.footerTabCss}>
           <Button
             onPress={() => navigation.navigate("Home")}
-            // disabled={!images.length || loading}
+            disabled={loading}
             block
             style={styles.EnabledBtn}
           >
-            {loading && (
-              <ActivityIndicator
-                color={"#fff"}
-                size={"small"}
-                style={{ marginRight: 12 }}
-              />
-            )}
             <Text style={styles.btntext}>UPLOAD LATER</Text>
           </Button>
           <Button

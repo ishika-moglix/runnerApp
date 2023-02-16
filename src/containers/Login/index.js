@@ -23,7 +23,7 @@ import styles from "./style";
 import DeviceInfo from "react-native-device-info";
 
 export default LoginScreen = (props) => {
-  const [phone, setPhone] = useState("9711572214");
+  const [phone, setPhone] = useState("");
   const [loader, setLoader] = useState(false);
 
   useEffect(() => {

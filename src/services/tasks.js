@@ -29,9 +29,9 @@ const getTask = async (type, date, page) =>
     {
       headers: {
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-        "x-lat": await getLocation("latitude"),
-        "x-lon": await getLocation("longitude"),
-        "x-acc": await getLocation("accuracy"),
+        latitude: await getLocation("latitude"),
+        longitude: await getLocation("longitude"),
+        accuracy: await getLocation("accuracy"),
       },
     }
   );
@@ -46,9 +46,9 @@ const getPickupTask = async (type, date, page) =>
     },
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
     },
   });
 
@@ -60,9 +60,9 @@ const getPickupTaskByPoId = async (type, pickupTaskId, poId) =>
     },
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
     },
   });
 
@@ -74,9 +74,9 @@ const getDeliveryTaskByInvoice = async (type, deliveryTaskId, invoiceNumber) =>
     },
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
     },
   });
 
@@ -105,9 +105,9 @@ const getPickupTaskById = async (type, pickupTaskId) =>
       },
       headers: {
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-        "x-lat": await getLocation("latitude"),
-        "x-lon": await getLocation("longitude"),
-        "x-acc": await getLocation("accuracy"),
+        latitude: await getLocation("latitude"),
+        longitude: await getLocation("longitude"),
+        accuracy: await getLocation("accuracy"),
       },
     }
   );
@@ -119,9 +119,9 @@ const getSupplierPickupTaskById = async (type, pickupTaskId) =>
     },
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
     },
   });
 
@@ -133,9 +133,9 @@ const getPickupTaskItemsByPoId = async (poId, pickupTaskId) =>
     },
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
     },
   });
 
@@ -146,9 +146,9 @@ const getDeliveryTaskItemsByTaskItemId = async (deliveryTaskItemId) =>
     },
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
     },
   });
 
@@ -159,9 +159,9 @@ const getReturnTaskItemsByTaskItemId = async (returnTaskItemId) =>
     },
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
     },
   });
 
@@ -172,9 +172,9 @@ const getPdfByPoId = async (poId) =>
     },
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
     },
   });
 
@@ -182,101 +182,157 @@ const getReasonList = async (type) =>
   axiosInstance.get(`tasks/reasons?type=${type}`, {
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
     },
   });
 
 const pickupStart = async (data) =>
-  axiosInstance.post(`tasks/pickup/taskStatuses`, data, {
-    headers: {
-      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+  axiosInstance.post(
+    `tasks/pickup/taskStatuses`,
+    {
+      ...data,
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
+      address: "",
     },
-  });
+    {
+      headers: {
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    }
+  );
 
 const deliveryStart = async (data) =>
-  axiosInstance.post(`tasks/delivery/taskStatuses`, data, {
-    headers: {
-      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+  axiosInstance.post(
+    `tasks/delivery/taskStatuses`,
+    {
+      ...data,
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
+      address: "",
     },
-  });
+    {
+      headers: {
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    }
+  );
 
 const returnStart = async (data) =>
-  axiosInstance.post(`tasks/returnPickup/taskStatuses`, data, {
-    headers: {
-      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+  axiosInstance.post(
+    `tasks/returnPickup/taskStatuses`,
+    {
+      ...data,
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
     },
-  });
+    {
+      headers: {
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    }
+  );
 
 const returnPicked = async (data) =>
-  axiosInstance.post(`tasks/returnPickup/picked`, data, {
-    headers: {
-      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+  axiosInstance.post(
+    `tasks/returnPickup/picked`,
+    {
+      ...data,
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
     },
-  });
+    {
+      headers: {
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    }
+  );
 
 const markAttempted = async (data) =>
-  axiosInstance.post(`tasks/delivery/markAttempted`, data, {
-    headers: {
-      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+  axiosInstance.post(
+    `tasks/delivery/markAttempted`,
+    {
+      ...data,
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
     },
-  });
+    {
+      headers: {
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    }
+  );
 
 const markAttemptedReturn = async (data) =>
-  axiosInstance.post(`tasks/return/pickupPending`, data, {
-    headers: {
-      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+  axiosInstance.post(
+    `tasks/return/pickupPending`,
+    {
+      ...data,
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
     },
-  });
+    {
+      headers: {
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    }
+  );
 
 const uploadImages = async (data) =>
-  axiosInstance.post(`tasks/delivery/deliveredPod`, data, {
-    headers: {
-      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+  axiosInstance.post(
+    `tasks/delivery/deliveredPod`,
+    {
+      ...data,
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
     },
-  });
+    {
+      headers: {
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    }
+  );
 
 const markDelivered = async (data) =>
-  axiosInstance.post(`tasks/delivery/delivered`, data, {
-    headers: {
-      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+  axiosInstance.post(
+    `tasks/delivery/delivered`,
+    {
+      ...data,
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
     },
-  });
+    {
+      headers: {
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    }
+  );
 
 const returnRejected = async (data) =>
-  axiosInstance.post(`v2/tasks/delivery/rejected`, data, {
-    headers: {
-      Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+  axiosInstance.post(
+    `v2/tasks/delivery/rejected`,
+    {
+      ...data,
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
     },
-  });
+    {
+      headers: {
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+      },
+    }
+  );
 
 export {
   getTask,

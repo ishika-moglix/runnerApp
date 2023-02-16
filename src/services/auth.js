@@ -23,28 +23,28 @@ const sendOtp = async (phoneNumber) =>
     },
     {
       headers: {
-        "x-lat": await getLocation("latitude"),
-        "x-lon": await getLocation("longitude"),
-        "x-acc": await getLocation("accuracy"),
+        latitude: await getLocation("latitude"),
+        longitude: await getLocation("longitude"),
+        accuracy: await getLocation("accuracy"),
       },
     }
   );
 
 const login = async (data) =>
-  axiosInstance.post("users/verifyOtp", data, {
-    headers: {
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
-    },
+  axiosInstance.post("users/verifyOtp", {
+    ...data,
+    latitude: await getLocation("latitude"),
+    longitude: await getLocation("longitude"),
+    accuracy: await getLocation("accuracy"),
+    address: "",
   });
 
 const uploadDeviceId = async (data) =>
   axiosInstance.post("users/saveDeviceId", data, {
     headers: {
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
     },
   });
 

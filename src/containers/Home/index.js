@@ -8,6 +8,8 @@ import {
   Platform,
   ScrollView,
   ActivityIndicator,
+  RefreshControl,
+  PermissionsAndroid,
 } from "react-native";
 import Header from "../../components/Header";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -56,6 +58,12 @@ const HomeScreen = (props) => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
+    PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+    );
+  }, []);
+
+  useEffect(() => {
     updateHomePage();
     if (!props.home.getIn(["profile", "data"]).size) {
       props.fetchProfile();
@@ -68,8 +76,12 @@ const HomeScreen = (props) => {
       !props.home.get(moment(date).format("DD-MM-YYYY")) ||
       !props.home.getIn([moment(date).format("DD-MM-YYYY"), "data"])
     ) {
-      props.fetchHome(date);
+      refreshHomepage();
     }
+  };
+
+  const refreshHomepage = () => {
+    props.fetchHome(date);
   };
 
   const onChange = (event, selectedDate) => {
@@ -195,6 +207,15 @@ const HomeScreen = (props) => {
       <ScrollView
         contentContainerStyle={{ padding: 20 }}
         style={styles.ContainerCss}
+        refreshControl={
+          <RefreshControl
+            refreshing={props.home.getIn([
+              moment(date).format("DD-MM-YYYY"),
+              "loading",
+            ])}
+            onRefresh={refreshHomepage}
+          />
+        }
       >
         {show && (
           <DateTimePicker

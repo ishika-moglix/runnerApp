@@ -25,9 +25,9 @@ const getHome = async (date) =>
     {
       headers: {
         Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-        "x-lat": await getLocation("latitude"),
-        "x-lon": await getLocation("longitude"),
-        "x-acc": await getLocation("accuracy"),
+        latitude: await getLocation("latitude"),
+        longitude: await getLocation("longitude"),
+        accuracy: await getLocation("accuracy"),
       },
     }
   );
@@ -36,9 +36,9 @@ const getProfile = async () =>
   axiosInstance.get(`runners/profile`, {
     headers: {
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
-      "x-lat": await getLocation("latitude"),
-      "x-lon": await getLocation("longitude"),
-      "x-acc": await getLocation("accuracy"),
+      latitude: await getLocation("latitude"),
+      longitude: await getLocation("longitude"),
+      accuracy: await getLocation("accuracy"),
     },
   });
 
