@@ -32,6 +32,7 @@ const getTask = async (type, date, page) =>
         latitude: await getLocation("latitude"),
         longitude: await getLocation("longitude"),
         accuracy: await getLocation("accuracy"),
+        address: "",
       },
     }
   );
@@ -49,6 +50,7 @@ const getPickupTask = async (type, date, page) =>
       latitude: await getLocation("latitude"),
       longitude: await getLocation("longitude"),
       accuracy: await getLocation("accuracy"),
+      address: "",
     },
   });
 
@@ -63,6 +65,7 @@ const getPickupTaskByPoId = async (type, pickupTaskId, poId) =>
       latitude: await getLocation("latitude"),
       longitude: await getLocation("longitude"),
       accuracy: await getLocation("accuracy"),
+      address: "",
     },
   });
 
@@ -77,6 +80,7 @@ const getDeliveryTaskByInvoice = async (type, deliveryTaskId, invoiceNumber) =>
       latitude: await getLocation("latitude"),
       longitude: await getLocation("longitude"),
       accuracy: await getLocation("accuracy"),
+      address: "",
     },
   });
 
@@ -108,6 +112,7 @@ const getPickupTaskById = async (type, pickupTaskId) =>
         latitude: await getLocation("latitude"),
         longitude: await getLocation("longitude"),
         accuracy: await getLocation("accuracy"),
+        address: "",
       },
     }
   );
@@ -121,6 +126,8 @@ const getSupplierPickupTaskById = async (type, pickupTaskId) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       latitude: await getLocation("latitude"),
       longitude: await getLocation("longitude"),
+      address: "",
+
       accuracy: await getLocation("accuracy"),
     },
   });
@@ -136,6 +143,7 @@ const getPickupTaskItemsByPoId = async (poId, pickupTaskId) =>
       latitude: await getLocation("latitude"),
       longitude: await getLocation("longitude"),
       accuracy: await getLocation("accuracy"),
+      address: "",
     },
   });
 
@@ -149,6 +157,7 @@ const getDeliveryTaskItemsByTaskItemId = async (deliveryTaskItemId) =>
       latitude: await getLocation("latitude"),
       longitude: await getLocation("longitude"),
       accuracy: await getLocation("accuracy"),
+      address: "",
     },
   });
 
@@ -162,6 +171,7 @@ const getReturnTaskItemsByTaskItemId = async (returnTaskItemId) =>
       latitude: await getLocation("latitude"),
       longitude: await getLocation("longitude"),
       accuracy: await getLocation("accuracy"),
+      address: "",
     },
   });
 
@@ -174,7 +184,8 @@ const getPdfByPoId = async (poId) =>
       Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
       latitude: await getLocation("latitude"),
       longitude: await getLocation("longitude"),
-      accuracy: await getLocation("accuracy"),
+
+      address: "",
     },
   });
 
@@ -185,6 +196,7 @@ const getReasonList = async (type) =>
       latitude: await getLocation("latitude"),
       longitude: await getLocation("longitude"),
       accuracy: await getLocation("accuracy"),
+      address: "",
     },
   });
 
@@ -230,6 +242,7 @@ const returnStart = async (data) =>
       latitude: await getLocation("latitude"),
       longitude: await getLocation("longitude"),
       accuracy: await getLocation("accuracy"),
+      address: "",
     },
     {
       headers: {
@@ -246,6 +259,7 @@ const returnPicked = async (data) =>
       latitude: await getLocation("latitude"),
       longitude: await getLocation("longitude"),
       accuracy: await getLocation("accuracy"),
+      address: "",
     },
     {
       headers: {
@@ -262,6 +276,7 @@ const markAttempted = async (data) =>
       latitude: await getLocation("latitude"),
       longitude: await getLocation("longitude"),
       accuracy: await getLocation("accuracy"),
+      address: "",
     },
     {
       headers: {
@@ -278,6 +293,7 @@ const markAttemptedReturn = async (data) =>
       latitude: await getLocation("latitude"),
       longitude: await getLocation("longitude"),
       accuracy: await getLocation("accuracy"),
+      address: "",
     },
     {
       headers: {
@@ -294,6 +310,7 @@ const uploadImages = async (data) =>
       latitude: await getLocation("latitude"),
       longitude: await getLocation("longitude"),
       accuracy: await getLocation("accuracy"),
+      address: "",
     },
     {
       headers: {
@@ -310,6 +327,7 @@ const markDelivered = async (data) =>
       latitude: await getLocation("latitude"),
       longitude: await getLocation("longitude"),
       accuracy: await getLocation("accuracy"),
+      address: "",
     },
     {
       headers: {
@@ -326,6 +344,7 @@ const returnRejected = async (data) =>
       latitude: await getLocation("latitude"),
       longitude: await getLocation("longitude"),
       accuracy: await getLocation("accuracy"),
+      address: "",
     },
     {
       headers: {

@@ -16,19 +16,13 @@ const axiosInstance = axios.create({
 });
 
 const sendOtp = async (phoneNumber) =>
-  axiosInstance.post(
-    "users/login",
-    {
-      phoneNumber,
-    },
-    {
-      headers: {
-        latitude: await getLocation("latitude"),
-        longitude: await getLocation("longitude"),
-        accuracy: await getLocation("accuracy"),
-      },
-    }
-  );
+  axiosInstance.post("users/login", {
+    phoneNumber,
+    latitude: await getLocation("latitude"),
+    longitude: await getLocation("longitude"),
+    accuracy: await getLocation("accuracy"),
+    address: "",
+  });
 
 const login = async (data) =>
   axiosInstance.post("users/verifyOtp", {
