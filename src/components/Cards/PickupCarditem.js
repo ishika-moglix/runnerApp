@@ -7,7 +7,7 @@ export default PickupCarditem = (props) => {
   const { item, onIncDec, onQtyChange, onChangeReason, reasons } = props;
   return (
     <View style={styles.pickupCard}>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.checkBoxWrap}
         onPress={() => props.onCheck(props.id)}
       >
@@ -18,7 +18,7 @@ export default PickupCarditem = (props) => {
           }
           style={styles.checkboxIcon}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <View style={styles.pickUpRightPart}>
         <View
           style={{
