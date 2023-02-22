@@ -121,7 +121,6 @@ const PickupItemsScreen = (props) => {
       props.route.params.poId,
       props.route.params.data.id
     );
-    // console.log(data, "dwedfewnfefbn");
     if (data.pickupTaskItemRes[0].status == "PICKUP") {
       Toast.show({
         text: "Already picked up!",
@@ -166,17 +165,27 @@ const PickupItemsScreen = (props) => {
   const onQtyChange = (key, val) => {
     let newData = data;
     if (val <= newData.getIn([key, "remainingQuantity"])) {
-      newData = newData.setIn([key, "inputQuantity"], val);
+      newData = newData.setIn([key, "inputQuantity"], val || 0);
       setData(newData);
     }
   };
 
   const onIncDec = (key, type) => {
     let newData = data;
-    newData = newData.setIn(
-      [key, "inputQuantity"],
-      Number(newData.getIn([key, "inputQuantity"])) + (type === "inc" ? 1 : -1)
-    );
+    newData = newData
+      .setIn(
+        [key, "inputQuantity"],
+        Number(newData.getIn([key, "inputQuantity"])) +
+          (type === "inc" ? 1 : -1)
+      )
+      .setIn(
+        [key, "reason"],
+        Number(newData.getIn([key, "inputQuantity"])) +
+          (type === "inc" ? 1 : -1) ==
+          newData.getIn([key, "remainingQuantity"])
+          ? null
+          : newData.getIn([key, "reason"])
+      );
     setData(newData);
   };
 
@@ -275,23 +284,33 @@ const PickupItemsScreen = (props) => {
     }
   };
 
+  const isQuantityMisMatched = () => {
+    return data
+      .toList()
+      .filter((_) => _.checked && _.inputQuantity == _.remainingQuantity)
+      .size == data.toList().filter((_) => _.checked).size
+      ? true
+      : data
+          .toList()
+          .filter((_) => _.checked && _.inputQuantity != _.remainingQuantity)
+          .size == data.toList().filter((_) => _.checked && _.reason).size;
+  };
+
   const renderFooter = () => {
     let isChecked = data.toList().filter((_) => _.checked).size;
-    console.log(
-      data.toList().filter((_) => _.checked).size,
-      data.toList().toArray(),
-      data.toList().reduce((a, b) => a + b.inputQuantity, 0),
-      data.toList().reduce((a, b) => a + b.remainingQuantity, 0),
-      "cehbceubcuen"
-    );
     let isReasonSelected =
       props.route.params.type == "Pickup"
-        ? data.toList().reduce((a, b) => a + b.inputQuantity, 0) ==
-          data.toList().reduce((a, b) => a + b.remainingQuantity, 0)
+        ? Number(
+            data.toList().reduce((a, b) => a + Number(b.inputQuantity), 0)
+          ) ==
+          Number(
+            data.toList().reduce((a, b) => a + Number(b.remainingQuantity), 0)
+          )
           ? true
-          : data.toList().filter((_) => _.checked).size ==
-            data.toList().filter((_) => _.reason).size
-        : null;
+          : isQuantityMisMatched()
+        : // data.toList().filter((_) => _.checked).size ==
+          //   data.toList().filter((_) => _.reason).size
+          null;
     switch (props.route.params.type) {
       case "Pickup":
         return (

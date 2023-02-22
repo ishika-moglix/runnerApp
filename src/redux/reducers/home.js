@@ -15,6 +15,7 @@ let INITIAL_STATE = new Map({
     loading: false,
     error: false,
     data: new Map({}),
+    errorStatusCode: 0,
   }),
 });
 
@@ -62,10 +63,15 @@ export const fetchedProfile = (state, { data }) => {
     .setIn(["profile", "error"], false)
     .setIn(["profile", "data"], new Map(data));
 };
-export const fetchFailedProfile = (state, { error }) => {
+export const fetchFailedProfile = (state, { error, errorStatusCode }) => {
   return state
     .setIn(["profile", "loading"], false)
-    .setIn(["profile", "error"], true);
+    .setIn(["profile", "error"], true)
+    .setIn(["profile", "errorStatusCode"], errorStatusCode);
+};
+
+export const logout = (state, {}) => {
+  return INITIAL_STATE;
 };
 
 // export const fetchAddressLoading = (state) => ({
@@ -100,6 +106,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [HomeTypes.FETCH_PROFILE]: fetchProfile,
   [HomeTypes.FETCHED_PROFILE]: fetchedProfile,
   [HomeTypes.FETCH_FAILED_PROFILE]: fetchFailedProfile,
+
+  [HomeTypes.LOGOUT]: logout,
   //   [AddressTypes.FETCH_ADDRESS_SUCCESS]: fetchAddressSuccess,
   //   [AddressTypes.FETCH_ADDRESS_FAILURE]: fetchAddressFailure,
 });

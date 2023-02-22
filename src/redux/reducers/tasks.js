@@ -6,6 +6,7 @@
 
 import { createReducer } from "reduxsauce";
 import { TaskTypes } from "../actions/tasks";
+import { HomeTypes } from "../actions/home";
 import { Map, List } from "immutable";
 import moment from "moment";
 
@@ -108,6 +109,10 @@ export const fetchFailedPickupTask = (state, { taskType, taskId, poId }) => {
   return state.setIn([taskType, "loading"], false).setIn([, "error"], true);
 };
 
+export const logout = (state, {}) => {
+  return INITIAL_STATE;
+};
+
 /**
  * @see https://github.com/infinitered/reduxsauce#createreducer
  */
@@ -119,6 +124,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [TaskTypes.FETCH_PICKUP_TASK]: fetchPickupTask,
   [TaskTypes.FETCHED_PICKUP_TASK]: fetchedPickupTask,
   [TaskTypes.FETCH_FAILED_PICKUP_TASK]: fetchFailedPickupTask,
+  [HomeTypes.LOGOUT]: logout,
   //   [AddressTypes.FETCH_ADDRESS_SUCCESS]: fetchAddressSuccess,
   //   [AddressTypes.FETCH_ADDRESS_FAILURE]: fetchAddressFailure,
 });

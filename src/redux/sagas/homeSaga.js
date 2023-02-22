@@ -57,14 +57,16 @@ export function* fetchProfileData() {
     } else {
       yield put(
         HomeActions.fetchFailedProfile(
-          "There was an error while fetching homepage data."
+          "There was an error while fetching homepage data.",
+          400
         )
       );
     }
   } catch (e) {
     yield put(
       HomeActions.fetchFailedProfile(
-        "There was an error while fetching homepage data."
+        "There was an error while fetching homepage data.",
+        e.response.data.status
       )
     );
   }

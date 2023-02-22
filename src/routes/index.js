@@ -71,6 +71,9 @@ const Routes = (props) => {
             options={{
               headerShown: false,
             }}
+            initialParams={{
+              setIsLoggedIn: changeLoginState,
+            }}
             component={HomeScreen}
           />
           <Stack.Screen

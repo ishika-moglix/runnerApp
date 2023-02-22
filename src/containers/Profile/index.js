@@ -9,6 +9,7 @@ import {
   AsyncStorage,
 } from "react-native";
 import { connect } from "react-redux";
+import HomeActions from "../../redux/actions/home";
 
 const MEDIUM_CARDS = new OrderedMap({
   warehouse: {
@@ -35,6 +36,7 @@ const ProfileScreen = (props) => {
   };
 
   const onLogout = () => {
+    props.logout();
     AsyncStorage.removeItem("token");
     props.route.params.setIsLoggedIn();
   };
@@ -199,4 +201,8 @@ const mapStateToProp = (state) => ({
   home: state.home,
 });
 
-export default connect(mapStateToProp, null)(ProfileScreen);
+const mapDispatchToProps = (dispatch) => ({
+  logout: () => dispatch(HomeActions.logout()),
+});
+
+export default connect(mapStateToProp, mapDispatchToProps)(ProfileScreen);

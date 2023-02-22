@@ -26,7 +26,9 @@ const { Types, Creators } = createActions({
 
   fetchProfile: [],
   fetchedProfile: ["data"],
-  fetchFailedProfile: ["error"],
+  fetchFailedProfile: ["error", "errorStatusCode"],
+
+  logout: [],
 });
 
 export const HomeTypes = Types;

@@ -9,6 +9,7 @@ import {
   ScrollView,
   ActivityIndicator,
   RefreshControl,
+  AsyncStorage,
   PermissionsAndroid,
 } from "react-native";
 import Header from "../../components/Header";
@@ -26,7 +27,7 @@ const min = new Date(moment(new Date()).subtract(2, "month").toString());
 const TITLES = new Map({
   pickupDetails: "Pickup Done",
   deliveryDetails: "Delivery Details",
-  returnDetails: "Return Details",
+  returnDetails: "Customer Return Details",
   supplierReturnDetails: "Supplier Return Details",
 });
 
@@ -62,6 +63,14 @@ const HomeScreen = (props) => {
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
     );
   }, []);
+
+  useEffect(() => {
+    if (props.home.getIn(["profile", "errorStatusCode"]) == 401) {
+      props.logout();
+      AsyncStorage.removeItem("token");
+      props.route.params.setIsLoggedIn();
+    }
+  }, [props.home.getIn(["profile", "errorStatusCode"])]);
 
   useEffect(() => {
     updateHomePage();
@@ -294,6 +303,7 @@ const mapDispatchToProps = (dispatch) => ({
   fetchHome: (date) => dispatch(HomeActions.fetchHomeData(date)),
   fetchProfile: () => dispatch(HomeActions.fetchProfile()),
   setDate: (date) => dispatch(HomeActions.setDate(date)),
+  logout: () => dispatch(HomeActions.logout()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
