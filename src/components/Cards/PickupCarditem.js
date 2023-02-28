@@ -5,7 +5,9 @@ import styles from "./style";
 
 export default PickupCarditem = (props) => {
   const { item, onIncDec, onQtyChange, onChangeReason, reasons } = props;
+  console.log(item.inputQuantity,'ddhfdfdgfdg');
   return (
+   
     <View style={styles.pickupCard}>
       {/* <TouchableOpacity
         style={styles.checkBoxWrap}
@@ -38,10 +40,10 @@ export default PickupCarditem = (props) => {
           }}
         >
           <TouchableOpacity
-            disabled={item.inputQuantity == 0}
+            disabled={item.inputQuantity > 0 && item.inputQuantity <= 1}
             onPress={() => onIncDec(props.id, "dec")}
             style={
-              item.inputQuantity == 0
+              item.inputQuantity > 0 && item.inputQuantity <= 1
                 ? styles.MinusdisabledQtyWrap
                 : styles.MinusenableQtyWrap
             }

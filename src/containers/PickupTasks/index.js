@@ -165,7 +165,7 @@ const PickupTasksScreen = (props) => {
           ) : null}
           <TouchableOpacity
             onPress={() => {
-              item.status == "STARTED" || item.poId
+              item.status == "STARTED" || item.poId || item.taskId
                 ? props.navigation.navigate("PickupItems", {
                     ...props.route.params,
                     ...item,
@@ -186,7 +186,7 @@ const PickupTasksScreen = (props) => {
                 {item.itemCount || item.itemsCount}
               </Text>
             </Text>
-            {item.status == "STARTED" || item.poId ? (
+            {item.status == "STARTED" || item.poId || item.taskId ? (
               <Icon
                 name={"menu-right"}
                 syle={{ color: "#000" }}

@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   PermissionsAndroid,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import {
   Container,
@@ -19,13 +20,15 @@ import {
   Button,
 } from "native-base";
 import { sendOtp, uploadDeviceId } from "../../services/auth";
+import Modal from "react-native-modal";
 import styles from "./style";
 import DeviceInfo from "react-native-device-info";
 
 export default LoginScreen = (props) => {
   const [phone, setPhone] = useState("");
   const [loader, setLoader] = useState(false);
-
+  const [UidModal,setUidModal] = useState(false);
+  const [UserID,setUserID] = useState("");
   useEffect(() => {
     PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
@@ -59,6 +62,8 @@ export default LoginScreen = (props) => {
         setLoader(false);
         if (data && data.success) {
           console.log(data);
+          // setUidModal(true);
+          // setUserID(data.data.id);
           Alert.alert(
             "Some Issue in Getting your details",
             `Please upload code ${DeviceInfo.getUniqueId()} for Login`,
@@ -176,6 +181,31 @@ export default LoginScreen = (props) => {
           </Button>
         </View>
       </View>
+      {/* <Modal
+      
+      isVisible={UidModal}
+      style={{
+        margin: 0,
+        padding:0
+      }}
+    >
+      <View>
+        <Text> "Some Issue in Getting your details",</Text>
+        <Text>
+        `Please upload code ${DeviceInfo.getUniqueId()} for Login`,
+        </Text>
+        <TouchableOpacity onPress = {
+                  props.navigation.navigate("Verification", {
+                    phone,
+                    id: UserID,
+                  })}>
+        <Text>Already Uploaded, Login Now</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress = {onUploadDeviceId(UserID)}>
+        <Text>Already Uploaded, Login Now</Text>
+        </TouchableOpacity>
+      </View>
+    </Modal> */}
     </Container>
   );
 };

@@ -348,7 +348,30 @@ const PickupItemsScreen = (props) => {
           </View>
         );
       case "Delivery":
-        return (
+        if (props.route.params.status == "DELIVERED"){
+          return(
+            <View style={styles.footerWrap}>
+           <Button
+              onPress={setIsUploaderVisible}
+              disabled={!isChecked || loading}
+              block
+              style={styles.EnabledAttemptedBtn}
+            >
+              <Text
+                style={
+                  !isChecked
+                    ? styles.DisbaledAttemptedBtntext
+                    : styles.EnabledAttemptedBtntext
+                }
+              >
+                UPLOAD POD
+              </Text>
+            </Button>
+           </View>
+          )
+
+        }else{
+          return (
           <View style={styles.footerWrap}>
             <Button
               onPress={toggleModal}
@@ -394,7 +417,61 @@ const PickupItemsScreen = (props) => {
               </Text>
             </Button>
           </View>
-        );
+          )
+        }
+        // return (
+        //    {props.route.params.status == "DELIVERED" ?
+        //    <View style={styles.footerWrap}>
+           
+        //    </View>
+        //    :
+        //   <View style={styles.footerWrap}>
+        //     <Button
+        //       onPress={toggleModal}
+        //       disabled={!isChecked || loading}
+        //       block
+        //       style={styles.EnabledAttemptedBtn}
+        //     >
+        //       <Text
+        //         style={
+        //           !isChecked
+        //             ? styles.DisbaledAttemptedBtntext
+        //             : styles.EnabledAttemptedBtntext
+        //         }
+        //       >
+        //         ATTEMPTED
+        //       </Text>
+        //     </Button>
+        //     <Button
+        //       onPress={setIsUploaderVisible}
+        //       disabled={!isChecked || loading}
+        //       block
+        //       style={
+        //         !isChecked
+        //           ? styles.EnabledAttemptedBtn
+        //           : styles.EnabledDeliverdBtn
+        //       }
+        //     >
+        //       {loading && (
+        //         <ActivityIndicator
+        //           size={"small"}
+        //           color={Colors.white}
+        //           style={{ marginRight: Dimension.margin10 }}
+        //         />
+        //       )}
+        //       <Text
+        //         style={
+        //           !isChecked
+        //             ? styles.DisbaledAttemptedBtntext
+        //             : styles.EnabledDeliverdBtnText
+        //         }
+        //       >
+        //         DELIVERED
+        //       </Text>
+        //     </Button>
+        //   </View>
+        //       }
+        // );
       case "SupplierReturn":
         return (
           <View style={styles.footerWrap}>
