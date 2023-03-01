@@ -53,7 +53,11 @@ export default LoginScreen = (props) => {
       });
     }
   };
+  const onAlreadyUploaded = () => {
+    props.navigation.navigate("Verification", {phone, id: UserID,})
+    setUidModal(false)
 
+  }
   const onNext = async () => {
     if (phone.length == 10) {
       try {
@@ -62,27 +66,27 @@ export default LoginScreen = (props) => {
         setLoader(false);
         if (data && data.success) {
           console.log(data);
-          // setUidModal(true);
-          // setUserID(data.data.id);
-          Alert.alert(
-            "Some Issue in Getting your details",
-            `Please upload code ${DeviceInfo.getUniqueId()} for Login`,
-            [
-              {
-                text: "Upload",
-                onPress: () => onUploadDeviceId(data.data.id),
-              },
-              {
-                text: "Already Uploaded, Login Now",
-                onPress: () =>
-                  props.navigation.navigate("Verification", {
-                    phone,
-                    id: data.data.id,
-                  }),
-                style: "cancel",
-              },
-            ]
-          );
+          setUidModal(true);
+          setUserID(data.data.id);
+          // Alert.alert(
+          //   "Some Issue in Getting your details",
+          //   `Please upload code ${DeviceInfo.getUniqueId()} for Login`,
+          //   [
+          //     {
+          //       text: "Upload",
+          //       onPress: () => onUploadDeviceId(data.data.id),
+          //     },
+          //     {
+          //       text: "Already Uploaded, Login Now",
+          //       onPress: () =>
+          //         props.navigation.navigate("Verification", {
+          //           phone,
+          //           id: data.data.id,
+          //         }),
+          //       style: "cancel",
+          //     },
+          //   ]
+          // );
           Toast.show({
             text: data.message,
             buttonText: "Okay",
@@ -181,7 +185,7 @@ export default LoginScreen = (props) => {
           </Button>
         </View>
       </View>
-      {/* <Modal
+      <Modal
       
       isVisible={UidModal}
       style={{
@@ -189,23 +193,23 @@ export default LoginScreen = (props) => {
         padding:0
       }}
     >
-      <View>
-        <Text> "Some Issue in Getting your details",</Text>
-        <Text>
-        `Please upload code ${DeviceInfo.getUniqueId()} for Login`,
+      <View style={styles.ModalContainer}>
+        <Text style={styles.issueTxt}>Some Issue in Getting your details</Text>
+        <Text style={styles.uploadUidTxt}>
+        Please upload code <Text style={styles.uidtxt}> ${DeviceInfo.getUniqueId()} </Text>for Login,
         </Text>
-        <TouchableOpacity onPress = {
-                  props.navigation.navigate("Verification", {
-                    phone,
-                    id: UserID,
-                  })}>
-        <Text>Already Uploaded, Login Now</Text>
+        <TouchableOpacity 
+        onPress={() => onAlreadyUploaded()}
+       style={styles.uploadBtn}
+        >
+        <Text style={styles.uploadBtnTxt1}>Already Uploaded,</Text>
+        <Text style={styles.uploadBtnTxt2}> Login Now</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress = {onUploadDeviceId(UserID)}>
-        <Text>Already Uploaded, Login Now</Text>
+        <TouchableOpacity onPress = {() => {onUploadDeviceId(UserID),setUidModal(false)}}   style={styles.uploadBtn1}>
+        <Text  style={styles.uploadBtnTxt} >Upload</Text>
         </TouchableOpacity>
       </View>
-    </Modal> */}
+    </Modal>
     </Container>
   );
 };
