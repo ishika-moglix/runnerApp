@@ -40,10 +40,10 @@ export default PickupCarditem = (props) => {
           }}
         >
           <TouchableOpacity
-            disabled={item.inputQuantity > 0 && item.inputQuantity <= 1}
+            disabled={item.inputQuantity == 0 }
             onPress={() => onIncDec(props.id, "dec")}
             style={
-              item.inputQuantity > 0 && item.inputQuantity <= 1
+              item.inputQuantity == 0
                 ? styles.MinusdisabledQtyWrap
                 : styles.MinusenableQtyWrap
             }
@@ -56,10 +56,10 @@ export default PickupCarditem = (props) => {
             value={String(item.inputQuantity)}
           />
           <TouchableOpacity
-            disabled={item.inputQuantity == item.remainingQuantity}
+            disabled={item.inputQuantity >= item.remainingQuantity-0.99 }
             onPress={() => onIncDec(props.id, "inc")}
             style={
-              item.inputQuantity == item.remainingQuantity
+              item.inputQuantity >= item.remainingQuantity-0.99
                 ? styles.MinusdisabledQtyWrap
                 : styles.MinusenableQtyWrap
             }
