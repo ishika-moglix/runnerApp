@@ -109,7 +109,7 @@ export default CompanyCard = (props) => {
         props.item.status == "CLOSED" ||
         props.item.deliveryTaskStatus == "CLOSED" ||
         props.item.returnTaskStatus == "CLOSED" ||
-        props.item.status == "READY_FOR_PICKUP" ||
+        // props.item.status == "READY_FOR_PICKUP" ||
         props.item.deliveryTaskStatus == "READY_FOR_DELIVERY" ||
         props.item.returnTaskStatus == "READY_FOR_RETURN" ||
         props.item.returnTaskStatus == "READY_FOR_PICKUP"
@@ -119,6 +119,10 @@ export default CompanyCard = (props) => {
         company: props.item.contactName,
         type: props.type,
         data: props.item,
+        showFurtherFlow:
+          props.type == "Pickup"
+            ? props.item.status != "READY_FOR_PICKUP"
+            : true,
       });
     }
     // if (props.type == "Pickup") {

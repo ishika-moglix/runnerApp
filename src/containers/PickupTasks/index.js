@@ -165,12 +165,14 @@ const PickupTasksScreen = (props) => {
           ) : null}
           <TouchableOpacity
             onPress={() => {
-              item.status == "STARTED" || item.poId || item.taskId
-                ? props.navigation.navigate("PickupItems", {
-                    ...props.route.params,
-                    ...item,
-                  })
-                : null;
+              if (props.route.params.showFurtherFlow) {
+                item.status == "STARTED" || item.poId || item.taskId
+                  ? props.navigation.navigate("PickupItems", {
+                      ...props.route.params,
+                      ...item,
+                    })
+                  : null;
+              }
             }}
             style={{
               flexDirection: "row",
