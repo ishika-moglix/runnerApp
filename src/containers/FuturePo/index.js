@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import React, { useEffect, useState, useCallback } from "react";
-import { Container, Icon, Item, Input, Button } from "native-base";
+import { Container, Icon, Item, Input, Button,Footer, Content } from "native-base";
 import {
   View,
   TouchableOpacity,
@@ -13,6 +13,8 @@ import Header from "../../components/Header";
 import styles from "./styles";
 import debounce from "lodash.debounce";
 import { getFuturePos, assingPickUp } from "../../services/tasks";
+import Dimension from "../../Theme/Dimension";
+import style from "../../components/Cards/style";
 // import TaskActions from "../../redux/actions/tasks";
 
 const FuturePO = (props) => {
@@ -56,7 +58,7 @@ const FuturePO = (props) => {
 
   const startSearch = (text) => {
     setSearch(text);
-    searchValidator(text);
+   // searchValidator(text);
   };
 
   const onCreateAssign = async () => {
@@ -109,7 +111,7 @@ const FuturePO = (props) => {
           </TouchableOpacity>
         )}
       />
-      <View style={styles.container}>
+      <Content style={styles.container}>
         <Item style={{ backgroundColor: "#fff", borderRadius: 8 }} regular>
           <Icon
             name={"magnify"}
@@ -119,23 +121,42 @@ const FuturePO = (props) => {
             }}
           />
           <Input
-            placeholder={"Search PO"}
+            placeholder={"Search Supplier PO"}
             value={search}
             onChangeText={(text) => startSearch(text)}
+            keyboardType={'number-pad'}
           />
+          {search.length > 2 ?
+          <TouchableOpacity onPress={() => {setSearch(''),setDataList([])}}>
+          <Icon
+            name={"close"}
+            type={"MaterialCommunityIcons"}
+            style={{
+              color: "#3C3C3C",
+            }}
+          />
+          </TouchableOpacity>
+          :null  } 
         </Item>
+
+        <Button
+              block
+              onPress={() => searchValidator(search)}
+              style={styles.startNowBtn}
+            > 
+            <Text style={styles.startNowText}>Search</Text></Button>
         {!dataList.length && loading ? (
           <ActivityIndicator
             color={"rgba(217, 35, 45, 1)"}
-            size={"small"}
-            style={{ alignSelf: "center", margin: 10 }}
+            size={"large"}
+            style={{ alignSelf: "center", margin: 100 }}
           />
         ) : null}
-        <ScrollView>
-          {dataList.map((item, itemKey) => (
-            <View key={itemKey}>
-              <Text>{item.emsPoId}</Text>
-              <Text>
+        <ScrollView style={styles.scrollviewCss}>
+        {dataList.length ? 
+          <>
+          <Text style={styles.poidtxt}>{dataList[0].emsPoId}</Text>
+              <Text style={[styles.normalText,{marginVertical:Dimension.margin10}]}>
                 Scheduled Date :{" "}
                 {
                   new Date(new Date().setDate(new Date().getDate() + 1))
@@ -143,32 +164,50 @@ const FuturePO = (props) => {
                     .split("T")[0]
                 }
               </Text>
-              <Text>Name: {item.name}</Text>
-              <Text>QTY :{item.quantity}</Text>
-              <Text></Text>
-              <Text></Text>
+              </>
+          : null}
+         
+          {dataList.map((item, itemKey) => (
+            <View key={itemKey} style={styles.cardWrap}>
+              <View style={{flex:8,}}>
+              <Text style={styles.normalText}>{item.name}</Text>
+              </View>
+              <View style={{flex:4,alignItems:"flex-end"}}>
+              <Text style={styles.normalText}>QTY : {item.quantity}</Text>
+              </View>
             </View>
           ))}
         </ScrollView>
-        {dataList.length ? (
+        
+      </Content>
+      {dataList.length ? (
           <>
-            <Text>Would you like to pick this Order?</Text>
+          <View style={styles.footerCss}>
+
+         
+            <Text style={styles.footerTxt}>Would you like to pick this Order?</Text>
+            <View style={{flexDirection:"row",}}>
+              <View style={{flex:1}}>
             <Button
               block
               onPress={() => props.navigation.goBack()}
-              style={styles.startNowBtn}
+              style={styles.graybtn}
             >
-              <Text style={styles.startNowText}>NO</Text>
+              <Text style={styles.graybtnTxt}>NO</Text>
             </Button>
+            </View>
+            <View style={{flex:1,marginLeft:Dimension.padding10}}>
             <Button block onPress={onCreateAssign} style={styles.startNowBtn}>
               <Text style={styles.startNowText}>YES</Text>
               {loading ? (
                 <ActivityIndicator color={"#fff"} size={"small"} />
               ) : null}
             </Button>
+            </View>
+            </View>
+            </View>
           </>
         ) : null}
-      </View>
     </Container>
   );
 };

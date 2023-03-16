@@ -18,6 +18,7 @@ export default StyleSheet.create({
   ContainerCss: { backgroundColor: "#F7F7FA", position: "relative" },
   container: {
     padding: Dimension.padding20,
+    position:"relative"
   },
   cardWrap: {
     marginBottom: Dimension.margin15,
@@ -27,6 +28,7 @@ export default StyleSheet.create({
     backgroundColor: "#fff",
     borderWidth: 1,
     borderColor: "#C4C4C4",
+    flexDirection:"row"
   },
   cardTitle: {
     fontSize: Dimension.font16,
@@ -78,7 +80,7 @@ export default StyleSheet.create({
     fontFamily: Dimension.CustomMediumFont,
   },
   startNowBtn: {
-    marginTop: Dimension.margin20,
+    marginTop: Dimension.margin10,
     width: "100%",
     borderRadius: 8,
     backgroundColor: Colors.RedThemeColor,
@@ -93,5 +95,62 @@ export default StyleSheet.create({
     color: Colors.white,
     fontFamily: Dimension.CustomSemiBoldFont,
     marginRight: Dimension.margin10,
+  },
+
+  bottomAction:{
+    position:"absolute",
+    width:"100%",
+    left:0,
+    bottom:0
+  },
+  footerCss:{
+    backgroundColor:"#fff",
+    borderTopColor:"#ccc",
+    borderTopWidth:1,
+    padding:Dimension.padding10,
+    margin:0,
+   //height:60
+
+  },
+  footerTxt:{
+    fontSize: Dimension.font14,
+    color: Colors.PrimaryTextColor,
+    fontFamily: Dimension.CustomSemiBoldFont,
+    //marginRight: Dimension.margin10,
+  },
+  graybtn:{
+    marginTop: Dimension.margin10,
+    width: "100%",
+    borderRadius: 8,
+    backgroundColor: Colors.white,
+    borderWidth:1,
+    borderColor:'#CFD2E2',
+    height: Dimension.height40,
+    elevation: 0,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  graybtnTxt:{
+    fontSize: Dimension.font14,
+    color: Colors.PrimaryTextColor,
+    fontFamily: Dimension.CustomSemiBoldFont,
+  },
+  scrollviewCss:{
+    paddingVertical:Dimension.padding15
+  },
+  poidtxt:{
+    fontSize: Dimension.font14,
+    color: Colors.PrimaryTextColor,
+    fontFamily: Dimension.CustomSemiBoldFont,
+    backgroundColor:Colors.white,
+    paddingHorizontal:Dimension.padding15,
+    paddingVertical:Dimension.padding4,
+    paddingTop:8,
+    borderRadius:4,
+    alignSelf:"flex-start",
+    borderWidth:1,
+    borderColor:Colors.ExtralightGrayText,
+    
   },
 });

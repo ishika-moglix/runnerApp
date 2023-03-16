@@ -678,7 +678,7 @@ const PickupItemsScreen = (props) => {
   const renderItemDetails = () => {
     return (
       <>
-        <ScrollView>
+        <ScrollView contentContainerStyle={{paddingBottom:80}}>
           <View style={styles.DeliveryItemWrap}>
             {data
               .map((item, index) => renderCard(item, index))
