@@ -104,11 +104,29 @@ const AddressScreen = (props) => {
 
   const onIncDec = (key, type) => {
     let newData = data;
-    newData = newData.setIn(
-      [key, "inputQuantity"],
-      Number(newData.getIn([key, "inputQuantity"])) + (type === "inc" ? 1 : -1)
-    );
+    if(Number(newData.getIn([key, "inputQuantity"])<1)){
+      newData = newData
+      .setIn(
+        [key, "inputQuantity"],
+        (type === "inc" ? Number(newData.getIn([key, "inputQuantity"])) + 1: 0)
+      )
     setData(newData);
+    }else if(Number(newData.getIn([key, "inputQuantity"])>1 && Number(newData.getIn([key, "inputQuantity"])<2))){
+      newData = newData
+      .setIn(
+        [key, "inputQuantity"],
+        (type === "inc" ? Number(newData.getIn([key, "inputQuantity"])) + 1: (Number(newData.getIn([key, "inputQuantity"]))-1).toFixed(2))
+      )
+    setData(newData);
+    }else{
+      newData = newData
+      .setIn(
+        [key, "inputQuantity"],
+        Number(newData.getIn([key, "inputQuantity"])) +
+          (type === "inc" ? 1 : -1)
+      )
+    setData(newData);
+    }
   };
 
   const onChangeReason = (key, val) => {

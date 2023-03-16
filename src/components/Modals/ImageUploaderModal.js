@@ -8,7 +8,7 @@ import {
   Dimensions,
   ActivityIndicator,
 } from "react-native";
-import { Icon, Footer, FooterTab, Button } from "native-base";
+import { Icon, Footer, FooterTab, Button, Toast } from "native-base";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import Modal from "react-native-modal";
 import { markDelivered, uploadImages } from "../../services/tasks";
@@ -22,9 +22,9 @@ export default ImageUploaderModal = (props) => {
     props;
 
   useEffect(() => {
-    console.log();
+    console.log("final", props);
     if (type == "Delivery" || type == "SupplierReturn") {
-      markDelivery();
+      if (props.status != "DELIVERED") markDelivery();
     }
   }, []);
 
@@ -33,6 +33,22 @@ export default ImageUploaderModal = (props) => {
       deliveryTaskItemId,
     });
     console.log(data);
+    if (data.code != 200) {
+      Toast.show({
+        text: data.message,
+        buttonText: "Okay",
+        duration: 2500,
+        style: { margin: 20 },
+      });
+      props.navigation.goBack();
+    } else {
+      Toast.show({
+        text: data.message,
+        buttonText: "Okay",
+        duration: 2500,
+        style: { margin: 20 },
+      });
+    }
   };
 
   const openSelector = (selection) => {
@@ -159,8 +175,8 @@ export default ImageUploaderModal = (props) => {
 
   return (
     <Modal
-      onBackButtonPress={toggleModal}
-      onBackdropPress={toggleModal}
+      // onBackButtonPress={toggleModal}
+      // onBackdropPress={toggleModal}
       isVisible={isModalVisible}
       style={{
         margin: 0,
@@ -171,13 +187,13 @@ export default ImageUploaderModal = (props) => {
           <Text style={styles.headingText}>
             Please Upload or take photo of the document
           </Text>
-          <TouchableOpacity onPress={toggleModal}>
+          {/* <TouchableOpacity onPress={toggleModal}>
             <Icon
               name={"close-circle"}
               style={styles.closeIcon}
               type={"MaterialCommunityIcons"}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <ScrollView style={styles.containercss}>
           <View>{renderOptions()}</View>

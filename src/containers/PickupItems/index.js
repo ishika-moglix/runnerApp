@@ -80,7 +80,7 @@ const PickupItemsScreen = (props) => {
   const [reasonLoading, setReasonLoading] = useState(false);
 
   useEffect(() => {
-    console.log(props);
+    console.log(props.route.params.status);
     if (props.route.params.type == "Pickup") {
       getPickupItemsList();
     } else if (
@@ -172,7 +172,38 @@ const PickupItemsScreen = (props) => {
 
   const onIncDec = (key, type) => {
     let newData = data;
-    newData = newData
+    if(Number(newData.getIn([key, "inputQuantity"])<1)){
+      newData = newData
+      .setIn(
+        [key, "inputQuantity"],
+        (type === "inc" ? Number(newData.getIn([key, "inputQuantity"])) + 1: 0)
+      )
+      .setIn(
+        [key, "reason"],
+        Number(newData.getIn([key, "inputQuantity"])) +
+          (type === "inc" ? 1 : -1) ==
+          newData.getIn([key, "remainingQuantity"])
+          ? null
+          : newData.getIn([key, "reason"])
+      );
+    setData(newData);
+    }else if(Number(newData.getIn([key, "inputQuantity"])>1 && Number(newData.getIn([key, "inputQuantity"])<2))){
+      newData = newData
+      .setIn(
+        [key, "inputQuantity"],
+        (type === "inc" ? Number(newData.getIn([key, "inputQuantity"])) + 1: (Number(newData.getIn([key, "inputQuantity"]))-1).toFixed(2))
+      )
+      .setIn(
+        [key, "reason"],
+        Number(newData.getIn([key, "inputQuantity"])) +
+          (type === "inc" ? 1 : -1) ==
+          newData.getIn([key, "remainingQuantity"])
+          ? null
+          : newData.getIn([key, "reason"])
+      );
+    setData(newData);
+    }else{
+      newData = newData
       .setIn(
         [key, "inputQuantity"],
         Number(newData.getIn([key, "inputQuantity"])) +
@@ -187,6 +218,7 @@ const PickupItemsScreen = (props) => {
           : newData.getIn([key, "reason"])
       );
     setData(newData);
+    }
   };
 
   const onChangeReason = (key, val) => {
@@ -473,6 +505,40 @@ const PickupItemsScreen = (props) => {
         //       }
         // );
       case "SupplierReturn":
+        if (props.route.params.status == "DELIVERED"){
+          return(
+            <View style={styles.footerWrap}>
+            <Button
+              onPress={setIsUploaderVisible}
+              disabled={!isChecked || loading}
+              block
+              style={
+                !isChecked
+                  ? styles.EnabledAttemptedBtn
+                  : styles.EnabledDeliverdBtn
+              }
+            >
+              {loading && (
+                <ActivityIndicator
+                  size={"small"}
+                  color={Colors.white}
+                  style={{ marginRight: Dimension.margin10 }}
+                />
+              )}
+              <Text
+                style={
+                  !isChecked
+                    ? styles.DisbaledAttemptedBtntext
+                    : styles.EnabledDeliverdBtnText
+                }
+              >
+                UPLOAD POD
+              </Text>
+            </Button>
+            </View>
+          )
+        }
+        else{
         return (
           <View style={styles.footerWrap}>
             <Button
@@ -519,7 +585,7 @@ const PickupItemsScreen = (props) => {
               </Text>
             </Button>
           </View>
-        );
+        );}
       default:
         return (
           <View
@@ -642,6 +708,7 @@ const PickupItemsScreen = (props) => {
           <ImageUploaderModal
             navigation={props.navigation}
             type={props.route.params.type}
+            status={props.route.params.status}
             toggleModal={toggleUploaderModal}
             deliveryTaskItemId={props.route.params.deliveryTaskItemId}
             isModalVisible={isUploaderVisible}

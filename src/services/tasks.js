@@ -17,6 +17,40 @@ const axiosInstance = axios.create({
   },
 });
 
+const getFuturePos = async (poId) =>
+  axiosInstance.post(
+    `tasks/futurePickuppoItemsByPoId`,
+    {
+      poId,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+        latitude: await getLocation("latitude"),
+        longitude: await getLocation("longitude"),
+        accuracy: await getLocation("accuracy"),
+        address: "",
+      },
+    }
+  );
+
+const assingPickUp = async (poItemIds) =>
+  axiosInstance.post(
+    `tasks/futurePickup/createAssign`,
+    {
+      poItemIds,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+        latitude: await getLocation("latitude"),
+        longitude: await getLocation("longitude"),
+        accuracy: await getLocation("accuracy"),
+        address: "",
+      },
+    }
+  );
+
 const getTask = async (type, date, page) =>
   axiosInstance.post(
     `v2/tasks/runner/delivery`,
@@ -374,4 +408,6 @@ export {
   returnPicked,
   getSupplierPickupTaskById,
   returnRejected,
+  getFuturePos,
+  assingPickUp,
 };
