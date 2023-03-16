@@ -2,9 +2,8 @@ import { StyleSheet, Dimensions, Platform } from "react-native";
 
 //import { FORMERR } from 'dns';
 const IS_IOS = Platform.OS === "ios";
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
-  "window"
-);
+const { width: viewportWidth, height: viewportHeight } =
+  Dimensions.get("window");
 
 function wp(percentage) {
   const value = (percentage * viewportWidth) / 100;
@@ -85,10 +84,14 @@ export default StyleSheet.create({
     backgroundColor: Colors.RedThemeColor,
     height: Dimension.height40,
     elevation: 0,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   startNowText: {
     fontSize: Dimension.font14,
     color: Colors.white,
     fontFamily: Dimension.CustomSemiBoldFont,
+    marginRight: Dimension.margin10,
   },
 });

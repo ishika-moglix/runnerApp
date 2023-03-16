@@ -8,7 +8,7 @@ import {
   Dimensions,
   ActivityIndicator,
 } from "react-native";
-import { Icon, Footer, FooterTab, Button,Toast } from "native-base";
+import { Icon, Footer, FooterTab, Button, Toast } from "native-base";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import Modal from "react-native-modal";
 import { markDelivered, uploadImages } from "../../services/tasks";
@@ -18,13 +18,13 @@ export default ImageUploaderModal = (props) => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const { toggleModal, isModalVisible, deliveryTaskItemId, navigation, type } =props;
+  const { toggleModal, isModalVisible, deliveryTaskItemId, navigation, type } =
+    props;
 
   useEffect(() => {
-    console.log("final",props);
+    console.log("final", props);
     if (type == "Delivery" || type == "SupplierReturn") {
-      if(props.status !="DELIVERED")
-      markDelivery();
+      if (props.status != "DELIVERED") markDelivery();
     }
   }, []);
 
@@ -33,7 +33,7 @@ export default ImageUploaderModal = (props) => {
       deliveryTaskItemId,
     });
     console.log(data);
-    if(data.code!=200){
+    if (data.code != 200) {
       Toast.show({
         text: data.message,
         buttonText: "Okay",
@@ -41,7 +41,7 @@ export default ImageUploaderModal = (props) => {
         style: { margin: 20 },
       });
       props.navigation.goBack();
-    }else{
+    } else {
       Toast.show({
         text: data.message,
         buttonText: "Okay",
@@ -175,8 +175,8 @@ export default ImageUploaderModal = (props) => {
 
   return (
     <Modal
-      onBackButtonPress={toggleModal}
-      onBackdropPress={toggleModal}
+      // onBackButtonPress={toggleModal}
+      // onBackdropPress={toggleModal}
       isVisible={isModalVisible}
       style={{
         margin: 0,
