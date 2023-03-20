@@ -129,11 +129,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.moglix_runner"
+        applicationId "com.moglix.runner"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 30
+        versionName "3.0.0"
     }
     splits {
         abi {

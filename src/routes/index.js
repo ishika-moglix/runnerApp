@@ -31,10 +31,10 @@ const Routes = (props) => {
 
   useEffect(() => {
     axios
-      .get("https://runnerqa.moglilabs.com/api/auth/getConfiguration")
+      .get("https://runner.moglix.com/api/auth/getConfiguration")
       .then(({ data: { list } }) => {
         props.setBaseUrl(
-          "https://runnerqa.moglilabs.com/api/" ||
+          "https://runner.moglix.com/api/" ||
             list.find((_) => _.name == "BASE_URL").value
         );
       });

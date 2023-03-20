@@ -1,4 +1,4 @@
-package com.moglix_runner;
+package com.moglix.runner;
 
 import com.facebook.react.ReactActivity;
 
