@@ -60,6 +60,14 @@ const FuturePO = (props) => {
     setDataList([]);
     const { data } = await getFuturePos(searchText);
     if (data.success) {
+      if (!data.poItemDetails.length) {
+        Toast.show({
+          text: "No Data Found!",
+          buttonText: "Okay",
+          duration: 2500,
+          style: { margin: 20 },
+        });
+      }
       setDataList(data.poItemDetails);
     } else {
       Toast.show({
@@ -184,7 +192,7 @@ const FuturePO = (props) => {
           {dataList.length ? (
             <>
               <Text style={styles.poidtxt}>{dataList[0].emsPoId}</Text>
-              <Text
+              {/* <Text
                 style={[
                   styles.normalText,
                   { marginVertical: Dimension.margin10 },
@@ -196,7 +204,7 @@ const FuturePO = (props) => {
                     .toISOString()
                     .split("T")[0]
                 }
-              </Text>
+              </Text> */}
             </>
           ) : null}
 
