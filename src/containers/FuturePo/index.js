@@ -191,7 +191,7 @@ const FuturePO = (props) => {
         <ScrollView style={styles.scrollviewCss}>
           {dataList.length ? (
             <>
-              <Text style={styles.poidtxt}>{dataList[0].emsPoId}</Text>
+              <Text style={[styles.poidtxt, { marginVertical: Dimension.margin10 }]}>{dataList[0].emsPoId}</Text>
               {/* <Text
                 style={[
                   styles.normalText,
