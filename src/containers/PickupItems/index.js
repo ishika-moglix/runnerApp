@@ -172,52 +172,59 @@ const PickupItemsScreen = (props) => {
 
   const onIncDec = (key, type) => {
     let newData = data;
-    if(Number(newData.getIn([key, "inputQuantity"])<1)){
+    if (Number(newData.getIn([key, "inputQuantity"]) < 1)) {
       newData = newData
-      .setIn(
-        [key, "inputQuantity"],
-        (type === "inc" ? Number(newData.getIn([key, "inputQuantity"])) + 1: 0)
+        .setIn(
+          [key, "inputQuantity"],
+          type === "inc" ? Number(newData.getIn([key, "inputQuantity"])) + 1 : 0
+        )
+        .setIn(
+          [key, "reason"],
+          Number(newData.getIn([key, "inputQuantity"])) +
+            (type === "inc" ? 1 : -1) ==
+            newData.getIn([key, "remainingQuantity"])
+            ? null
+            : newData.getIn([key, "reason"])
+        );
+      setData(newData);
+    } else if (
+      Number(
+        newData.getIn([key, "inputQuantity"]) > 1 &&
+          Number(newData.getIn([key, "inputQuantity"]) < 2)
       )
-      .setIn(
-        [key, "reason"],
-        Number(newData.getIn([key, "inputQuantity"])) +
-          (type === "inc" ? 1 : -1) ==
-          newData.getIn([key, "remainingQuantity"])
-          ? null
-          : newData.getIn([key, "reason"])
-      );
-    setData(newData);
-    }else if(Number(newData.getIn([key, "inputQuantity"])>1 && Number(newData.getIn([key, "inputQuantity"])<2))){
+    ) {
       newData = newData
-      .setIn(
-        [key, "inputQuantity"],
-        (type === "inc" ? Number(newData.getIn([key, "inputQuantity"])) + 1: (Number(newData.getIn([key, "inputQuantity"]))-1).toFixed(2))
-      )
-      .setIn(
-        [key, "reason"],
-        Number(newData.getIn([key, "inputQuantity"])) +
-          (type === "inc" ? 1 : -1) ==
-          newData.getIn([key, "remainingQuantity"])
-          ? null
-          : newData.getIn([key, "reason"])
-      );
-    setData(newData);
-    }else{
+        .setIn(
+          [key, "inputQuantity"],
+          type === "inc"
+            ? Number(newData.getIn([key, "inputQuantity"])) + 1
+            : (Number(newData.getIn([key, "inputQuantity"])) - 1).toFixed(2)
+        )
+        .setIn(
+          [key, "reason"],
+          Number(newData.getIn([key, "inputQuantity"])) +
+            (type === "inc" ? 1 : -1) ==
+            newData.getIn([key, "remainingQuantity"])
+            ? null
+            : newData.getIn([key, "reason"])
+        );
+      setData(newData);
+    } else {
       newData = newData
-      .setIn(
-        [key, "inputQuantity"],
-        Number(newData.getIn([key, "inputQuantity"])) +
-          (type === "inc" ? 1 : -1)
-      )
-      .setIn(
-        [key, "reason"],
-        Number(newData.getIn([key, "inputQuantity"])) +
-          (type === "inc" ? 1 : -1) ==
-          newData.getIn([key, "remainingQuantity"])
-          ? null
-          : newData.getIn([key, "reason"])
-      );
-    setData(newData);
+        .setIn(
+          [key, "inputQuantity"],
+          Number(newData.getIn([key, "inputQuantity"])) +
+            (type === "inc" ? 1 : -1)
+        )
+        .setIn(
+          [key, "reason"],
+          Number(newData.getIn([key, "inputQuantity"])) +
+            (type === "inc" ? 1 : -1) ==
+            newData.getIn([key, "remainingQuantity"])
+            ? null
+            : newData.getIn([key, "reason"])
+        );
+      setData(newData);
     }
   };
 
@@ -301,6 +308,13 @@ const PickupItemsScreen = (props) => {
     setLoading(false);
     if (resp.data.success) {
       props.navigation.navigate("Pickup");
+    } else {
+      Toast.show({
+        text: resp.data.message,
+        buttonText: "Okay",
+        duration: 1500,
+        style: { margin: 20 },
+      });
     }
   };
 
@@ -313,6 +327,13 @@ const PickupItemsScreen = (props) => {
     setLoading(false);
     if (resp.data.success) {
       props.navigation.navigate("Return");
+    } else {
+      Toast.show({
+        text: resp.data.message,
+        buttonText: "Okay",
+        duration: 1500,
+        style: { margin: 20 },
+      });
     }
   };
 
@@ -380,212 +401,211 @@ const PickupItemsScreen = (props) => {
           </View>
         );
       case "Delivery":
-        if (props.route.params.status == "DELIVERED"){
-          return(
-            <View style={styles.footerWrap}>
-           <Button
-              onPress={setIsUploaderVisible}
-              disabled={!isChecked || loading}
-              block
-              style={styles.EnabledAttemptedBtn}
-            >
-              <Text
-                style={
-                  !isChecked
-                    ? styles.DisbaledAttemptedBtntext
-                    : styles.EnabledAttemptedBtntext
-                }
-              >
-                UPLOAD POD
-              </Text>
-            </Button>
-           </View>
-          )
-
-        }else{
+        if (props.route.params.status == "DELIVERED") {
           return (
-          <View style={styles.footerWrap}>
-            <Button
-              onPress={toggleModal}
-              disabled={!isChecked || loading}
-              block
-              style={styles.EnabledAttemptedBtn}
-            >
-              <Text
-                style={
-                  !isChecked
-                    ? styles.DisbaledAttemptedBtntext
-                    : styles.EnabledAttemptedBtntext
-                }
-              >
-                ATTEMPTED
-              </Text>
-            </Button>
-            <Button
-              onPress={setIsUploaderVisible}
-              disabled={!isChecked || loading}
-              block
-              style={
-                !isChecked
-                  ? styles.EnabledAttemptedBtn
-                  : styles.EnabledDeliverdBtn
-              }
-            >
-              {loading && (
-                <ActivityIndicator
-                  size={"small"}
-                  color={Colors.white}
-                  style={{ marginRight: Dimension.margin10 }}
-                />
-              )}
-              <Text
-                style={
-                  !isChecked
-                    ? styles.DisbaledAttemptedBtntext
-                    : styles.EnabledDeliverdBtnText
-                }
-              >
-                DELIVERED
-              </Text>
-            </Button>
-          </View>
-          )
-        }
-        // return (
-        //    {props.route.params.status == "DELIVERED" ?
-        //    <View style={styles.footerWrap}>
-           
-        //    </View>
-        //    :
-        //   <View style={styles.footerWrap}>
-        //     <Button
-        //       onPress={toggleModal}
-        //       disabled={!isChecked || loading}
-        //       block
-        //       style={styles.EnabledAttemptedBtn}
-        //     >
-        //       <Text
-        //         style={
-        //           !isChecked
-        //             ? styles.DisbaledAttemptedBtntext
-        //             : styles.EnabledAttemptedBtntext
-        //         }
-        //       >
-        //         ATTEMPTED
-        //       </Text>
-        //     </Button>
-        //     <Button
-        //       onPress={setIsUploaderVisible}
-        //       disabled={!isChecked || loading}
-        //       block
-        //       style={
-        //         !isChecked
-        //           ? styles.EnabledAttemptedBtn
-        //           : styles.EnabledDeliverdBtn
-        //       }
-        //     >
-        //       {loading && (
-        //         <ActivityIndicator
-        //           size={"small"}
-        //           color={Colors.white}
-        //           style={{ marginRight: Dimension.margin10 }}
-        //         />
-        //       )}
-        //       <Text
-        //         style={
-        //           !isChecked
-        //             ? styles.DisbaledAttemptedBtntext
-        //             : styles.EnabledDeliverdBtnText
-        //         }
-        //       >
-        //         DELIVERED
-        //       </Text>
-        //     </Button>
-        //   </View>
-        //       }
-        // );
-      case "SupplierReturn":
-        if (props.route.params.status == "DELIVERED"){
-          return(
             <View style={styles.footerWrap}>
-            <Button
-              onPress={setIsUploaderVisible}
-              disabled={!isChecked || loading}
-              block
-              style={
-                !isChecked
-                  ? styles.EnabledAttemptedBtn
-                  : styles.EnabledDeliverdBtn
-              }
-            >
-              {loading && (
-                <ActivityIndicator
-                  size={"small"}
-                  color={Colors.white}
-                  style={{ marginRight: Dimension.margin10 }}
-                />
-              )}
-              <Text
-                style={
-                  !isChecked
-                    ? styles.DisbaledAttemptedBtntext
-                    : styles.EnabledDeliverdBtnText
-                }
+              <Button
+                onPress={setIsUploaderVisible}
+                disabled={!isChecked || loading}
+                block
+                style={styles.EnabledAttemptedBtn}
               >
-                UPLOAD POD
-              </Text>
-            </Button>
+                <Text
+                  style={
+                    !isChecked
+                      ? styles.DisbaledAttemptedBtntext
+                      : styles.EnabledAttemptedBtntext
+                  }
+                >
+                  UPLOAD POD
+                </Text>
+              </Button>
             </View>
-          )
+          );
+        } else {
+          return (
+            <View style={styles.footerWrap}>
+              <Button
+                onPress={toggleModal}
+                disabled={!isChecked || loading}
+                block
+                style={styles.EnabledAttemptedBtn}
+              >
+                <Text
+                  style={
+                    !isChecked
+                      ? styles.DisbaledAttemptedBtntext
+                      : styles.EnabledAttemptedBtntext
+                  }
+                >
+                  ATTEMPTED
+                </Text>
+              </Button>
+              <Button
+                onPress={setIsUploaderVisible}
+                disabled={!isChecked || loading}
+                block
+                style={
+                  !isChecked
+                    ? styles.EnabledAttemptedBtn
+                    : styles.EnabledDeliverdBtn
+                }
+              >
+                {loading && (
+                  <ActivityIndicator
+                    size={"small"}
+                    color={Colors.white}
+                    style={{ marginRight: Dimension.margin10 }}
+                  />
+                )}
+                <Text
+                  style={
+                    !isChecked
+                      ? styles.DisbaledAttemptedBtntext
+                      : styles.EnabledDeliverdBtnText
+                  }
+                >
+                  DELIVERED
+                </Text>
+              </Button>
+            </View>
+          );
         }
-        else{
-        return (
-          <View style={styles.footerWrap}>
-            <Button
-              onPress={toggleModal}
-              disabled={!isChecked || loading}
-              block
-              style={styles.EnabledAttemptedBtn}
-            >
-              <Text
+      // return (
+      //    {props.route.params.status == "DELIVERED" ?
+      //    <View style={styles.footerWrap}>
+
+      //    </View>
+      //    :
+      //   <View style={styles.footerWrap}>
+      //     <Button
+      //       onPress={toggleModal}
+      //       disabled={!isChecked || loading}
+      //       block
+      //       style={styles.EnabledAttemptedBtn}
+      //     >
+      //       <Text
+      //         style={
+      //           !isChecked
+      //             ? styles.DisbaledAttemptedBtntext
+      //             : styles.EnabledAttemptedBtntext
+      //         }
+      //       >
+      //         ATTEMPTED
+      //       </Text>
+      //     </Button>
+      //     <Button
+      //       onPress={setIsUploaderVisible}
+      //       disabled={!isChecked || loading}
+      //       block
+      //       style={
+      //         !isChecked
+      //           ? styles.EnabledAttemptedBtn
+      //           : styles.EnabledDeliverdBtn
+      //       }
+      //     >
+      //       {loading && (
+      //         <ActivityIndicator
+      //           size={"small"}
+      //           color={Colors.white}
+      //           style={{ marginRight: Dimension.margin10 }}
+      //         />
+      //       )}
+      //       <Text
+      //         style={
+      //           !isChecked
+      //             ? styles.DisbaledAttemptedBtntext
+      //             : styles.EnabledDeliverdBtnText
+      //         }
+      //       >
+      //         DELIVERED
+      //       </Text>
+      //     </Button>
+      //   </View>
+      //       }
+      // );
+      case "SupplierReturn":
+        if (props.route.params.status == "DELIVERED") {
+          return (
+            <View style={styles.footerWrap}>
+              <Button
+                onPress={setIsUploaderVisible}
+                disabled={!isChecked || loading}
+                block
                 style={
                   !isChecked
-                    ? styles.DisbaledAttemptedBtntext
-                    : styles.EnabledAttemptedBtntext
+                    ? styles.EnabledAttemptedBtn
+                    : styles.EnabledDeliverdBtn
                 }
               >
-                REJECTED
-              </Text>
-            </Button>
-            <Button
-              onPress={setIsUploaderVisible}
-              disabled={!isChecked || loading}
-              block
-              style={
-                !isChecked
-                  ? styles.EnabledAttemptedBtn
-                  : styles.EnabledDeliverdBtn
-              }
-            >
-              {loading && (
-                <ActivityIndicator
-                  size={"small"}
-                  color={Colors.white}
-                  style={{ marginRight: Dimension.margin10 }}
-                />
-              )}
-              <Text
+                {loading && (
+                  <ActivityIndicator
+                    size={"small"}
+                    color={Colors.white}
+                    style={{ marginRight: Dimension.margin10 }}
+                  />
+                )}
+                <Text
+                  style={
+                    !isChecked
+                      ? styles.DisbaledAttemptedBtntext
+                      : styles.EnabledDeliverdBtnText
+                  }
+                >
+                  UPLOAD POD
+                </Text>
+              </Button>
+            </View>
+          );
+        } else {
+          return (
+            <View style={styles.footerWrap}>
+              <Button
+                onPress={toggleModal}
+                disabled={!isChecked || loading}
+                block
+                style={styles.EnabledAttemptedBtn}
+              >
+                <Text
+                  style={
+                    !isChecked
+                      ? styles.DisbaledAttemptedBtntext
+                      : styles.EnabledAttemptedBtntext
+                  }
+                >
+                  REJECTED
+                </Text>
+              </Button>
+              <Button
+                onPress={setIsUploaderVisible}
+                disabled={!isChecked || loading}
+                block
                 style={
                   !isChecked
-                    ? styles.DisbaledAttemptedBtntext
-                    : styles.EnabledDeliverdBtnText
+                    ? styles.EnabledAttemptedBtn
+                    : styles.EnabledDeliverdBtn
                 }
               >
-                DELIVERED
-              </Text>
-            </Button>
-          </View>
-        );}
+                {loading && (
+                  <ActivityIndicator
+                    size={"small"}
+                    color={Colors.white}
+                    style={{ marginRight: Dimension.margin10 }}
+                  />
+                )}
+                <Text
+                  style={
+                    !isChecked
+                      ? styles.DisbaledAttemptedBtntext
+                      : styles.EnabledDeliverdBtnText
+                  }
+                >
+                  DELIVERED
+                </Text>
+              </Button>
+            </View>
+          );
+        }
       default:
         return (
           <View
@@ -678,7 +698,7 @@ const PickupItemsScreen = (props) => {
   const renderItemDetails = () => {
     return (
       <>
-        <ScrollView contentContainerStyle={{paddingBottom:80}}>
+        <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
           <View style={styles.DeliveryItemWrap}>
             {data
               .map((item, index) => renderCard(item, index))

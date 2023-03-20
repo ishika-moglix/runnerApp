@@ -1,6 +1,15 @@
 import { connect } from "react-redux";
 import React, { useEffect, useState, useCallback } from "react";
-import { Container, Icon, Item, Input, Button,Footer, Content } from "native-base";
+import {
+  Container,
+  Icon,
+  Item,
+  Input,
+  Button,
+  Footer,
+  Content,
+  Toast,
+} from "native-base";
 import {
   View,
   TouchableOpacity,
@@ -51,14 +60,29 @@ const FuturePO = (props) => {
     setDataList([]);
     const { data } = await getFuturePos(searchText);
     if (data.success) {
+      if (!data.poItemDetails.length) {
+        Toast.show({
+          text: "No Data Found!",
+          buttonText: "Okay",
+          duration: 2500,
+          style: { margin: 20 },
+        });
+      }
       setDataList(data.poItemDetails);
+    } else {
+      Toast.show({
+        text: data.message,
+        buttonText: "Okay",
+        duration: 2500,
+        style: { margin: 20 },
+      });
     }
     setLoading(false);
   };
 
   const startSearch = (text) => {
     setSearch(text);
-   // searchValidator(text);
+    // searchValidator(text);
   };
 
   const onCreateAssign = async () => {
@@ -66,6 +90,13 @@ const FuturePO = (props) => {
     const { data } = await assingPickUp(dataList.map((_) => _.emsPoItemId));
     if (data.success) {
       props.navigation.goBack();
+    } else {
+      Toast.show({
+        text: data.message,
+        buttonText: "Okay",
+        duration: 2500,
+        style: { margin: 20 },
+      });
     }
     setLoading(false);
   };
@@ -124,27 +155,32 @@ const FuturePO = (props) => {
             placeholder={"Search Supplier PO"}
             value={search}
             onChangeText={(text) => startSearch(text)}
-            keyboardType={'number-pad'}
+            keyboardType={"number-pad"}
           />
-          {search.length > 2 ?
-          <TouchableOpacity onPress={() => {setSearch(''),setDataList([])}}>
-          <Icon
-            name={"close"}
-            type={"MaterialCommunityIcons"}
-            style={{
-              color: "#3C3C3C",
-            }}
-          />
-          </TouchableOpacity>
-          :null  } 
+          {search.length > 2 ? (
+            <TouchableOpacity
+              onPress={() => {
+                setSearch(""), setDataList([]);
+              }}
+            >
+              <Icon
+                name={"close"}
+                type={"MaterialCommunityIcons"}
+                style={{
+                  color: "#3C3C3C",
+                }}
+              />
+            </TouchableOpacity>
+          ) : null}
         </Item>
 
         <Button
-              block
-              onPress={() => searchValidator(search)}
-              style={styles.startNowBtn}
-            > 
-            <Text style={styles.startNowText}>Search</Text></Button>
+          block
+          onPress={() => searchValidator(search)}
+          style={styles.startNowBtn}
+        >
+          <Text style={styles.startNowText}>Search</Text>
+        </Button>
         {!dataList.length && loading ? (
           <ActivityIndicator
             color={"rgba(217, 35, 45, 1)"}
@@ -153,61 +189,69 @@ const FuturePO = (props) => {
           />
         ) : null}
         <ScrollView style={styles.scrollviewCss}>
-        {dataList.length ? 
-          <>
-          <Text style={styles.poidtxt}>{dataList[0].emsPoId}</Text>
-              <Text style={[styles.normalText,{marginVertical:Dimension.margin10}]}>
+          {dataList.length ? (
+            <>
+              <Text style={styles.poidtxt}>{dataList[0].emsPoId}</Text>
+              {/* <Text
+                style={[
+                  styles.normalText,
+                  { marginVertical: Dimension.margin10 },
+                ]}
+              >
                 Scheduled Date :{" "}
                 {
                   new Date(new Date().setDate(new Date().getDate() + 1))
                     .toISOString()
                     .split("T")[0]
                 }
-              </Text>
-              </>
-          : null}
-         
+              </Text> */}
+            </>
+          ) : null}
+
           {dataList.map((item, itemKey) => (
             <View key={itemKey} style={styles.cardWrap}>
-              <View style={{flex:8,}}>
-              <Text style={styles.normalText}>{item.name}</Text>
+              <View style={{ flex: 8 }}>
+                <Text style={styles.normalText}>{item.name}</Text>
               </View>
-              <View style={{flex:4,alignItems:"flex-end"}}>
-              <Text style={styles.normalText}>QTY : {item.quantity}</Text>
+              <View style={{ flex: 4, alignItems: "flex-end" }}>
+                <Text style={styles.normalText}>QTY : {item.quantity}</Text>
               </View>
             </View>
           ))}
         </ScrollView>
-        
       </Content>
       {dataList.length ? (
-          <>
+        <>
           <View style={styles.footerCss}>
-
-         
-            <Text style={styles.footerTxt}>Would you like to pick this Order?</Text>
-            <View style={{flexDirection:"row",}}>
-              <View style={{flex:1}}>
-            <Button
-              block
-              onPress={() => props.navigation.goBack()}
-              style={styles.graybtn}
-            >
-              <Text style={styles.graybtnTxt}>NO</Text>
-            </Button>
+            <Text style={styles.footerTxt}>
+              Would you like to pick this Order?
+            </Text>
+            <View style={{ flexDirection: "row" }}>
+              <View style={{ flex: 1 }}>
+                <Button
+                  block
+                  onPress={() => props.navigation.goBack()}
+                  style={styles.graybtn}
+                >
+                  <Text style={styles.graybtnTxt}>NO</Text>
+                </Button>
+              </View>
+              <View style={{ flex: 1, marginLeft: Dimension.padding10 }}>
+                <Button
+                  block
+                  onPress={onCreateAssign}
+                  style={styles.startNowBtn}
+                >
+                  <Text style={styles.startNowText}>YES</Text>
+                  {loading ? (
+                    <ActivityIndicator color={"#fff"} size={"small"} />
+                  ) : null}
+                </Button>
+              </View>
             </View>
-            <View style={{flex:1,marginLeft:Dimension.padding10}}>
-            <Button block onPress={onCreateAssign} style={styles.startNowBtn}>
-              <Text style={styles.startNowText}>YES</Text>
-              {loading ? (
-                <ActivityIndicator color={"#fff"} size={"small"} />
-              ) : null}
-            </Button>
-            </View>
-            </View>
-            </View>
-          </>
-        ) : null}
+          </View>
+        </>
+      ) : null}
     </Container>
   );
 };
