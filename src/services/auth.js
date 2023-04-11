@@ -9,7 +9,7 @@ const getLocation = async (type) =>
   });
 
 const axiosInstance = axios.create({
-  baseURL: "https://runnerqa.moglilabs.com/api",
+  baseURL: "https://runner.moglix.com/api",
   headers: {
     "Content-Type": "application/json",
   },

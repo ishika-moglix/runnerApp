@@ -8,9 +8,10 @@ import {createReducer} from 'reduxsauce';
 import {AuthTypes} from '../actions/auth';
 
 let INITIAL_STATE = {
-  url: 'https://runnerqa.moglilabs.com/api/',
+  url: 'https://runner.moglix.com/api/',
 };
 
+//https://runner.moglix.com https://runnerqa.moglilabs.com/api/
 export const setBaseUrl = (state, {url}) => ({
   url,
 });
