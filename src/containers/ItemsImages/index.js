@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  PermissionsAndroid,
+} from "react-native";
 import {
   Container,
   Icon,
@@ -19,23 +26,32 @@ export default ItemsImages = (props) => {
     props.navigation.goBack();
   };
 
-  const openSelector = (selection) => {
-    switch (selection) {
-      case "Camera":
-        launchCamera({}, (res) => {
-          setImages([...images, res]);
-        });
-        return;
-      case "Gallery":
-        launchImageLibrary({}, (res) => {
-          setImages([...images, res]);
-        });
-        return;
-      default:
-        launchCamera({}, (res) => {
-          setImages([...images, res]);
-        });
-        return;
+  const openSelector = async (selection) => {
+    const granted = await PermissionsAndroid.requestMultiple([
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+    ]);
+    if (
+      granted["android.permission.CAMERA"] &&
+      granted["android.permission.WRITE_EXTERNAL_STORAGE"]
+    ) {
+      switch (selection) {
+        case "Camera":
+          launchCamera({}, (res) => {
+            setImages([...images, res]);
+          });
+          return;
+        case "Gallery":
+          launchImageLibrary({}, (res) => {
+            setImages([...images, res]);
+          });
+          return;
+        default:
+          launchCamera({}, (res) => {
+            setImages([...images, res]);
+          });
+          return;
+      }
     }
   };
 

@@ -7,6 +7,7 @@ import {
   ScrollView,
   Dimensions,
   ActivityIndicator,
+  PermissionsAndroid,
 } from "react-native";
 import { Icon, Footer, FooterTab, Button, Toast } from "native-base";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
@@ -51,32 +52,41 @@ export default ImageUploaderModal = (props) => {
     }
   };
 
-  const openSelector = (selection) => {
-    switch (selection) {
-      case "Camera":
-        launchCamera({ includeBase64: true }, (res) => {
-          console.log(res, "ferfe");
-          if (!res.didCancel) {
-            setImages([...images, res]);
-          }
-        });
-        return;
-      case "Gallery":
-        launchImageLibrary({ includeBase64: true }, (res) => {
-          console.log(res, "ferfe");
-          if (!res.didCancel) {
-            setImages([...images, res]);
-          }
-        });
-        return;
-      default:
-        launchCamera({ includeBase64: true }, (res) => {
-          console.log(res, "ferfe");
-          if (!res.didCancel) {
-            setImages([...images, res]);
-          }
-        });
-        return;
+  const openSelector = async (selection) => {
+    const granted = await PermissionsAndroid.requestMultiple([
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+    ]);
+    if (
+      granted["android.permission.CAMERA"] &&
+      granted["android.permission.WRITE_EXTERNAL_STORAGE"]
+    ) {
+      switch (selection) {
+        case "Camera":
+          launchCamera({ includeBase64: true }, (res) => {
+            console.log(res, "ferfe");
+            if (!res.didCancel) {
+              setImages([...images, res]);
+            }
+          });
+          return;
+        case "Gallery":
+          launchImageLibrary({ includeBase64: true }, (res) => {
+            console.log(res, "ferfe");
+            if (!res.didCancel) {
+              setImages([...images, res]);
+            }
+          });
+          return;
+        default:
+          launchCamera({ includeBase64: true }, (res) => {
+            console.log(res, "ferfe");
+            if (!res.didCancel) {
+              setImages([...images, res]);
+            }
+          });
+          return;
+      }
     }
   };
 
