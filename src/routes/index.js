@@ -22,6 +22,7 @@ import FileViewerScreen from "../containers/FileViewer";
 import ProfileScreen from "../containers/Profile";
 import FuturePOScreen from "../containers/FuturePo";
 import PickupItemsScreen from "../containers/PickupItems";
+import { BASE_URL } from "../constants";
 
 const Stack = createStackNavigator();
 
@@ -30,14 +31,11 @@ const Routes = (props) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios
-      .get("https://runner.moglix.com/api/auth/getConfiguration")
-      .then(({ data: { list } }) => {
-        props.setBaseUrl(
-          "https://runner.moglix.com/api/" ||
-            list.find((_) => _.name == "BASE_URL").value
-        );
-      });
+    axios.get(`${BASE_URL}auth/getConfiguration`).then(({ data: { list } }) => {
+      props.setBaseUrl(
+        BASE_URL || list.find((_) => _.name == "BASE_URL").value
+      );
+    });
   }, []);
 
   const changeLoginState = () => {

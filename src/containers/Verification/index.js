@@ -84,9 +84,10 @@ export default VerificationScreen = (props) => {
         const { data } = await login({
           id: props.route.params.id,
           imei: [device_id],
-          device_id: device_id,
+          deviceId: device_id,
           // device_id: "a9245b9bc9af6670",
-          otp,
+          phoneNumber: props.route.params.phone,
+          otp: Number(otp),
         });
         setLoader(false);
         if (data && data.success) {
@@ -164,9 +165,7 @@ export default VerificationScreen = (props) => {
         <View style={styles.signInWrap}>
           <Text style={styles.headingText}>Sign In</Text>
           <View style={styles.row}>
-            <Text style={styles.numbertext}>
-              +91 {props.route.params.phone}
-            </Text>
+            <Text style={styles.numbertext}>{props.route.params.phone}</Text>
             <TouchableOpacity
               transparent
               onPress={() => props.navigation.goBack()}

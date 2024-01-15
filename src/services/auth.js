@@ -1,5 +1,6 @@
 import axios from "axios";
 import Geolocation from "react-native-geolocation-service";
+import { BASE_URL } from "../constants";
 
 const getLocation = async (type) =>
   new Promise(function (myResolve, myReject) {
@@ -9,7 +10,7 @@ const getLocation = async (type) =>
   });
 
 const axiosInstance = axios.create({
-  baseURL: "https://runner.moglix.com/api",
+  baseURL: BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },

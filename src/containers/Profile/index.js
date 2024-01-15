@@ -161,7 +161,7 @@ const ProfileScreen = (props) => {
                   width: "100%",
                 }}
               >
-                +91-{props.home.getIn(["profile", "data", "phone"])}
+                {props.home.getIn(["profile", "data", "phone"])}
               </Text>
             </View>
           </View>

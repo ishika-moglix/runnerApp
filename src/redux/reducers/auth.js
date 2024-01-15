@@ -4,15 +4,15 @@
  * @see https://redux.js.org/basics/reducers
  */
 
-import {createReducer} from 'reduxsauce';
-import {AuthTypes} from '../actions/auth';
+import { createReducer } from "reduxsauce";
+import { BASE_URL } from "../../constants";
+import { AuthTypes } from "../actions/auth";
 
 let INITIAL_STATE = {
-  url: 'https://runner.moglix.com/api/',
+  url: BASE_URL,
 };
 
-//https://runner.moglix.com https://runnerqa.moglilabs.com/api/
-export const setBaseUrl = (state, {url}) => ({
+export const setBaseUrl = (state, { url }) => ({
   url,
 });
 

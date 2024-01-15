@@ -27,8 +27,8 @@ import DeviceInfo from "react-native-device-info";
 export default LoginScreen = (props) => {
   const [phone, setPhone] = useState("");
   const [loader, setLoader] = useState(false);
-  const [UidModal,setUidModal] = useState(false);
-  const [UserID,setUserID] = useState("");
+  const [UidModal, setUidModal] = useState(false);
+  const [UserID, setUserID] = useState("");
   useEffect(() => {
     PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
@@ -54,12 +54,11 @@ export default LoginScreen = (props) => {
     }
   };
   const onAlreadyUploaded = () => {
-    props.navigation.navigate("Verification", {phone, id: UserID,})
-    setUidModal(false)
-
-  }
+    props.navigation.navigate("Verification", { phone, id: UserID });
+    setUidModal(false);
+  };
   const onNext = async () => {
-    if (phone.length == 10) {
+    if (phone.length) {
       try {
         setLoader(true);
         const { data, error } = await sendOtp(phone);
@@ -166,7 +165,7 @@ export default LoginScreen = (props) => {
                   value={phone}
                   onChangeText={(text) => setPhone(text)}
                   keyboardType={"numeric"}
-                  maxLength={10}
+                  // maxLength={10}
                   style={styles.inputCss}
                 />
               </Item>
@@ -186,30 +185,38 @@ export default LoginScreen = (props) => {
         </View>
       </View>
       <Modal
-      
-      isVisible={UidModal}
-      style={{
-        margin: 0,
-        padding:0
-      }}
-    >
-      <View style={styles.ModalContainer}>
-        <Text style={styles.issueTxt}>Some Issue in Getting your details</Text>
-        <Text style={styles.uploadUidTxt}>
-        Please upload code <Text style={styles.uidtxt}> ${DeviceInfo.getUniqueId()} </Text>for Login,
-        </Text>
-        <TouchableOpacity 
-        onPress={() => onAlreadyUploaded()}
-       style={styles.uploadBtn}
-        >
-        <Text style={styles.uploadBtnTxt1}>Already Uploaded,</Text>
-        <Text style={styles.uploadBtnTxt2}> Login Now</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress = {() => {onUploadDeviceId(UserID),setUidModal(false)}}   style={styles.uploadBtn1}>
-        <Text  style={styles.uploadBtnTxt} >Upload</Text>
-        </TouchableOpacity>
-      </View>
-    </Modal>
+        isVisible={UidModal}
+        style={{
+          margin: 0,
+          padding: 0,
+        }}
+      >
+        <View style={styles.ModalContainer}>
+          <Text style={styles.issueTxt}>
+            Some Issue in Getting your details
+          </Text>
+          <Text style={styles.uploadUidTxt}>
+            Please upload code{" "}
+            <Text style={styles.uidtxt}> ${DeviceInfo.getUniqueId()} </Text>for
+            Login,
+          </Text>
+          <TouchableOpacity
+            onPress={() => onAlreadyUploaded()}
+            style={styles.uploadBtn}
+          >
+            <Text style={styles.uploadBtnTxt1}>Already Uploaded,</Text>
+            <Text style={styles.uploadBtnTxt2}> Login Now</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              onUploadDeviceId(UserID), setUidModal(false);
+            }}
+            style={styles.uploadBtn1}
+          >
+            <Text style={styles.uploadBtnTxt}>Upload</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </Container>
   );
 };
