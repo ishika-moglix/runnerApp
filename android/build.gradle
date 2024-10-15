@@ -10,6 +10,9 @@ buildscript {
         ndkVersion = "21.4.7075529"
         kotlinVersion = "1.6.21"
         googlePlayServicesAuthVersion = "19.2.0"
+        // pdfViewerVersion = "3.2.0-beta.1"
+        // pdfViewerRepo = "com.github.mhiew"
+
     }
     repositories {
         google()
@@ -27,6 +30,11 @@ def REACT_NATIVE_VERSION = new File(['node', '--print',"JSON.parse(require('fs')
 
 
 allprojects {
+   buildscript {
+       repositories {
+           maven { url "https://maven.aliyun.com/repository/jcenter" }
+       }
+   }
     repositories {
         exclusiveContent {
            filter {
@@ -46,7 +54,7 @@ allprojects {
         }
     }
         mavenLocal()
-        jcenter()
+         maven { url "https://maven.aliyun.com/repository/jcenter" }
 
         // maven { url "http://jcenter.bintray.com" }
          maven {
@@ -70,7 +78,7 @@ allprojects {
         }
 
         google()
-        jcenter()
+        maven { url "https://maven.aliyun.com/repository/jcenter" }
          maven {
             url "https://maven.google.com"
         }
