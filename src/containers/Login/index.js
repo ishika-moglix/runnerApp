@@ -64,7 +64,7 @@ export default LoginScreen = (props) => {
         const { data, error } = await sendOtp(phone);
         setLoader(false);
         if (data && data.success) {
-          console.log(data);
+          console.log(data, " ye data dekhna hai otp ka hai");
           setUidModal(true);
           setUserID(data.data.id);
           // Alert.alert(

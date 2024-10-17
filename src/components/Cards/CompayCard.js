@@ -38,7 +38,9 @@ export default CompanyCard = (props) => {
     });
     setLoader(false);
     if (data) {
-      console.log("****************", data);
+      console.log("longitude pickup:" , data.longitude, "latitude pickup:", data.latitude);
+      console.log("yha data dikh rha hai Pickupstart ka ")
+      console.log("*******pickup start *********", data);
       props.fetchTask();
     } else {
       setLoader(false);
@@ -55,7 +57,18 @@ export default CompanyCard = (props) => {
     });
     setLoader(false);
     if (data) {
-      console.log("****************", data);
+    const requestData = JSON.parse(data.config.data); 
+    const { latitude, longitude } = requestData; 
+
+    console.log("User's coordinates: onDelivery DONE ", latitude, longitude);
+
+    const distanceCheckResult = checkDistance({ latitude, longitude });
+
+    if (!distanceCheckResult.isInRange) {
+      console.log(distanceCheckResult.message);      
+  }  
+      //console.log("longitude:" , data.longitude, "latitude:", data.latitude);
+      console.log("*******hnn yhi hai delivery start ka data (delivery to wh)*********", data);
       props.fetchTask();
     } else {
       setLoader(false);
@@ -72,7 +85,18 @@ export default CompanyCard = (props) => {
     });
     setLoader(false);
     if (data) {
-      console.log("****************", data);
+      const requestData = JSON.parse(data.config.data); 
+    const { latitude, longitude } = requestData; 
+
+    console.log("User's coordinates: onRturn DONE ", latitude, longitude);
+
+    const distanceCheckResult = checkDistance({ latitude, longitude });
+
+    if (!distanceCheckResult.isInRange) {
+      console.log(distanceCheckResult.message);      
+  }  
+     // console.log("longitude:" , data.longitude, "latitude:", data.latitude);
+      console.log("********on return********", data);
       props.fetchTask();
     } else {
       setLoader(false);

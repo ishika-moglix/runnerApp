@@ -31,8 +31,8 @@ export default AddressCard = (props) => {
             <Text style={[styles.colontext,styles.centerWidth]}>
               :
             </Text>
-            <Text
-              style={[styles.addresstext,styles.rightWidth]}
+            <Text 
+            style={[styles.addresstext,styles.rightWidth]}
             >
               {props.item[item.key]}
             </Text>

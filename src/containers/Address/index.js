@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Container, Icon, Tab, TabHeading, Tabs, Button } from "native-base";
+import Geolocation from 'react-native-geolocation-service';
+import { checkDistance } from '../../services/checkLocation';
 import Header from "../../components/Header";
 import {
   TouchableOpacity,
@@ -15,6 +17,7 @@ import PickupCarditem from "../../components/Cards/PickupCarditem";
 import CommonCardItem from "../../components/Cards/CommonCardItem";
 import ReasonsModal from "../../components/Modals/ReasonsModal";
 import ImageUploaderModal from "../../components/Modals/ImageUploaderModal";
+import {fetchCoordinates} from '../../services/checkLocation'
 import { List } from "immutable";
 import styles from "./style";
 
@@ -49,10 +52,11 @@ let returnOptions = [
 ];
 
 const AddressScreen = (props) => {
-  console.log(props);
+  console.log(" hnn yhi adress hai ...........", props);
   const [activeTab, setActiveTab] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isUploaderVisible, setIsUploaderVisible] = useState(false);
+  const [addressCoordinates, setAddressCoordinates] = useState(null);
   const [data, setData] = useState(
     new List([
       {
@@ -111,12 +115,14 @@ const AddressScreen = (props) => {
         (type === "inc" ? Number(newData.getIn([key, "inputQuantity"])) + 1: 0)
       )
     setData(newData);
+    console.log("new data is set", newData)
     }else if(Number(newData.getIn([key, "inputQuantity"])>1 && Number(newData.getIn([key, "inputQuantity"])<2))){
       newData = newData
       .setIn(
         [key, "inputQuantity"],
         (type === "inc" ? Number(newData.getIn([key, "inputQuantity"])) + 1: (Number(newData.getIn([key, "inputQuantity"]))-1).toFixed(2))
       )
+      console.log("new data is set", newData)
     setData(newData);
     }else{
       newData = newData
@@ -126,6 +132,7 @@ const AddressScreen = (props) => {
           (type === "inc" ? 1 : -1)
       )
     setData(newData);
+    console.log("new data is set", newData)
     }
   };
 
@@ -134,6 +141,22 @@ const AddressScreen = (props) => {
     newData = newData.setIn([key, "reason"], val);
     setData(newData);
   };
+
+  const handleFetchCoordinates = async () => {
+    const address = props.route.params.data.contactAddress; 
+    try {
+      console.log("address is", address);
+      const coords = await fetchCoordinates(address); 
+      setAddressCoordinates(coords);
+      console.log("Coordinates of address :", coords);
+    } catch (error) {
+      console.error("Error fetching coordinates:", error);
+    }
+  };
+
+  useEffect(() => {
+    handleFetchCoordinates();
+  }, []);
 
   const renderFooter = () => {
     switch (props.route.params.type) {
@@ -148,7 +171,7 @@ const AddressScreen = (props) => {
               block
               style={styles.EnabledDeliverdBtn}
             >
-              <Text style={styles.EnabledDeliverdBtnText}>PICKUP DONE</Text>
+              <Text style={styles.EnabledDeliverdBtnText}>PICKUP hnn yhi h DONE</Text>
             </Button>
           </View>
         );
@@ -215,6 +238,38 @@ const AddressScreen = (props) => {
             </Button>
           </View>
         );
+    }
+  };
+
+  const getLocation = async () =>
+    new Promise((myResolve, myReject) => {
+      Geolocation.getCurrentPosition(
+        (info) => {
+          myResolve(info.coords);
+        },
+        (error) => {
+          myReject(error.message);
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      );
+    });
+
+  const handleCompare = async () => {
+    try {
+      console.log("compare")
+      const coords = await getLocation(); 
+      const currentCoords = {
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+      };
+
+     
+      console.log("current coordinates are", currentCoords);
+     
+      console.log("destination coords", addressCoordinates);
+      checkDistance(currentCoords, addressCoordinates);
+    } catch (error) {
+      Alert.alert("Error", error);
     }
   };
 
@@ -295,6 +350,26 @@ const AddressScreen = (props) => {
           renderItem={renderCards}
           keyExtractor={(item, index) => `${index}-item`}
         />
+        <Button
+          onPress={handleCompare}
+          style={{
+            backgroundColor: "#D10000", 
+            paddingVertical: 12,
+            paddingHorizontal: 15,
+            borderRadius: 20,
+            alignItems: "center",
+            justifyContent: "center",
+            elevation: 5,
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.3,
+            shadowRadius: 4,
+          }}
+        >
+          <Text style={{ color: "#fff", fontSize: 15, fontWeight: "bold" }}>
+            Check Distance
+          </Text>
+        </Button>
       </View>
     );
   };
@@ -379,6 +454,7 @@ const AddressScreen = (props) => {
           </Tab>
         ))}
       </Tabs>
+      
     </Container>
   );
 };

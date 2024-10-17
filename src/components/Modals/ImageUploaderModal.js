@@ -13,6 +13,7 @@ import { Icon, Footer, FooterTab, Button, Toast } from "native-base";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import Modal from "react-native-modal";
 import { markDelivered, uploadImages } from "../../services/tasks";
+import checkLocation from '../../services/geofencing'
 import styles from "./style";
 
 export default ImageUploaderModal = (props) => {
@@ -33,7 +34,8 @@ export default ImageUploaderModal = (props) => {
     const { data } = await markDelivered({
       deliveryTaskItemId,
     });
-    console.log(data);
+    console.log(data, "marked delivered data ...............");
+    checkLocation(data); //funtion for geofencing 
     if (data.code != 200) {
       Toast.show({
         text: data.message,

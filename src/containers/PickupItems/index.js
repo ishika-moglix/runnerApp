@@ -24,6 +24,7 @@ import PickupCarditem from "../../components/Cards/PickupCarditem";
 import CommonCardItem from "../../components/Cards/CommonCardItem";
 import ReasonsModal from "../../components/Modals/ReasonsModal";
 import ImageUploaderModal from "../../components/Modals/ImageUploaderModal";
+import { checkDistance } from "../../services/checkLocation";
 import { List } from "immutable";
 import styles from "./style";
 import {
@@ -39,6 +40,7 @@ import {
 } from "../../services/tasks";
 import Colors from "../../Theme/Colors";
 import Dimension from "../../Theme/Dimension";
+import { fetchCoordinates } from "../../services/checkLocation";
 
 let deliveryOptions = [
   {
@@ -78,6 +80,7 @@ const PickupItemsScreen = (props) => {
   const [reasonsData, setReasonsData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [reasonLoading, setReasonLoading] = useState(false);
+  const [addressCoordinates, setAddressCoordinates] = useState(0);
 
   useEffect(() => {
     console.log(props.route.params.status);
@@ -141,6 +144,21 @@ const PickupItemsScreen = (props) => {
       );
     }
   };
+  const handleFetchCoordinates = async () => {
+    const address = props.route.params.data.contactAddress;
+    try {
+      console.log("address is", address);
+      const coords = await fetchCoordinates(address);
+      setAddressCoordinates(coords);
+      console.log("Coordinates of address :", coords);
+    } catch (error) {
+      console.error("Error fetching coordinates:", error);
+    }
+  };
+
+  useEffect(() => {
+    handleFetchCoordinates();
+  }, []);
 
   const getReasons = async () => {
     const { data } = await getReasonList(
@@ -305,8 +323,24 @@ const PickupItemsScreen = (props) => {
         })),
     };
     const resp = await pickupStart(obj);
+    //console.log("pick up item details................", resp);
     setLoading(false);
+
     if (resp.data.success) {
+      const requestData = JSON.parse(resp.config.data);
+      const { latitude, longitude } = requestData;
+    
+      console.log("User's coordinates: PICK DONE ", latitude, longitude);
+    
+      const distanceCheckResult = checkDistance(
+        { latitude, longitude },
+        addressCoordinates 
+      );
+    
+      if (!distanceCheckResult.isInRange) {
+        console.log(`User is out of range. Distance: ${distanceCheckResult.distance} meters`);
+      }
+    
       props.navigation.navigate("Pickup");
     } else {
       Toast.show({
@@ -326,6 +360,22 @@ const PickupItemsScreen = (props) => {
     const resp = await returnPicked(obj);
     setLoading(false);
     if (resp.data.success) {
+      const requestData = JSON.parse(resp.config.data);
+      const { latitude, longitude } = requestData;
+
+      console.log("User's coordinates: onReturn DONE ", latitude, longitude);
+
+      const distanceCheckResult = checkDistance(
+        { latitude, longitude },
+        addressCoordinates
+      );
+
+      if (!distanceCheckResult.isInRange) {
+        console.log(
+          `User is out of range. Distance: ${distanceCheckResult.distance} meters`
+        );
+      }
+
       props.navigation.navigate("Return");
     } else {
       Toast.show({

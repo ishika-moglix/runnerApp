@@ -17,6 +17,7 @@
     "@react-navigation/native": "^5.9.2",
     "@react-navigation/stack": "^5.14.2",
     "axios": "^0.21.1",
+    "geolib": "^3.3.4",
     "immutable": "^4.0.0-rc.12",
     "lodash.debounce": "^4.0.8",
     "moment": "^2.29.1",

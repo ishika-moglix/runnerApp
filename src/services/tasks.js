@@ -10,7 +10,7 @@ const getLocation = async (type) =>
       myResolve(info.coords[type]);
     });
   });
-
+  
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
@@ -353,7 +353,7 @@ const uploadImages = async (data) =>
       },
     }
   );
-
+  
 const markDelivered = async (data) =>
   axiosInstance.post(
     `tasks/delivery/delivered`,
